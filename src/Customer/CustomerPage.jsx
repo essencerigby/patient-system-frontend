@@ -27,7 +27,8 @@
 
 import React, { useEffect, useState } from 'react';
 import StickyHeadTable, { createRow } from '../Component/Table';
-import CustomerModal from './NewCustomerModal';
+import EditCustomerModal from './EditCustomerModal';
+import NewCustomerModal from './NewCustomerModal';
 import { getCustomers } from '../apiService';
 import DeleteCustomer from './DeleteCustomer';
 import SuccessModal from '../Component/SuccessModal';
@@ -48,6 +49,9 @@ export default function CustomerPage() {
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+
+  // Formats lifetimeSpent as a currency string with two decimal places
+  const formatLifetimeSpent = (lifetimeSpent) => `$${Number(lifetimeSpent).toFixed(2)}`;
 
   // Get all customers from the database and store it in customers array
   useEffect(() => {
@@ -85,11 +89,11 @@ export default function CustomerPage() {
       createRow(
         columns,
         [
-          customer.id,
+          <EditCustomerModal customer={customer} onRefresh={handleRefresh} />,
           <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
           customer.name,
           customer.emailAddress,
-          customer.lifetimeSpent,
+          formatLifetimeSpent(customer.lifetimeSpent || '0.00'),
           customer.customerSince,
           <DeleteCustomer customer={customer} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
         ],
@@ -103,8 +107,7 @@ export default function CustomerPage() {
     rows.push(createRow(columns, Array(columns.length).fill('')));
   }
 
-  // Define customerModal fields - able to be modified
-  const temporaryFields = [
+  const fields = [
     { id: 'id', label: 'ID' },
     { id: 'active', label: 'Active' },
     { id: 'name', label: 'Customer Name' },
@@ -118,11 +121,11 @@ export default function CustomerPage() {
       <div className='pages-table'>
         <div className='header-modal-container'>
           <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Customers</h1>
-          <CustomerModal onRefresh={handleRefresh} />
+          <NewCustomerModal onRefresh={handleRefresh} />
         </div>
         <StickyHeadTable columns={columns} rows={rows} />
         <TableFilter
-          fields={temporaryFields}
+          fields={fields}
           getDomain={getCustomers}
           setDomain={setCustomers}
           setError={setError}
