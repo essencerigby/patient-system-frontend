@@ -12,6 +12,7 @@
   "rules": {
     "react/jsx-one-expression-per-line": "off",
     "jsx-quotes": ["error", "prefer-single"],
-    "comma-dangle": ["error", "never"]
+    "comma-dangle": ["error", "never"],
+    "react/prop-types": "off"
   }
 }
