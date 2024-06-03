@@ -64,6 +64,10 @@ h2 {
   border-radius: 4px;
 }
 
+.modal {
+  z-index: 1051;
+}
+
 .modal-content {
   background: #f1f1f1;
   border-radius: 3px;
@@ -76,6 +80,7 @@ h2 {
   position: absolute;
   top: 40%;
   transform: translate(-50%, -50%);
+  z-index: 1100;
 }
 
 .modal-header {
@@ -101,7 +106,9 @@ h2 {
 }
 
 .overlay {
-  background: rgba(49, 49, 49, 0.8);
+  /* background: rgba(49, 49, 49, 0.8); */
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
 }
 
 label {
