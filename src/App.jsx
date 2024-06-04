@@ -73,60 +73,6 @@ const rows = [
     '987-654-3210',
     'Sales Manager'
   ])
-  // createRow(updatedColumns, [
-  //   '6',
-  //   'Cedar Court Eatery',
-  //   '202 Cedar Court, San Francisco, CA 94101',
-  //   'David Anderson',
-  //   'd.anderson@test.com',
-  //   '777-555-0101',
-  //   'Sales VP'
-  // ]),
-  // createRow(updatedColumns, [
-  //   '7',
-  //   'Willow Drive Bistro',
-  //   '303 Willow Drive, New York, NY 10001',
-  //   'Amanda Thomas',
-  //   'a.thomas@test.com',
-  //   '777-555-0101',
-  //   'Sales VP'
-  // ]),
-  // createRow(updatedColumns, [
-  //   '8',
-  //   'Spruce Street Grill',
-  //   '404 Spruce Street, Chicago, IL 60601',
-  //   'Joshua Harris',
-  //   'j.harris@test.com',
-  //   '777-555-0101',
-  //   'Sales VP'
-  // ]),
-  // createRow(updatedColumns, [
-  //   '9',
-  //   'Aspen Boulevard Brunch',
-  //   '505 Aspen Boulevard, Denver, CO 80202',
-  //   'Olivia Clark',
-  //   'o.clark@test.com',
-  //   '777-555-0101',
-  //   'Sales VP'
-  // ]),
-  // createRow(updatedColumns, [
-  //   '10',
-  //   'Redwood Path Cafe',
-  //   '606 Redwood Path, Atlanta, GA 30301',
-  //   'Daniel Lewis',
-  //   'd.lewis@test.com',
-  //   '777-555-0101',
-  //   'Sales VP'
-  // ]),
-  // createRow(updatedColumns, [
-  //   '11',
-  //   'Test Center 1',
-  //   '12345 New Road Ave, TestCity, NV 12021',
-  //   'Contact Name Here',
-  //   'email@test.com',
-  //   '000-111-0101',
-  //   'Role Here'
-  // ])
 ];
 
 function App() {

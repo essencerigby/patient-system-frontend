@@ -48,7 +48,10 @@ export default function Form() {
     { id: 'city', label: 'City' },
     { id: 'state', label: 'State' },
     { id: 'zipCode', label: 'Zip Code' },
-    { id: 'contactName', label: 'Contact Name' }
+    { id: 'contact', label: 'Contact' },
+    { id: 'email', label: 'Email' },
+    { id: 'phoneNumber', label: 'Phone Number' },
+    { id: 'role', label: 'Role' }
   ];
 
   // Return desired setup for input field parameters
