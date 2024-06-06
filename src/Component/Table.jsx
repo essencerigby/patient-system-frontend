@@ -7,6 +7,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import SortDropdown from './TableSort';
 
 // Add styling to table head/body with StyledTableCell component
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -43,22 +44,43 @@ export function createRow(columns, values) {
 // StickyHeadTable component import - MUI
 // Accept column and row props for reusability
 export default function StickyHeadTable({ columns, rows }) {
+  const [sortConfig, setSortConfig] = React.useState({ key: null, direction: 'asc' });
+
+  const sortedData = [...rows].sort((a, b) => {
+    if (sortConfig.key) {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+    }
+    return 0;
+  });
+
+  const requestSort = (key, direction) => {
+    setSortConfig({ key, direction });
+  };
+
   return (
     <Paper sx={{ padding: 0, margin: '10%', overflow: 'hidden' }}>
-      <TableContainer>
+      <TableContainer sx={{ maxHeight: '650px', overflowY: 'auto' }}>
         <Table stickyHeader aria-label='sticky table'>
-          <TableHead>
+          <TableHead style={{ textAlign: 'center' }}>
             <TableRow>
               {columns.map((column) => (
                 // eslint-disable-next-line max-len
                 <StyledTableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                  {column.label}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span>{column.label}</span>
+                    <SortDropdown onSort={(order) => requestSort(column.id, order)} />
+                  </div>
                 </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
+            {sortedData.map((row, index) => (
               <TableRow
                 hover
                 tabIndex={-1}

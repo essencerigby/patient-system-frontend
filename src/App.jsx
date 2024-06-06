@@ -13,7 +13,6 @@ const columns = [
 ];
 
 // Iterate through the columns and apply the max width conditionally
-// To be used with label/id = "id" or "ID"
 const updatedColumns = columns.map((column) => {
   const maxWidth = 40;
 
@@ -75,11 +74,31 @@ const rows = [
   ])
 ];
 
+// Define vendorModal fields - able to be modified
+const vendorFields = [
+  { id: 'vendorName', label: 'Vendor Name' },
+  { id: 'streetAddress1', label: 'Street Address 1' },
+  { id: 'streetAddress2', label: 'Street Address 2' },
+  { id: 'city', label: 'City' },
+  { id: 'state', label: 'State' },
+  { id: 'zipCode', label: 'Zip Code' },
+  { id: 'contact', label: 'Contact' },
+  { id: 'email', label: 'Email' },
+  { id: 'phoneNumber', label: 'Phone Number' },
+  { id: 'role', label: 'Role' }
+];
+
+/**
+ * App component serves as the main entry point for the application.
+ *
+ * @component
+ * @returns {JSX.Element} A React component representing the main application.
+ */
 function App() {
   return (
     <div className='App'>
       <header className='App-header'>
-        <Modal />
+        <Modal fields={vendorFields} />
         <StickyHeadTable columns={columns} rows={rows} />
       </header>
     </div>
