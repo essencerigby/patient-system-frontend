@@ -75,7 +75,12 @@ export function createRow(columns, values) {
 export default function StickyHeadTable({ columns, rows }) {
   const [sortConfig, setSortConfig] = React.useState({ key: null, direction: 'asc' });
 
-  const sortedData = [...rows].sort((a, b) => {
+  // Separate empty and non-empty rows
+  const emptyRows = rows.filter((row) => Object.values(row).every((value) => value === ''));
+  const nonEmptyRows = rows.filter((row) => !Object.values(row).every((value) => value === ''));
+
+  // Sort the non-empty rows
+  const sortedNonEmptyRows = [...nonEmptyRows].sort((a, b) => {
     if (sortConfig.key) {
       if (a[sortConfig.key] < b[sortConfig.key]) {
         return sortConfig.direction === 'asc' ? -1 : 1;
@@ -86,6 +91,9 @@ export default function StickyHeadTable({ columns, rows }) {
     }
     return 0;
   });
+
+  // Combine sorted non-empty rows with empty rows
+  const sortedData = [...sortedNonEmptyRows, ...emptyRows];
 
   /**
    * Requests sorting by a specific key and direction.
@@ -98,7 +106,7 @@ export default function StickyHeadTable({ columns, rows }) {
   };
 
   return (
-    <Paper sx={{ padding: 0, margin: '10%', overflow: 'hidden' }}>
+    <Paper sx={{ padding: 0, overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: '650px', overflowY: 'auto' }}>
         <Table stickyHeader aria-label='sticky table'>
           <TableHead style={{ textAlign: 'center' }}>
@@ -119,8 +127,8 @@ export default function StickyHeadTable({ columns, rows }) {
               <TableRow
                 hover
                 tabIndex={-1}
-                key={row.address}
-                style={{ borderBottom: index === rows.length - 1 ? 'none' : '1px solid #000000' }}
+                key={row.address || `emptyRow${index}`}
+                style={{ borderBottom: index === rows.length - 1 ? 'none' : '1px solid #000000', height: '50px' }}
               >
                 {columns.map((column) => {
                   const value = row[column.id];
