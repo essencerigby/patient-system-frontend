@@ -30,7 +30,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     borderRight: '1px solid #000000',
     fontSize: 14,
     textAlign: 'center',
-    '&:first-child': {
+    '&:first-of-type': {
       borderLeft: '1px solid #000000'
     }
   }
