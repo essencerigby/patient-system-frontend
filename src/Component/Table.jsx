@@ -9,7 +9,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SortDropdown from './TableSort';
 
-// Add styling to table head/body with StyledTableCell component
+/**
+ * StyledTableCell is a custom-styled TableCell component.
+ * Applies specific styles to table head and body cells.
+ */
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#8ca0c7',
@@ -33,6 +36,13 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   }
 }));
 
+/**
+ * Creates a row object from the given columns and values.
+ *
+ * @param {Array} columns - The columns for the row.
+ * @param {Array} values - The values for the row.
+ * @returns {Object} A row object with column IDs as keys and values as corresponding values.
+ */
 export function createRow(columns, values) {
   const row = {};
   columns.forEach((column, index) => {
@@ -41,8 +51,27 @@ export function createRow(columns, values) {
   return row;
 }
 
-// StickyHeadTable component import - MUI
-// Accept column and row props for reusability
+/**
+ * StickyHeadTable component renders a table with sticky headers and sorting capabilities.
+ *
+ * @component
+ * @example
+ * const columns = [
+ *   { id: 'name', label: 'Name', minWidth: 170, align: 'center' },
+ *   { id: 'code', label: 'ISO\u00a0Code', minWidth: 100, align: 'center' },
+ * ];
+ * const rows = [
+ *   createRow(columns, ['India', 'IN']),
+ *   createRow(columns, ['China', 'CN']),
+ * ];
+ * return <StickyHeadTable columns={columns} rows={rows} />;
+ *
+ * @param {Object} props - Component properties.
+ * @param {Array} props.columns - The columns to be displayed in the table.
+ * @param {Array} props.rows - The rows to be displayed in the table.
+ *
+ * @returns {JSX.Element} A React component that renders a table with sticky headers and sorting.
+ */
 export default function StickyHeadTable({ columns, rows }) {
   const [sortConfig, setSortConfig] = React.useState({ key: null, direction: 'asc' });
 
@@ -58,6 +87,12 @@ export default function StickyHeadTable({ columns, rows }) {
     return 0;
   });
 
+  /**
+   * Requests sorting by a specific key and direction.
+   *
+   * @param {string} key - The key to sort by.
+   * @param {string} direction - The direction to sort ('asc' or 'desc').
+   */
   const requestSort = (key, direction) => {
     setSortConfig({ key, direction });
   };
