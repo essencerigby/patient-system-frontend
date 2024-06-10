@@ -36,11 +36,11 @@ export default function ProductPage() {
     { id: 'active', label: 'Active', minWidth: 20 },
     { id: 'classification', label: 'Classification', minWidth: 100 },
     { id: 'type', label: 'Type', minWidth: 100 },
-    { id: 'vendorId', label: 'Vendor ID', minWidth: 50 },
-    { id: 'ingredientsList', label: 'Ingredients List', minWidth: 150 },
+    { id: 'vendorId', label: 'Vendor ID', minWidth: 100 },
+    { id: 'ingredientsList', label: 'Ingredients List', minWidth: 200 },
     { id: 'allergenList', label: 'Allergen List', minWidth: 100 },
-    { id: 'cost', label: 'Cost', minWidth: 50 },
-    { id: 'markup', label: 'Markup', minWidth: 50 },
+    { id: 'cost', label: 'Cost', minWidth: 80 },
+    { id: 'markup', label: 'Markup', minWidth: 80 },
     { id: 'salePrice', label: 'Sale Price', minWidth: 50 }
   ];
 
