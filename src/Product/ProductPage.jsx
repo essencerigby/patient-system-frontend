@@ -61,14 +61,18 @@ export default function ProductPage() {
     fetchProducts();
   }, []);
 
+  // Formats a number as a price string in USD
   const formatPrice = (price) => `$${price.toFixed(2)}`;
 
+  // Joins elements of an array into a single string separated by commas
   const formatList = (list) => list.join(', ');
 
+  // Formats a number as a percentage string
   const formatPercentage = (value) => {
     return value > 0 ? `${(value * 100).toFixed(0)}%` : '';
   };
 
+  // Returns an empty string if the given value is 0 or null
   const formatField = (value) => {
     if (value === 0 || value === null) {
       return '';
@@ -108,7 +112,7 @@ export default function ProductPage() {
 
   // Fields for placeholder modal
   const tempModalFields = [
-    { id: 'name', label: 'Product Name' },
+    { id: 'name', label: 'Name' },
     { id: 'description', label: 'Description' },
     { id: 'active', label: 'Active' },
     { id: 'classification', label: 'Classification' },
