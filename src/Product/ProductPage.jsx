@@ -31,14 +31,14 @@ export default function ProductPage() {
   // Create column names, id's, minimum width
   const columns = [
     { id: 'id', label: 'ID', minWidth: 40 },
-    { id: 'name', label: 'Product Name', minWidth: 100 },
+    { id: 'name', label: 'Name', minWidth: 100 },
     { id: 'description', label: 'Description', minWidth: 100 },
     { id: 'active', label: 'Active', minWidth: 20 },
     { id: 'classification', label: 'Classification', minWidth: 100 },
     { id: 'type', label: 'Type', minWidth: 100 },
     { id: 'vendorId', label: 'Vendor ID', minWidth: 100 },
     { id: 'ingredientsList', label: 'Ingredients List', minWidth: 200 },
-    { id: 'allergenList', label: 'Allergen List', minWidth: 100 },
+    { id: 'allergenList', label: 'Allergen List', minWidth: 150 },
     { id: 'cost', label: 'Cost', minWidth: 80 },
     { id: 'markup', label: 'Markup', minWidth: 80 },
     { id: 'salePrice', label: 'Sale Price', minWidth: 50 }
