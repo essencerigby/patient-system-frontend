@@ -1,5 +1,5 @@
 import React from 'react';
-import VendorPage from './Vendor/VendorPage';
+import ProductPage from './Product/ProductPage';
 
 /**
  * App component serves as the main entry point for the application.
@@ -10,7 +10,7 @@ import VendorPage from './Vendor/VendorPage';
 function App() {
   return (
     <div className='App'>
-      <VendorPage />
+      <ProductPage />
     </div>
   );
 }
