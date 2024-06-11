@@ -38,7 +38,7 @@ export default function ProductPage() {
     { id: 'type', label: 'Type', minWidth: 100 },
     { id: 'vendorId', label: 'Vendor ID', minWidth: 100 },
     { id: 'ingredientsList', label: 'Ingredients List', minWidth: 200 },
-    { id: 'allergenList', label: 'Allergen List', minWidth: 150 },
+    { id: 'allergenList', label: 'Allergen List', minWidth: 160 },
     { id: 'cost', label: 'Cost', minWidth: 80 },
     { id: 'markup', label: 'Markup', minWidth: 80 },
     { id: 'salePrice', label: 'Sale Price', minWidth: 50 }
