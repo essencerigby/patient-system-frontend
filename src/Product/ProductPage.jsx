@@ -36,12 +36,12 @@ export default function ProductPage() {
     { id: 'active', label: 'Active', minWidth: 20 },
     { id: 'classification', label: 'Classification', minWidth: 100 },
     { id: 'type', label: 'Type', minWidth: 100 },
-    { id: 'vendorId', label: 'Vendor ID', minWidth: 100 },
+    { id: 'vendorId', label: 'Vendor ID', minWidth: 120 },
     { id: 'ingredientsList', label: 'Ingredients List', minWidth: 200 },
     { id: 'allergenList', label: 'Allergen List', minWidth: 160 },
     { id: 'cost', label: 'Cost', minWidth: 80 },
     { id: 'markup', label: 'Markup', minWidth: 80 },
-    { id: 'salePrice', label: 'Sale Price', minWidth: 50 }
+    { id: 'salePrice', label: 'Sale Price', minWidth: 120 }
   ];
 
   const [products, setProducts] = useState([]);
