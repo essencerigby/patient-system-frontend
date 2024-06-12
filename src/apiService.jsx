@@ -8,7 +8,7 @@ export const getVendors = async () => {
     const response = await axios.get(vendorsApiUrl);
     return response.data;
   } catch (error) {
-    throw Error('Could not fetch vendors', error);
+    throw Error('Error fetching vendors', error);
   }
 };
 
@@ -17,8 +17,15 @@ export const getVendorById = async (id) => {
     const response = await axios.get(`${vendorsApiUrl}/${id}`);
     return response.data;
   } catch (error) {
-    throw Error('Could not fetch vendor', error);
+    throw Error('Error fetching vendor', error);
   }
+};
+
+// This function is responsible for creating a new vendor by sending a POST request
+// to the specified API endpoint (vendorsApiUrl) with the vendor data provided as an argument.
+export const createVendor = async (vendorToCreate) => {
+  const response = await axios.post(vendorsApiUrl, vendorToCreate);
+  return response.data;
 };
 
 export const getProducts = async () => {

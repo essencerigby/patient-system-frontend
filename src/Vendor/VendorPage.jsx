@@ -24,7 +24,7 @@ import React, { useEffect, useState } from 'react';
 import '../index.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import { getVendors } from '../apiService';
-import Modal from '../Component/Modal';
+import AddVendor from './AddVendor';
 
 export default function VendorPage() {
   // Create column names, id's, minimum width
@@ -40,6 +40,7 @@ export default function VendorPage() {
 
   const [vendors, setVendors] = useState([]);
   const [error, setError] = useState(null);
+  const [refresh, setRefresh] = useState(false);
 
   // Get all vendors from the database and store it in vendors array
   useEffect(() => {
@@ -53,7 +54,12 @@ export default function VendorPage() {
     };
 
     fetchVendors();
-  }, []);
+  }, [refresh]);
+
+  // Toggles the refresh state, to trigger a refresh when a new vendor is successfully submitted.
+  const handleRefresh = () => {
+    setRefresh((prev) => !prev);
+  };
 
   const rows = [];
 
@@ -80,26 +86,11 @@ export default function VendorPage() {
     rows.push(createRow(columns, Array(columns.length).fill('')));
   }
 
-  // Fields for placeholder modal
-  const tempModalFields = [
-    { id: 'vendorName', label: 'Vendor Name' },
-    { id: 'streetAddress1', label: 'Street Address 1' },
-    { id: 'streetAddress2', label: 'Street Address 2' },
-    { id: 'city', label: 'City' },
-    { id: 'state', label: 'State' },
-    { id: 'zipCode', label: 'Zip Code' },
-    { id: 'contact', label: 'Contact' },
-    { id: 'email', label: 'Email' },
-    { id: 'phoneNumber', label: 'Phone Number' },
-    { id: 'role', label: 'Role' }
-  ];
-
-  // Added Modal on line 62 as placeholder for New Vendor Form
   return (
     <div className='pages-table'>
       <div className='header-modal-container'>
         <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Vendors</h1>
-        <Modal fields={tempModalFields} />
+        <AddVendor onRefresh={handleRefresh} />
       </div>
       <StickyHeadTable columns={columns} rows={rows} />
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
