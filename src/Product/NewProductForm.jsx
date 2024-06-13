@@ -291,45 +291,6 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
       requiredFields.push('type');
     }
 
-    // Prevent form submission if all required fields not complete
-    // const isFormValid = requiredFields.every((field) => formValues[field] !== '');
-    // if (!isFormValid) {
-    //   return;
-    // }
-    // const isFormValid = () => {
-    //   const error = {};
-    //   if (formValues.description.length > 100) {
-    //     error.description = 'Description must be 100 characters or less.';
-    //   }
-    //   if (formValues.name.length > 50) {
-    //     error.name = 'Name must be 50 characters or less.';
-    //   }
-    //   if (formValues.classification === 'Baked Good' && formValues.vendorId.length < 1) {
-    //     error.vendorId = 'Must include Vendor Id for Baked Good Products.';
-    //   }
-    //   if (formValues.ingredientsList.length < 1) {
-    //     error.ingredientsList = 'Ingredients List is empty.';
-    //   }
-    //   if (formValues.classification === '') {
-    //     error.classification = 'Classification must be Drink or Baked Good.';
-    //   }
-    //   if (formValues.type && formValues.type === '') {
-    //     error.type = 'Must choose a Drink Type.';
-    //   }
-    //   const wholeNumberPattern = /^\d+$/;
-    // eslint-disable-next-line max-len
-    //   if (formValues.classification === 'Baked Good' && (formValues.markup === '' || !wholeNumberPattern.test(formValues.markup))) {
-    //     error.markup = 'Markup must be a whole number.';
-    //   }
-    //   const costPattern = /^\d\.\d{2}$/;
-    //   if (!costPattern.test(formValues.cost)) {
-    //     error.cost = 'Must be numbers in the following format: X.XX';
-    //   }
-    //   setErrors(error);
-    //   const errorCheck = Object.keys(error).length === 0;
-    //   return errorCheck;
-    // };
-
     // If the input is for cost, check if the value is greater than 0
     const cost = parseFloat(formValues.cost);
     if (cost.isNaN || cost <= 0) {
