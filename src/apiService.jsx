@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const vendorsApiUrl = 'http://localhost:8085/vendors';
 const productsApiUrl = 'http://localhost:8085/products';
+const customersApiUrl = 'http://localhost:8085/customers';
 
 export const getVendors = async () => {
   try {
@@ -43,5 +44,14 @@ export const getProductById = async (id) => {
     return response.data;
   } catch (error) {
     throw Error('Could not fetch product', error);
+  }
+};
+
+export const getCustomers = async () => {
+  try {
+    const response = await axios.get(customersApiUrl);
+    return response.data;
+  } catch (error) {
+    throw Error('Error fetching customers', error);
   }
 };
