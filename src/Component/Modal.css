@@ -35,12 +35,12 @@ h2 {
 .checkbox-field {
   display: flex;
   justify-content: space-between;
-  align-items: left
+  align-items: left;
 }
 
-.checkbox-field input[type="checkbox"] {
+.checkbox-field input[type='checkbox'] {
   margin-left: 5px;
-  order: 2
+  order: 2;
 }
 
 .checkbox-field label {
@@ -64,6 +64,10 @@ h2 {
   padding: 3%;
   padding-bottom: 25%;
   width: 100%;
+}
+
+.input-error {
+  border: 1px solid red;
 }
 
 .input-field {
@@ -170,5 +174,5 @@ input {
 }
 
 textarea {
-    resize: none;
+  resize: none;
 }
