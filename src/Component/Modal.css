@@ -32,6 +32,22 @@ h2 {
   text-align: left;
 }
 
+.checkbox-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: left
+}
+
+.checkbox-field input[type="checkbox"] {
+  margin-left: 5px;
+  order: 2
+}
+
+.checkbox-field label {
+  display: flex;
+  white-space: nowrap;
+}
+
 .close-modal {
   background-color: #d9d9d9;
   border: none;
@@ -62,6 +78,26 @@ h2 {
   box-sizing: border-box;
   border: 1px solid black;
   border-radius: 4px;
+}
+
+.input-wrapper {
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+.input-symbol-left {
+  position: absolute;
+  margin-left: 0.5rem;
+  pointer-events: none;
+  color: gray;
+}
+
+.input-symbol-right {
+  position: absolute;
+  right: 0.5rem;
+  pointer-events: none;
+  color: gray;
 }
 
 .modal {
@@ -110,6 +146,16 @@ h2 {
   z-index: 1050;
 }
 
+.percentage-container {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 20px; /* Adjust as needed */
+  color: black; /* Ensures the color is black */
+}
+.percent-sign {
+  margin-left: 2px; /* Adjust as needed */
+}
+
 label {
   display: block;
   margin-bottom: 5px;
@@ -121,4 +167,8 @@ input {
   box-sizing: border-box;
   border: 1px solid black;
   border-radius: 4px;
+}
+
+textarea {
+    resize: none;
 }
