@@ -71,7 +71,7 @@ export default function VendorPage() {
         createRow(columns, [
           vendor.id,
           vendor.name,
-          `${vendor.address.street}${vendor.address.street2 ? `, ${vendor.address.street2}` : ''}, ${vendor.address.city}, ${vendor.address.state} ${vendor.address.zipCode}`,
+          vendor.address.street,
           vendor.contact.contactName,
           vendor.contact.email,
           vendor.contact.phone,
