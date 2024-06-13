@@ -49,6 +49,14 @@ export const getProductById = async (id) => {
   }
 };
 
+/**
+ * Fetches customer data from the backend.
+ *
+ * This asynchronous function makes a GET request to the provided API URL to retrieve
+ * customer data. If the request is successful, it returns the customer data. In case
+ * of an error during the fetch operation, it throws an error with a descriptive message.
+ *
+ */
 export const getCustomers = async () => {
   try {
     const response = await axios.get(customersApiUrl);
