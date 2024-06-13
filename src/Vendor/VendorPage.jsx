@@ -78,7 +78,6 @@ export default function VendorPage() {
           vendor.contact.titleOrRole
         ])
       )
-    // eslint-disable-next-line function-paren-newline
   );
 
   // If there are less than 6 rows, create empty rows to fill out table
