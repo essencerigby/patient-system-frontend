@@ -1,3 +1,6 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable indent */
+/* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -5,23 +8,11 @@
 import React, { useState, forwardRef } from 'react';
 import { NumericFormat } from 'react-number-format';
 
-function InputField({
-  id,
-  label,
-  dropdownOptions,
-  multiple,
-  required,
-  type,
-  value,
-  onBlur,
-  onChange
-}) {
+function InputField({ id, label, dropdownOptions, multiple, required, type, value, onBlur, onChange }) {
   if (type === 'dropdown') {
     return (
       <div className={`input-field ${id}`} id={id}>
-        <label htmlFor={id}>
-          {label}
-        </label>
+        <label htmlFor={id}>{label}</label>
         <select
           className='input-flex'
           id={id}
@@ -34,7 +25,9 @@ function InputField({
         >
           <option value='' />
           {dropdownOptions.map((option) => (
-            <option key={option} value={option}>{option}</option>
+            <option key={option} value={option}>
+              {option}
+            </option>
           ))}
         </select>
       </div>
@@ -76,7 +69,9 @@ function InputField({
         >
           <option value='' />
           {dropdownOptions.map((option) => (
-            <option key={option} value={option}>{option}</option>
+            <option key={option} value={option}>
+              {option}
+            </option>
           ))}
         </select>
       </div>
@@ -222,7 +217,8 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
         type: value
       }));
     } else {
-      setFormValues((prevValues) => ({ //
+      setFormValues((prevValues) => ({
+        //
         ...prevValues,
         [id]: value
       }));
@@ -256,26 +252,32 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
   };
 
   // Conditionally render the type field based on classification of drink
-  const drinkTypeFields = formValues.classification === 'Drink' ? [
-    {
-      id: 'type',
-      label: 'Drink Type',
-      required: true,
-      type: 'dropdown',
-      dropdownOptions: ['Coffee', 'Tea', 'Soda']
-    }
-  ] : [];
+  const drinkTypeFields =
+    formValues.classification === 'Drink'
+      ? [
+          {
+            id: 'type',
+            label: 'Drink Type',
+            required: true,
+            type: 'dropdown',
+            dropdownOptions: ['Coffee', 'Tea', 'Soda']
+          }
+        ]
+      : [];
 
   // Conditionally render the markup field based on classification of bakedGood
-  const bakedGoodMarkupField = (formValues.classification === 'Baked Good' && formValues.vendorId) ? [
-    {
-      id: 'markup',
-      label: 'Markup',
-      min: 0.00,
-      step: 0.01,
-      type: 'number'
-    }
-  ] : '';
+  const bakedGoodMarkupField =
+    formValues.classification === 'Baked Good' && formValues.vendorId
+      ? [
+          {
+            id: 'markup',
+            label: 'Markup',
+            min: 0.0,
+            step: 0.01,
+            type: 'number'
+          }
+        ]
+      : '';
 
   // Combining always-on fields & conditionally rendered fields
   const allFields = [...fields, ...drinkTypeFields, ...bakedGoodMarkupField];
@@ -290,10 +292,43 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
     }
 
     // Prevent form submission if all required fields not complete
-    const isFormValid = requiredFields.every((field) => formValues[field] !== '');
-    if (!isFormValid) {
-      return;
-    }
+    // const isFormValid = requiredFields.every((field) => formValues[field] !== '');
+    // if (!isFormValid) {
+    //   return;
+    // }
+    // const isFormValid = () => {
+    //   const error = {};
+    //   if (formValues.description.length > 100) {
+    //     error.description = 'Description must be 100 characters or less.';
+    //   }
+    //   if (formValues.name.length > 50) {
+    //     error.name = 'Name must be 50 characters or less.';
+    //   }
+    //   if (formValues.classification === 'Baked Good' && formValues.vendorId.length < 1) {
+    //     error.vendorId = 'Must include Vendor Id for Baked Good Products.';
+    //   }
+    //   if (formValues.ingredientsList.length < 1) {
+    //     error.ingredientsList = 'Ingredients List is empty.';
+    //   }
+    //   if (formValues.classification === '') {
+    //     error.classification = 'Classification must be Drink or Baked Good.';
+    //   }
+    //   if (formValues.type && formValues.type === '') {
+    //     error.type = 'Must choose a Drink Type.';
+    //   }
+    //   const wholeNumberPattern = /^\d+$/;
+    // eslint-disable-next-line max-len
+    //   if (formValues.classification === 'Baked Good' && (formValues.markup === '' || !wholeNumberPattern.test(formValues.markup))) {
+    //     error.markup = 'Markup must be a whole number.';
+    //   }
+    //   const costPattern = /^\d\.\d{2}$/;
+    //   if (!costPattern.test(formValues.cost)) {
+    //     error.cost = 'Must be numbers in the following format: X.XX';
+    //   }
+    //   setErrors(error);
+    //   const errorCheck = Object.keys(error).length === 0;
+    //   return errorCheck;
+    // };
 
     // If the input is for cost, check if the value is greater than 0
     const cost = parseFloat(formValues.cost);
@@ -331,7 +366,8 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
         />
       ))}
       <div className='input-field'>
-        <label htmlFor='salePrice'>Sale Price:
+        <label htmlFor='salePrice'>
+          Sale Price:
           <input id='salePrice' type='text' value={`$${calculateSalePrice()}`} readOnly />
         </label>
       </div>
