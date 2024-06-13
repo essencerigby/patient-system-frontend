@@ -156,7 +156,7 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
     </div>
   );
 }
-const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
+const ProductForm = forwardRef(({ fields, onSubmit, errors }, ref) => {
   const initializedValues = () => {
     const initialValues = {};
     fields.forEach((field) => {
@@ -324,6 +324,7 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
           onBlur={handleBlur}
           onChange={handleChange}
           dropdownOptions={field.dropdownOptions || []}
+          error={errors[field.id]}
         />
       ))}
       <div className='input-field'>
