@@ -1,9 +1,11 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import axios from 'axios';
 
 const vendorsApiUrl = 'http://localhost:8085/vendors';
 const productsApiUrl = 'http://localhost:8085/products';
 const customersApiUrl = 'http://localhost:8085/customers';
 
+// Retrieving vendor instance(s) from the backend
 export const getVendors = async () => {
   try {
     const response = await axios.get(vendorsApiUrl);

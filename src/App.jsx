@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/extensions */
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ProductPage from './Product/ProductPage';
@@ -12,6 +14,7 @@ import CustomerPage from './Customer/CustomerPage';
  * @returns {JSX.Element} A React component representing the main
  * application with links to Vendor, Customer, Product, and Promotions pages.
  */
+
 function App() {
   return (
     <div className='App'>
