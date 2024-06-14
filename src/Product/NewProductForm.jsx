@@ -11,10 +11,10 @@ import { NumericFormat } from 'react-number-format';
 function InputField({ id, label, dropdownOptions, multiple, required, type, value, onBlur, onChange, error }) {
   if (type === 'dropdown') {
     return (
-      <div className={`input-field ${id} ${error ? 'error' : ''}`} id={id}>
+      <div className={`input-field ${id}}`} id={id}>
         <label htmlFor={id}>{label}</label>
         <select
-          className='input-flex'
+          className={`${error ? 'input-flex-error' : 'input-flex'}`}
           id={id}
           multiple={multiple}
           onBlur={onBlur}
@@ -87,7 +87,7 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
         <label htmlFor={id}>{label}:</label>
         <div className='input-wrapper'>
           <input
-            className='input-flex'
+            className={`${error ? 'input-flex-error' : 'input-flex'}`}
             id={id}
             type='text'
             value={value}
@@ -96,6 +96,7 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
             pattern='\d*'
           />
         </div>
+        {error && <div className='error-message'>{error}</div>}
       </div>
     );
   }
@@ -107,7 +108,7 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
         <label htmlFor={id}>{label}:</label>
         <div className='input-wrapper'>
           <NumericFormat
-            className='input-flex'
+            className={`${error ? 'input-flex-error' : 'input-flex'}`}
             id={id}
             value={value}
             onValueChange={(values) => {
@@ -121,6 +122,7 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
             prefix='$'
           />
         </div>
+        {error && <div className='error-message'>{error}</div>}
       </div>
     );
   }
@@ -131,7 +133,7 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
         <label htmlFor={id}>{label}:</label>
         <div className='input-wrapper'>
           <NumericFormat
-            className='input-flex'
+            className={`${error ? 'input-flex-error' : 'input-flex'}`}
             id={id}
             value={value}
             onValueChange={(values) => {
@@ -153,12 +155,19 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
     <div className={`input-field ${id}`} id={id}>
       <label htmlFor={id}>{label}:</label>
       <div className='input-wrapper'>
-        <input className='input-flex' id={id} type='text' value={value} onChange={onChange} />
+        <input
+          className={`${error ? 'input-flex-error' : 'input-flex'}`}
+          id={id}
+          type='text'
+          value={value}
+          onChange={onChange}
+        />
       </div>
+      {error && <div className='error-message'>{error}</div>}
     </div>
   );
 }
-const ProductForm = forwardRef(({ fields, onSubmit, errors }, ref) => {
+const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
   const initializedValues = () => {
     const initialValues = {};
     fields.forEach((field) => {
@@ -283,34 +292,74 @@ const ProductForm = forwardRef(({ fields, onSubmit, errors }, ref) => {
 
   // Combining always-on fields & conditionally rendered fields
   const allFields = [...fields, ...drinkTypeFields, ...bakedGoodMarkupField];
+  const [errors, setErrors] = useState({});
+
+  const isFormValid = () => {
+    const error = {};
+    if (formValues.description.length > 100) {
+      error.description = 'Description must be 100 characters or less.';
+    }
+    if (formValues.name.length > 50) {
+      error.name = 'Name must be 50 characters or less.';
+    }
+    if (formValues.classification === 'Baked Good' && formValues.vendorId.length < 1) {
+      error.vendorId = 'Must include Vendor Id for Baked Good Products.';
+    }
+    if (formValues.ingredientsList.length < 1) {
+      error.ingredientsList = 'Ingredients List is empty.';
+    }
+    if (formValues.classification === '') {
+      error.classification = 'Classification must be Drink or Baked Good.';
+    }
+    if (formValues.classification === 'Drink' && formValues.type === '') {
+      error.type = 'Must choose a Drink Type.';
+    }
+    const wholeNumberPattern = /^\d+$/;
+    if (
+      formValues.classification === 'Baked Good' &&
+      (formValues.markup === '' || !wholeNumberPattern.test(formValues.markup))
+    ) {
+      error.markup = 'Markup must be a whole number.';
+    }
+    const costPattern = /^\d\.\d{2}$/;
+    if (!costPattern.test(formValues.cost) || formValues.cost === 0) {
+      error.cost = 'Must be numbers in the following format: X.XX';
+    }
+    setErrors(error);
+    const errorCheck = Object.keys(error).length === 0;
+    return errorCheck;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Validating that required fields are completed
-    const requiredFields = ['name', 'description', 'classification', 'cost'];
-    if (formValues.classification === 'Drink') {
-      requiredFields.push('type');
+    // const requiredFields = ['name', 'description', 'classification', 'cost'];
+    // if (formValues.classification === 'Drink') {
+    //   requiredFields.push('type');
+    // }
+
+    // // If the input is for cost, check if the value is greater than 0
+    // const cost = parseFloat(formValues.cost);
+    // if (cost.isNaN || cost <= 0) {
+    //   return;
+    // }
+
+    // const formattedValues = {
+    //   ...formValues,
+    //   // Split ingredients into array
+    //   ingredientsList: formValues.ingredientsList.split(',').map((ingredient) => ingredient.trim()),
+
+    //   // Allergens are already an array
+    //   allergenList: formValues.allergenList,
+
+    //   // Sale price will be rendered based on cost & markup calculation
+    //   salePrice: calculateSalePrice()
+    // };
+
+    if (isFormValid(formValues)) {
+      onSubmit(formValues);
     }
-
-    // If the input is for cost, check if the value is greater than 0
-    const cost = parseFloat(formValues.cost);
-    if (cost.isNaN || cost <= 0) {
-      return;
-    }
-
-    const formattedValues = {
-      ...formValues,
-      // Split ingredients into array
-      ingredientsList: formValues.ingredientsList.split(',').map((ingredient) => ingredient.trim()),
-
-      // Allergens are already an array
-      allergenList: formValues.allergenList,
-
-      // Sale price will be rendered based on cost & markup calculation
-      salePrice: calculateSalePrice()
-    };
-    onSubmit(formattedValues);
   };
 
   return (
