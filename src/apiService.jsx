@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const vendorsApiUrl = 'http://localhost:8085/vendors';
 const productsApiUrl = 'http://localhost:8085/products';
+const customersApiUrl = 'http://localhost:8085/customers';
 
 // Retrieving vendor instance(s) from the backend
 export const getVendors = async () => {
@@ -45,5 +46,22 @@ export const getProductById = async (id) => {
     return response.data;
   } catch (error) {
     throw Error('Could not fetch product', error);
+  }
+};
+
+/**
+ * Fetches customer data from the backend.
+ *
+ * This asynchronous function makes a GET request to the provided API URL to retrieve
+ * customer data. If the request is successful, it returns the customer data. In case
+ * of an error during the fetch operation, it throws an error with a descriptive message.
+ *
+ */
+export const getCustomers = async () => {
+  try {
+    const response = await axios.get(customersApiUrl);
+    return response.data;
+  } catch (error) {
+    throw Error('Error fetching customers', error);
   }
 };

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ProductPage from './Product/ProductPage';
 import VendorPage from './Vendor/VendorPage';
 import ResponsiveAppBar from './Component/Header';
+import CustomerPage from './Customer/CustomerPage';
 
 /**
  * App component serves as the main entry point for the application.
@@ -21,7 +22,7 @@ function App() {
         <ResponsiveAppBar />
         <Routes>
           <Route path='/vendors' element={<VendorPage />} />
-          {/* <Route path='/customers' element={<Customers />} /> */}
+          <Route path='/customers' element={<CustomerPage />} />
           <Route path='/products' element={<ProductPage />} />
           {/* <Route path='/promotions' element={<Promotions />} /> */}
         </Routes>
