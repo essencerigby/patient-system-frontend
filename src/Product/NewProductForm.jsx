@@ -8,10 +8,10 @@
 import React, { useState, forwardRef } from 'react';
 import { NumericFormat } from 'react-number-format';
 
-function InputField({ id, label, dropdownOptions, multiple, required, type, value, onBlur, onChange }) {
+function InputField({ id, label, dropdownOptions, multiple, required, type, value, onBlur, onChange, error }) {
   if (type === 'dropdown') {
     return (
-      <div className={`input-field ${id}`} id={id}>
+      <div className={`input-field ${id} ${error ? 'error' : ''}`} id={id}>
         <label htmlFor={id}>{label}</label>
         <select
           className='input-flex'
@@ -30,6 +30,7 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
             </option>
           ))}
         </select>
+        {error && <div className='error-message'>{error}</div>}
       </div>
     );
   }
@@ -49,7 +50,8 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
     return (
       <div className={`input-field ${id}`} id={id}>
         <label htmlFor={id}>{label}:</label>
-        <textarea id={id} value={value} onChange={onChange} required={required} />
+        <textarea className={`${error ? 'error' : ''}`} id={id} value={value} onChange={onChange} required={required} />
+        {error && <div className='error-message'>{error}</div>}
       </div>
     );
   }
