@@ -32,8 +32,8 @@ export default function CustomerPage() {
     { id: 'active', label: 'Active', minWidth: 40 },
     { id: 'name', label: 'Customer Name', minWidth: 100 },
     { id: 'email', label: 'Email', minWidth: 100 },
-    { id: 'lifetimeSpent', label: 'Lifetime spent', minWidth: 100 },
-    { id: 'cutomerSince', label: 'Customer since', minWidth: 100 }
+    { id: 'lifetimeSpent', label: 'Lifetime Spent', minWidth: 100 },
+    { id: 'cutomerSince', label: 'Customer Since', minWidth: 100 }
   ];
 
   const [customers, setCustomers] = useState([]);
@@ -83,8 +83,8 @@ export default function CustomerPage() {
     { id: 'active', label: 'Active' },
     { id: 'name', label: 'Customer Name' },
     { id: 'emailAddress', label: 'Email' },
-    { id: 'lifetimeSpent', label: 'Lifetime spent' },
-    { id: 'cutomerSince', label: 'Customer since' }
+    { id: 'lifetimeSpent', label: 'Lifetime Spent' },
+    { id: 'cutomerSince', label: 'Customer Since' }
   ];
 
   return (
