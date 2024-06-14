@@ -50,7 +50,13 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
     return (
       <div className={`input-field ${id}`} id={id}>
         <label htmlFor={id}>{label}:</label>
-        <textarea className={`${error ? 'error' : ''}`} id={id} value={value} onChange={onChange} required={required} />
+        <textarea
+          className={`${error ? 'input-flex-error' : 'input-flex'}`}
+          id={id}
+          value={value}
+          onChange={onChange}
+          required={required}
+        />
         {error && <div className='error-message'>{error}</div>}
       </div>
     );
@@ -62,6 +68,7 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
       <div className={`input-field ${id}`} id={id}>
         <label htmlFor={id}>{label}</label>
         <select
+          className='input-multi-select'
           id={id}
           multiple={multiple}
           onChange={onChange}
@@ -141,12 +148,13 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
               onChange({ target: { id, value: formattedValue } });
             }}
             thousandSeparator={false}
-            defaultValue='0.00'
-            decimalScale={2}
-            fixedDecimalScale
+            defaultValue='0'
+            decimalScale={0}
+            fixedDecimalScale={false}
             suffix='%'
           />
         </div>
+        {error && <div className='error-message'>{error}</div>}
       </div>
     );
   }
@@ -299,14 +307,20 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
     if (formValues.description.length > 100) {
       error.description = 'Description must be 100 characters or less.';
     }
+    if (formValues.description.length < 1) {
+      error.description = 'Must have a product description';
+    }
     if (formValues.name.length > 50) {
       error.name = 'Name must be 50 characters or less.';
+    }
+    if (formValues.name.length < 1) {
+      error.name = 'Must include product name.';
     }
     if (formValues.classification === 'Baked Good' && formValues.vendorId.length < 1) {
       error.vendorId = 'Must include Vendor Id for Baked Good Products.';
     }
     if (formValues.ingredientsList.length < 1) {
-      error.ingredientsList = 'Ingredients List is empty.';
+      error.ingredientsList = 'Must have at least 1 ingredient.';
     }
     if (formValues.classification === '') {
       error.classification = 'Classification must be Drink or Baked Good.';
@@ -322,8 +336,11 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
       error.markup = 'Markup must be a whole number.';
     }
     const costPattern = /^\d\.\d{2}$/;
-    if (!costPattern.test(formValues.cost) || formValues.cost === 0) {
+    if (!costPattern.test(formValues.cost)) {
       error.cost = 'Must be numbers in the following format: X.XX';
+    }
+    if (formValues.cost === '0.00') {
+      error.cost = 'Cost must be greater than 0';
     }
     setErrors(error);
     const errorCheck = Object.keys(error).length === 0;
@@ -333,32 +350,20 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validating that required fields are completed
-    // const requiredFields = ['name', 'description', 'classification', 'cost'];
-    // if (formValues.classification === 'Drink') {
-    //   requiredFields.push('type');
-    // }
-
-    // // If the input is for cost, check if the value is greater than 0
-    // const cost = parseFloat(formValues.cost);
-    // if (cost.isNaN || cost <= 0) {
-    //   return;
-    // }
-
-    // const formattedValues = {
-    //   ...formValues,
-    //   // Split ingredients into array
-    //   ingredientsList: formValues.ingredientsList.split(',').map((ingredient) => ingredient.trim()),
-
-    //   // Allergens are already an array
-    //   allergenList: formValues.allergenList,
-
-    //   // Sale price will be rendered based on cost & markup calculation
-    //   salePrice: calculateSalePrice()
-    // };
-
     if (isFormValid(formValues)) {
-      onSubmit(formValues);
+      const filteredAllergenList = formValues.allergenList.filter((allergen) => allergen !== '');
+      const correctVariableFormValues = {
+        ...formValues,
+        ingredientsList: formValues.ingredientsList.split(',').map((ingredient) => ingredient.trim()),
+        allergenList: filteredAllergenList,
+        cost: formValues.cost.toString(),
+        salePrice: calculateSalePrice().toString()
+      };
+      if (formValues.classification === 'Baked Good') {
+        correctVariableFormValues.markup = formValues.markup.toString();
+        correctVariableFormValues.vendorId = formValues.vendorId.toString();
+      }
+      onSubmit(correctVariableFormValues);
     }
   };
 
