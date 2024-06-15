@@ -251,6 +251,13 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
         type: '' // Initialize `type` as empty string
       }));
     }
+
+    if (id === 'classification' && value === 'Baked Good') {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        vendorId: ''
+      }));
+    }
   };
 
   const handleBlur = (e) => {
@@ -284,9 +291,20 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
         ]
       : [];
 
+  const bakedGoodVendorIdField =
+    formValues.classification === 'Baked Good'
+      ? [
+          {
+            id: 'vendorId',
+            label: 'Vendor ID',
+            required: false
+          }
+        ]
+      : [];
+
   // Conditionally render the markup field based on classification of bakedGood
   const bakedGoodMarkupField =
-    formValues.classification === 'Baked Good' && formValues.vendorId
+    formValues.classification === 'Baked Good'
       ? [
           {
             id: 'markup',
@@ -299,7 +317,7 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
       : '';
 
   // Combining always-on fields & conditionally rendered fields
-  const allFields = [...fields, ...drinkTypeFields, ...bakedGoodMarkupField];
+  const allFields = [...fields, ...drinkTypeFields, ...bakedGoodVendorIdField, ...bakedGoodMarkupField];
   const [errors, setErrors] = useState({});
 
   const isFormValid = () => {
