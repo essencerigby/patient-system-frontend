@@ -6,15 +6,15 @@ import VendorForm from './VendorForm';
 
 const fields = [
   { id: 'name', label: 'Name', keys: 'name' },
-  { id: 'address.street', label: 'Street', keys: 'street' },
-  { id: 'address.street2', label: 'Street 2', keys: 'street2' },
-  { id: 'address.city', label: 'City', keys: 'city' },
-  { id: 'address.state', label: 'State', keys: 'state' },
-  { id: 'address.zipCode', label: 'Zip Code', keys: 'zipCode' },
-  { id: 'contact.email', label: 'Email', keys: 'email' },
-  { id: 'contact.contactName', label: 'Contact Name', keys: 'contactName' },
-  { id: 'contact.titleOrRole', label: 'Title or Role', keys: 'titleOrRole' },
-  { id: 'contact.phone', label: 'Phone', keys: 'phone' }
+  { id: 'street', label: 'Street', keys: 'street' },
+  { id: 'street2', label: 'Street 2', keys: 'street2' },
+  { id: 'city', label: 'City', keys: 'city' },
+  { id: 'state', label: 'State', keys: 'state' },
+  { id: 'zipCode', label: 'Zip Code', keys: 'zipCode' },
+  { id: 'email', label: 'Email', keys: 'email' },
+  { id: 'contactName', label: 'Contact Name', keys: 'contactName' },
+  { id: 'titleOrRole', label: 'Title or Role', keys: 'titleOrRole' },
+  { id: 'phone', label: 'Phone', keys: 'phone' }
 ];
 
 export default function EditVendor({ vendor, onRefresh }) {
@@ -55,18 +55,12 @@ export default function EditVendor({ vendor, onRefresh }) {
     setModal(!modal);
   };
 
-  const handleChange = (id, value) => {
-    const keys = id.split('.');
-    setCurrentVendor((prevValues) => {
-      const newVendor = { ...prevValues };
-      let current = newVendor;
-      for (let i = 0; i < keys.length - 1; i += 1) {
-        if (!current[keys[i]]) current[keys[i]] = {};
-        current = current[keys[i]];
-      }
-      current[keys[keys.length - 1]] = value;
-      return newVendor;
-    });
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setCurrentVendor((prevValues) => ({
+      ...prevValues,
+      [id]: value
+    }));
   };
 
   const handleSubmit = async () => {
@@ -133,10 +127,9 @@ export default function EditVendor({ vendor, onRefresh }) {
         phone: vendorById.contact.phone
       };
       setCurrentVendor(experimentVendor);
-      console.log(vendorById);
       toggleModal();
     } catch (err) {
-      console.log(err.message);
+      setError(err.message);
     }
   };
 
