@@ -56,16 +56,11 @@ const stateAbbreviations = [
 ];
 
 function InputField({ id, label, value, onChange }) {
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    onChange(id, value);
-  };
-
-  if (id === 'address.state') {
+  if (id === 'state') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 1 }}>
         <label htmlFor={id}>{label}:</label>
-        <select className='input-flex' id={id} value={value} onChange={handleChange}>
+        <select className='input-flex' id={id} value={value} onChange={onChange}>
           <option value=''>Select State</option>
           {stateAbbreviations.map((state) => (
             <option key={state} value={state}>
@@ -77,11 +72,11 @@ function InputField({ id, label, value, onChange }) {
     );
   }
 
-  if (id === 'address.zipCode') {
+  if (id === 'zipCode') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 2 }}>
         <label htmlFor={id}>{label}:</label>
-        <input className='input-flex' id={id} type='text' value={value} onChange={handleChange} />
+        <input className='input-flex' id={id} type='text' value={value} onChange={onChange} />
       </div>
     );
   }
@@ -89,7 +84,7 @@ function InputField({ id, label, value, onChange }) {
   return (
     <div className={`input-field ${id}`}>
       <label htmlFor={id}>{label}:</label>
-      <input className='input-flex' id={id} type='text' value={value} onChange={handleChange} />
+      <input className='input-flex' id={id} type='text' value={value} onChange={onChange} />
     </div>
   );
 }
