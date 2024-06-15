@@ -62,7 +62,7 @@ h2 {
   grid-template-columns: repeat(4, 1fr);
   max-width: 600px;
   padding: 3%;
-  padding-bottom: 25%;
+  padding-bottom: 10%;
   width: 100%;
 }
 
