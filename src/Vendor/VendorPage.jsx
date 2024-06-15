@@ -1,3 +1,4 @@
+/* eslint-disable function-paren-newline */
 /**
  * VendorPage Component
  *
@@ -25,6 +26,7 @@ import '../index.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import { getVendors } from '../apiService';
 import AddVendor from './AddVendor';
+import EditVendor from './EditVendor';
 
 export default function VendorPage() {
   // Create column names, id's, minimum width
@@ -41,12 +43,16 @@ export default function VendorPage() {
   const [vendors, setVendors] = useState([]);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [currentVendor, setCurrentVendor] = useState({});
 
   // Get all vendors from the database and store it in vendors array
   useEffect(() => {
     const fetchVendors = async () => {
       try {
         const data = await getVendors();
+        // Sort vendors by ID in ascending order
+        data.sort((a, b) => (a.id > b.id ? 1 : -1));
         setVendors(data);
       } catch (err) {
         setError(err);
@@ -64,20 +70,19 @@ export default function VendorPage() {
   const rows = [];
 
   // Create rows from the vendor array
-  vendors.map(
-    (vendor) =>
-      // eslint-disable-next-line implicit-arrow-linebreak
-      rows.push(
-        createRow(columns, [
-          vendor.id,
-          vendor.name,
-          `${vendor.address.street}${vendor.address.street2 ? `, ${vendor.address.street2}` : ''}, ${vendor.address.city}, ${vendor.address.state} ${vendor.address.zipCode}`,
-          vendor.contact.contactName,
-          vendor.contact.email,
-          vendor.contact.phone,
-          vendor.contact.titleOrRole
-        ])
-      )
+  vendors.map((vendor) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
+    rows.push(
+      createRow(columns, [
+        <EditVendor vendor={vendor} onRefresh={handleRefresh} />,
+        vendor.name,
+        `${vendor.address.street}${vendor.address.street2 ? `, ${vendor.address.street2}` : ''}, ${vendor.address.city}, ${vendor.address.state} ${vendor.address.zipCode}`,
+        vendor.contact.contactName,
+        vendor.contact.email,
+        vendor.contact.phone,
+        vendor.contact.titleOrRole
+      ])
+    )
   );
 
   // If there are less than 6 rows, create empty rows to fill out table
