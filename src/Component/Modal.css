@@ -54,6 +54,23 @@ h2 {
   display: inline-block;
   margin-right: 10px;
   padding: 5px 15px;
+  cursor: pointer;
+  transition: font-weight 0.3s ease;
+  transition: border 0.3s ease;
+}
+
+#confirmation-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .edit-container {
@@ -99,6 +116,7 @@ h2 {
 
 .input-flex {
   width: 100%;
+  padding-right: 30px;
   padding: 8px;
   box-sizing: border-box;
   border: 1px solid black;
@@ -126,6 +144,14 @@ h2 {
 }
 
 .modal {
+  align-items: center;
+  display: flex;
+  height: 80%;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
   z-index: 1051;
 }
 
@@ -164,6 +190,9 @@ h2 {
   border: none;
   display: inline-block;
   padding: 5px 15px;
+  cursor: pointer;
+  transition: font-weight 0.2s ease;
+  transition: border 0.2s ease;
 }
 
 .overlay {
@@ -196,4 +225,10 @@ input {
 
 textarea {
   resize: none;
+}
+
+.close-modal:hover,
+.submit-close-modal:hover {
+  font-weight: bold;
+  border: 2px solid #000;
 }
