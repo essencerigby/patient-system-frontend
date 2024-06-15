@@ -31,6 +31,15 @@ export const createVendor = async (vendorToCreate) => {
   return response.data;
 };
 
+export const editVendor = async (vendorToEdit) => {
+  try {
+    const response = await axios.put(`${vendorsApiUrl}/${vendorToEdit.id}`, vendorToEdit);
+    return response.data;
+  } catch (error) {
+    throw Error('Error updating vendor', error);
+  }
+};
+
 export const getProducts = async () => {
   try {
     const response = await axios.get(productsApiUrl);
