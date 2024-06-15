@@ -55,7 +55,7 @@ const stateAbbreviations = [
   'WY'
 ];
 
-function InputField({ id, label, value, onChange }) {
+function InputField({ id, label, value, onChange, onClear }) {
   if (id === 'state') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 1 }}>
@@ -68,6 +68,11 @@ function InputField({ id, label, value, onChange }) {
             </option>
           ))}
         </select>
+        {value && (
+          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
       </div>
     );
   }
@@ -77,6 +82,11 @@ function InputField({ id, label, value, onChange }) {
       <div className={`input-field ${id}`} style={{ gridColumn: 2 }}>
         <label htmlFor={id}>{label}:</label>
         <input className='input-flex' id={id} type='text' value={value} onChange={onChange} />
+        {value && (
+          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
       </div>
     );
   }
@@ -85,11 +95,26 @@ function InputField({ id, label, value, onChange }) {
     <div className={`input-field ${id}`}>
       <label htmlFor={id}>{label}:</label>
       <input className='input-flex' id={id} type='text' value={value} onChange={onChange} />
+      {value && (
+        <button type='button' className='clear-button' onClick={() => onClear(id)}>
+          X
+        </button>
+      )}
     </div>
   );
 }
 
 export default function VendorForm({ fields, vendor, onChange }) {
+  const handleClear = (fieldKeys) => {
+    const event = {
+      target: {
+        id: fieldKeys,
+        value: ''
+      }
+    };
+    onChange(event);
+  };
+
   return (
     <form style={{ paddingBottom: '5%' }} className='input-container'>
       {fields.map((field) => (
@@ -99,6 +124,7 @@ export default function VendorForm({ fields, vendor, onChange }) {
           label={field.label}
           value={field.keys.split('.').reduce((o, i) => o[i], vendor)}
           onChange={onChange}
+          onClear={handleClear}
         />
       ))}
     </form>
