@@ -135,9 +135,9 @@ export default function EditVendor({ vendor, onRefresh }) {
 
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <EditIcon style={{ marginRight: '8px' }} onClick={() => handleEditVendor(vendor.id)} />
-        {vendor.id}
+      <div className='edit-container'>
+        <EditIcon className='edit-icon' fontSize='small' onClick={() => handleEditVendor(vendor.id)} />
+        <div className='id-number'>{vendor.id}</div>
       </div>
       {modal && (
         <div className='modal'>
