@@ -39,11 +39,6 @@ export const productFields = [
     type: 'dropdown'
   },
   {
-    id: 'vendorId',
-    label: 'Vendor ID',
-    required: false
-  },
-  {
     id: 'cost',
     label: 'Cost',
     min: 0.0,
