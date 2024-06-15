@@ -31,7 +31,7 @@ import EditVendor from './EditVendor';
 export default function VendorPage() {
   // Create column names, id's, minimum width
   const columns = [
-    { id: 'id', label: 'ID', minWidth: 40 },
+    { id: 'id', label: 'ID', minWidth: 60 },
     { id: 'vendorName', label: 'Vendor Name', minWidth: 100 },
     { id: 'address', label: 'Address', minWidth: 100 },
     { id: 'contact', label: 'Contact', minWidth: 100 },
