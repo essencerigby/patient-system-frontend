@@ -1,8 +1,7 @@
-/* eslint-disable max-len */
-/* eslint-disable no-confusing-arrow */
+/* eslint-disable object-curly-newline */
+/* eslint-disable no-shadow */
 import React from 'react';
 
-// Array of state abbreviations
 const stateAbbreviations = [
   'AL',
   'AK',
@@ -56,15 +55,17 @@ const stateAbbreviations = [
   'WY'
 ];
 
-// Component to handle individual input fields
-// eslint-disable-next-line object-curly-newline
 function InputField({ id, label, value, onChange }) {
-  // If the field is for the state, we add the dropdown menu with state abbreviations
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    onChange(id, value);
+  };
+
   if (id === 'address.state') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 1 }}>
         <label htmlFor={id}>{label}:</label>
-        <select className='input-flex' id={id} value={value} onChange={onChange}>
+        <select className='input-flex' id={id} value={value} onChange={handleChange}>
           <option value=''>Select State</option>
           {stateAbbreviations.map((state) => (
             <option key={state} value={state}>
@@ -75,27 +76,26 @@ function InputField({ id, label, value, onChange }) {
       </div>
     );
   }
+
   if (id === 'address.zipCode') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 2 }}>
         <label htmlFor={id}>{label}:</label>
-        <input className='input-flex' id={id} type='text' value={value} onChange={onChange} />
+        <input className='input-flex' id={id} type='text' value={value} onChange={handleChange} />
       </div>
     );
   }
-  // Default input field (for text inputs)
+
   return (
     <div className={`input-field ${id}`}>
       <label htmlFor={id}>{label}:</label>
-      <input className='input-flex' id={id} type='text' value={value} onChange={onChange} />
+      <input className='input-flex' id={id} type='text' value={value} onChange={handleChange} />
     </div>
   );
 }
 
-// Component to render the vendor form
 export default function VendorForm({ fields, vendor, onChange }) {
   return (
-    // Inline style to add less padding at the bottom of the form
     <form style={{ paddingBottom: '5%' }} className='input-container'>
       {fields.map((field) => (
         <InputField
