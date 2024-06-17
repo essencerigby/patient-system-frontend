@@ -68,11 +68,6 @@ function InputField({ id, label, value, onChange, onClear }) {
             </option>
           ))}
         </select>
-        {value && (
-          <button type='button' className='clear-button' onClick={() => onClear(id)}>
-            X
-          </button>
-        )}
       </div>
     );
   }
