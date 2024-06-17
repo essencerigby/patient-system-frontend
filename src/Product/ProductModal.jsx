@@ -58,6 +58,7 @@ export default function ProductModal({ fields, type, onRefresh }) {
               </button>
               <button
                 type='submit'
+                className='submit-close-modal'
                 onClick={() => formRef.current.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))}
               >
                 Submit
