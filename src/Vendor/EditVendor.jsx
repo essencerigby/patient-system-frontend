@@ -1,9 +1,9 @@
+import EditIcon from '@mui/icons-material/Edit';
 import React, { useState, useEffect } from 'react';
 import '../Component/Modal.css';
-import { createVendor } from '../apiService';
+import { editVendor, getVendorById } from '../apiService';
 import VendorForm from './VendorForm';
 
-// Array of fields for the form
 const fields = [
   { id: 'name', label: 'Name', keys: 'name' },
   { id: 'street', label: 'Street', keys: 'street' },
@@ -17,10 +17,10 @@ const fields = [
   { id: 'phone', label: 'Phone', keys: 'phone' }
 ];
 
-export default function AddVendor({ onRefresh }) {
+export default function EditVendor({ vendor, onRefresh }) {
   const [modal, setModal] = useState(false);
   const [modalWidth, setModalWidth] = useState(Math.min(window.innerWidth * 0.8, 600));
-  const [vendor, setVendor] = useState({
+  const [currentVendor, setCurrentVendor] = useState({
     id: '',
     name: '',
     street: '',
@@ -50,45 +50,43 @@ export default function AddVendor({ onRefresh }) {
 
   const toggleModal = () => {
     if (modal) {
-      setError(null); // Reset error when closing the modal
+      setError(null);
     }
-    setModal(!modal); // Toggle modal visibility
+    setModal(!modal);
   };
 
-  // This function handles changes in input fields of the vendor form.
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setVendor((prevValues) => ({
+    setCurrentVendor((prevValues) => ({
       ...prevValues,
       [id]: value
     }));
   };
 
-  // This function handles the submission of the vendor form.
   const handleSubmit = async () => {
     try {
-      const vendorToCreate = {
-        id: vendor.id,
-        name: vendor.name,
+      const vendorToEdit = {
+        id: currentVendor.id,
+        name: currentVendor.name,
         address: {
-          street: vendor.street,
-          street2: vendor.street2,
-          city: vendor.city,
-          state: vendor.state,
-          zipCode: vendor.zipCode
+          street: currentVendor.street,
+          street2: currentVendor.street2,
+          city: currentVendor.city,
+          state: currentVendor.state,
+          zipCode: currentVendor.zipCode
         },
         contact: {
-          contactName: vendor.contactName,
-          email: vendor.email,
-          titleOrRole: vendor.titleOrRole,
-          phone: vendor.phone
+          contactName: currentVendor.contactName,
+          email: currentVendor.email,
+          titleOrRole: currentVendor.titleOrRole,
+          phone: currentVendor.phone
         }
       };
-      await createVendor(vendorToCreate);
-      setError(null); // Reset error on successful submission
-      toggleModal(); // Close the modal after successful submission
-      onRefresh(); // Refresh the vendor list after successful submission
-      setVendor({
+      await editVendor(vendorToEdit);
+      setError(null);
+      toggleModal();
+      onRefresh();
+      setCurrentVendor({
         id: '',
         name: '',
         street: '',
@@ -100,9 +98,9 @@ export default function AddVendor({ onRefresh }) {
         contactName: '',
         titleOrRole: '',
         phone: ''
-      }); // Resetting the vendor state to its initial empty values after successful submission
+      });
     } catch (err) {
-      setError(err.response ? err.response.data : err.message); // Set error if submission fails
+      setError(err.response ? err.response.data : err.message);
     }
   };
 
@@ -112,22 +110,54 @@ export default function AddVendor({ onRefresh }) {
     document.body.classList.remove('active-modal');
   }
 
+  const handleEditVendor = async (id) => {
+    try {
+      const vendorById = await getVendorById(id);
+      const experimentVendor = {
+        id: vendorById.id,
+        name: vendorById.name,
+        street: vendorById.address.street,
+        street2: vendorById.address.street2,
+        city: vendorById.address.city,
+        state: vendorById.address.state,
+        zipCode: vendorById.address.zipCode,
+        email: vendorById.contact.email,
+        contactName: vendorById.contact.contactName,
+        titleOrRole: vendorById.contact.titleOrRole,
+        phone: vendorById.contact.phone
+      };
+      setCurrentVendor(experimentVendor);
+      toggleModal();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleCancel = () => {
+    // eslint-disable-next-line no-alert
+    if (window.confirm('Are you sure you want to cancel?')) {
+      setCurrentVendor({});
+      toggleModal();
+    }
+  };
+
   return (
     <>
-      <button type='button' onClick={toggleModal} className='btn-modal'>
-        <strong>Add New +</strong>
-      </button>
+      <div className='edit-container'>
+        <EditIcon className='edit-icon' fontSize='small' onClick={() => handleEditVendor(vendor.id)} />
+        <div className='id-number'>{vendor.id}</div>
+      </div>
       {modal && (
         <div className='modal'>
           <div className='overlay' />
           <div className='modal-content' style={{ maxWidth: modalWidth }}>
             <div className='modal-header'>
-              <h2>NEW VENDOR FORM</h2>
+              <h2>EDIT VENDOR FORM</h2>
             </div>
-            <VendorForm fields={fields} vendor={vendor} onChange={handleChange} />
+            <VendorForm fields={fields} vendor={currentVendor} onChange={handleChange} />
             {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
             <div className='btn-container'>
-              <button type='button' className='close-modal' onClick={toggleModal}>
+              <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
               </button>
               <button type='button' className='submit-close-modal' onClick={handleSubmit}>
