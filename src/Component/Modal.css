@@ -54,6 +54,9 @@ h2 {
   display: inline-block;
   margin-right: 10px;
   padding: 5px 15px;
+  cursor: pointer;
+  transition: font-weight 0.3s ease;
+  transition: border 0.3s ease;
 }
 
 .input-container {
@@ -161,6 +164,9 @@ h2 {
   border: none;
   display: inline-block;
   padding: 5px 15px;
+  cursor: pointer;
+  transition: font-weight 0.2s ease;
+  transition: border 0.2s ease;
 }
 
 .overlay {
@@ -193,4 +199,29 @@ input {
 
 textarea {
   resize: none;
+}
+
+.clear-button {
+  position: absolute;
+  right: 320px;
+  transform: translateY(200%);
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  width: 15px;
+}
+
+.clear-button:hover {
+  color: #000;
+}
+
+.close-modal:hover,
+.submit-close-modal:hover {
+  font-weight: bold;
+  border: 2px solid #000;
 }
