@@ -320,6 +320,24 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
   const allFields = [...fields, ...drinkTypeFields, ...bakedGoodVendorIdField, ...bakedGoodMarkupField];
   const [errors, setErrors] = useState({});
 
+  /**
+   * Validates the form input values based on various criteria and sets error messages if any criteria are not met.
+   *
+   * Validation criteria include:
+   * - Description must be between 1 and 100 characters.
+   * - Name must be between 1 and 50 characters.
+   * - Classification must be either 'Drink' or 'Baked Good'.
+   * - Vendor ID is required if the product is classified as 'Baked Good'.
+   * - At least one ingredient must be provided.
+   * - If the product is classified as 'Drink', a type must be selected.
+   * - If the product is classified as 'Baked Good', the markup must be a whole number.
+   * - Cost must be in the format X.XX and greater than 0.
+   *
+   * Sets error messages in the `error` object for any invalid fields, and uses `setErrors` to update the state with these errors.
+   * Returns `true` if no errors are found, otherwise returns `false`.
+   *
+   * @returns {boolean} - Returns true if the form values are valid, false otherwise.
+   */
   const isFormValid = () => {
     const error = {};
     if (formValues.description.length > 100) {
