@@ -371,7 +371,7 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
     ) {
       error.markup = 'Markup must be a whole number.';
     }
-    const costPattern = /^\d\.\d{2}$/;
+    const costPattern = /^\d{0,4}\.\d{2}$/;
     if (!costPattern.test(formValues.cost)) {
       error.cost = 'Must be numbers in the following format: X.XX';
     }
