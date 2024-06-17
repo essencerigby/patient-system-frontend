@@ -133,6 +133,14 @@ export default function EditVendor({ vendor, onRefresh }) {
     }
   };
 
+  const handleCancel = () => {
+    // eslint-disable-next-line no-alert
+    if (window.confirm('Are you sure you want to cancel?')) {
+      setCurrentVendor({});
+      toggleModal();
+    }
+  };
+
   return (
     <>
       <div className='edit-container'>
@@ -149,7 +157,7 @@ export default function EditVendor({ vendor, onRefresh }) {
             <VendorForm fields={fields} vendor={currentVendor} onChange={handleChange} />
             {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
             <div className='btn-container'>
-              <button type='button' className='close-modal' onClick={toggleModal}>
+              <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
               </button>
               <button type='button' className='submit-close-modal' onClick={handleSubmit}>
