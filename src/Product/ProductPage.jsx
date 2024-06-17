@@ -64,22 +64,14 @@ export default function ProductPage() {
   }, [refresh]);
 
   // Formats a number as a price string in USD
-  const formatPrice = (price) => `$${price.toFixed(2)}`;
+  const formatPrice = (price) => `$${price}`;
 
   // Joins elements of an array into a single string separated by commas
   const formatList = (list) => list.join(', ');
 
   // Formats a number as a percentage string
   const formatPercentage = (value) => {
-    return value > 0 ? `${(value).toFixed(0)}%` : '';
-  };
-
-  // Returns an empty string if the given value is 0 or null
-  const formatField = (value) => {
-    if (value === 0 || value === null) {
-      return '';
-    }
-    return value;
+    return `${value}%`;
   };
 
   // Toggles the refresh state, to trigger a refresh when a new vendor is successfully submitted.
@@ -98,10 +90,10 @@ export default function ProductPage() {
           product.id,
           product.name,
           product.description,
-          <input type='checkbox' checked={product.active} />,
+          <input type='checkbox' defaultChecked={product.active} />,
           product.classification,
           product.type,
-          formatField(product.vendorId),
+          product.vendorId,
           formatList(product.ingredientsList),
           formatList(product.allergenList),
           formatPrice(product.cost),
@@ -109,6 +101,7 @@ export default function ProductPage() {
           formatPrice(product.salePrice)
         ])
       )
+    // eslint-disable-next-line function-paren-newline
   );
 
   // If there are less than 6 rows, create empty rows to fill out table

@@ -25,7 +25,7 @@ export const productFields = [
   },
   {
     id: 'allergenList',
-    dropdownOptions: ['Dairy', 'Gluten', 'Nut', 'Soy'],
+    dropdownOptions: ['Dairy', 'Gluten', 'Nuts', 'Soy'],
     label: 'Allergens:',
     multiple: true,
     required: false,
@@ -39,14 +39,9 @@ export const productFields = [
     type: 'dropdown'
   },
   {
-    id: 'vendorId',
-    label: 'Vendor ID',
-    required: false
-  },
-  {
     id: 'cost',
     label: 'Cost',
-    min: 0.00,
+    min: 0.0,
     step: 0.01,
     required: true,
     type: 'number'

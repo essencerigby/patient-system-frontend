@@ -1,3 +1,6 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable indent */
+/* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -5,25 +8,13 @@
 import React, { useState, forwardRef } from 'react';
 import { NumericFormat } from 'react-number-format';
 
-function InputField({
-  id,
-  label,
-  dropdownOptions,
-  multiple,
-  required,
-  type,
-  value,
-  onBlur,
-  onChange
-}) {
+function InputField({ id, label, dropdownOptions, multiple, required, type, value, onBlur, onChange, error }) {
   if (type === 'dropdown') {
     return (
-      <div className={`input-field ${id}`} id={id}>
-        <label htmlFor={id}>
-          {label}
-        </label>
+      <div className={`input-field ${id}}`} id={id}>
+        <label htmlFor={id}>{label}</label>
         <select
-          className='input-flex'
+          className={`${error ? 'input-flex-error' : 'input-flex'}`}
           id={id}
           multiple={multiple}
           onBlur={onBlur}
@@ -34,9 +25,12 @@ function InputField({
         >
           <option value='' />
           {dropdownOptions.map((option) => (
-            <option key={option} value={option}>{option}</option>
+            <option key={option} value={option}>
+              {option}
+            </option>
           ))}
         </select>
+        {error && <div className='error-message'>{error}</div>}
       </div>
     );
   }
@@ -56,7 +50,14 @@ function InputField({
     return (
       <div className={`input-field ${id}`} id={id}>
         <label htmlFor={id}>{label}:</label>
-        <textarea id={id} value={value} onChange={onChange} required={required} />
+        <textarea
+          className={`${error ? 'input-flex-error' : 'input-flex'}`}
+          id={id}
+          value={value}
+          onChange={onChange}
+          required={required}
+        />
+        {error && <div className='error-message'>{error}</div>}
       </div>
     );
   }
@@ -67,6 +68,7 @@ function InputField({
       <div className={`input-field ${id}`} id={id}>
         <label htmlFor={id}>{label}</label>
         <select
+          className='input-multi-select'
           id={id}
           multiple={multiple}
           onChange={onChange}
@@ -76,7 +78,9 @@ function InputField({
         >
           <option value='' />
           {dropdownOptions.map((option) => (
-            <option key={option} value={option}>{option}</option>
+            <option key={option} value={option}>
+              {option}
+            </option>
           ))}
         </select>
       </div>
@@ -90,7 +94,7 @@ function InputField({
         <label htmlFor={id}>{label}:</label>
         <div className='input-wrapper'>
           <input
-            className='input-flex'
+            className={`${error ? 'input-flex-error' : 'input-flex'}`}
             id={id}
             type='text'
             value={value}
@@ -99,6 +103,7 @@ function InputField({
             pattern='\d*'
           />
         </div>
+        {error && <div className='error-message'>{error}</div>}
       </div>
     );
   }
@@ -110,7 +115,7 @@ function InputField({
         <label htmlFor={id}>{label}:</label>
         <div className='input-wrapper'>
           <NumericFormat
-            className='input-flex'
+            className={`${error ? 'input-flex-error' : 'input-flex'}`}
             id={id}
             value={value}
             onValueChange={(values) => {
@@ -124,6 +129,7 @@ function InputField({
             prefix='$'
           />
         </div>
+        {error && <div className='error-message'>{error}</div>}
       </div>
     );
   }
@@ -134,7 +140,7 @@ function InputField({
         <label htmlFor={id}>{label}:</label>
         <div className='input-wrapper'>
           <NumericFormat
-            className='input-flex'
+            className={`${error ? 'input-flex-error' : 'input-flex'}`}
             id={id}
             value={value}
             onValueChange={(values) => {
@@ -142,12 +148,13 @@ function InputField({
               onChange({ target: { id, value: formattedValue } });
             }}
             thousandSeparator={false}
-            defaultValue='0.00'
-            decimalScale={2}
-            fixedDecimalScale
+            defaultValue='0'
+            decimalScale={0}
+            fixedDecimalScale={false}
             suffix='%'
           />
         </div>
+        {error && <div className='error-message'>{error}</div>}
       </div>
     );
   }
@@ -156,8 +163,15 @@ function InputField({
     <div className={`input-field ${id}`} id={id}>
       <label htmlFor={id}>{label}:</label>
       <div className='input-wrapper'>
-        <input className='input-flex' id={id} type='text' value={value} onChange={onChange} />
+        <input
+          className={`${error ? 'input-flex-error' : 'input-flex'}`}
+          id={id}
+          type='text'
+          value={value}
+          onChange={onChange}
+        />
       </div>
+      {error && <div className='error-message'>{error}</div>}
     </div>
   );
 }
@@ -222,7 +236,8 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
         type: value
       }));
     } else {
-      setFormValues((prevValues) => ({ //
+      setFormValues((prevValues) => ({
+        //
         ...prevValues,
         [id]: value
       }));
@@ -234,6 +249,13 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
       setFormValues((prevValues) => ({
         ...prevValues,
         type: '' // Initialize `type` as empty string
+      }));
+    }
+
+    if (id === 'classification' && value === 'Baked Good') {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        vendorId: ''
       }));
     }
   };
@@ -256,63 +278,129 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
   };
 
   // Conditionally render the type field based on classification of drink
-  const drinkTypeFields = formValues.classification === 'Drink' ? [
-    {
-      id: 'type',
-      label: 'Drink Type',
-      required: true,
-      type: 'dropdown',
-      dropdownOptions: ['Coffee', 'Tea', 'Soda']
-    }
-  ] : [];
+  const drinkTypeFields =
+    formValues.classification === 'Drink'
+      ? [
+          {
+            id: 'type',
+            label: 'Drink Type',
+            required: true,
+            type: 'dropdown',
+            dropdownOptions: ['Coffee', 'Tea', 'Soda']
+          }
+        ]
+      : [];
+
+  const bakedGoodVendorIdField =
+    formValues.classification === 'Baked Good'
+      ? [
+          {
+            id: 'vendorId',
+            label: 'Vendor ID',
+            required: false
+          }
+        ]
+      : [];
 
   // Conditionally render the markup field based on classification of bakedGood
-  const bakedGoodMarkupField = (formValues.classification === 'Baked Good' && formValues.vendorId) ? [
-    {
-      id: 'markup',
-      label: 'Markup',
-      min: 0.00,
-      step: 0.01,
-      type: 'number'
-    }
-  ] : '';
+  const bakedGoodMarkupField =
+    formValues.classification === 'Baked Good'
+      ? [
+          {
+            id: 'markup',
+            label: 'Markup',
+            min: 0.0,
+            step: 0.01,
+            type: 'number'
+          }
+        ]
+      : '';
 
   // Combining always-on fields & conditionally rendered fields
-  const allFields = [...fields, ...drinkTypeFields, ...bakedGoodMarkupField];
+  const allFields = [...fields, ...drinkTypeFields, ...bakedGoodVendorIdField, ...bakedGoodMarkupField];
+  const [errors, setErrors] = useState({});
+
+  /**
+   * Validates the form input values based on various criteria and sets error messages if any criteria are not met.
+   *
+   * Validation criteria include:
+   * - Description must be between 1 and 100 characters.
+   * - Name must be between 1 and 50 characters.
+   * - Classification must be either 'Drink' or 'Baked Good'.
+   * - Vendor ID is required if the product is classified as 'Baked Good'.
+   * - At least one ingredient must be provided.
+   * - If the product is classified as 'Drink', a type must be selected.
+   * - If the product is classified as 'Baked Good', the markup must be a whole number.
+   * - Cost must be in the format X.XX and greater than 0.
+   *
+   * Sets error messages in the `error` object for any invalid fields, and uses `setErrors` to update the state with these errors.
+   * Returns `true` if no errors are found, otherwise returns `false`.
+   *
+   * @returns {boolean} - Returns true if the form values are valid, false otherwise.
+   */
+  const isFormValid = () => {
+    const error = {};
+    if (formValues.description.length > 100) {
+      error.description = 'Description must be 100 characters or less.';
+    }
+    if (formValues.description.length < 1) {
+      error.description = 'Must have a product description';
+    }
+    if (formValues.name.length > 50) {
+      error.name = 'Name must be 50 characters or less.';
+    }
+    if (formValues.name.length < 1) {
+      error.name = 'Must include product name.';
+    }
+    if (formValues.classification === 'Baked Good' && formValues.vendorId.length < 1) {
+      error.vendorId = 'Must include Vendor Id for Baked Good Products.';
+    }
+    if (formValues.ingredientsList.length < 1) {
+      error.ingredientsList = 'Must have at least 1 ingredient.';
+    }
+    if (formValues.classification === '') {
+      error.classification = 'Classification must be Drink or Baked Good.';
+    }
+    if (formValues.classification === 'Drink' && formValues.type === '') {
+      error.type = 'Must choose a Drink Type.';
+    }
+    const wholeNumberPattern = /^\d+$/;
+    if (
+      formValues.classification === 'Baked Good' &&
+      (formValues.markup === '' || !wholeNumberPattern.test(formValues.markup))
+    ) {
+      error.markup = 'Markup must be a whole number.';
+    }
+    const costPattern = /^\d{0,4}\.\d{2}$/;
+    if (!costPattern.test(formValues.cost)) {
+      error.cost = 'Must be numbers in the following format: X.XX';
+    }
+    if (formValues.cost === '0.00') {
+      error.cost = 'Cost must be greater than 0';
+    }
+    setErrors(error);
+    const errorCheck = Object.keys(error).length === 0;
+    return errorCheck;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validating that required fields are completed
-    const requiredFields = ['name', 'description', 'classification', 'cost'];
-    if (formValues.classification === 'Drink') {
-      requiredFields.push('type');
+    if (isFormValid(formValues)) {
+      const filteredAllergenList = formValues.allergenList.filter((allergen) => allergen !== '');
+      const correctVariableFormValues = {
+        ...formValues,
+        ingredientsList: formValues.ingredientsList.split(',').map((ingredient) => ingredient.trim()),
+        allergenList: filteredAllergenList,
+        cost: formValues.cost.toString(),
+        salePrice: calculateSalePrice().toString()
+      };
+      if (formValues.classification === 'Baked Good') {
+        correctVariableFormValues.markup = formValues.markup.toString();
+        correctVariableFormValues.vendorId = formValues.vendorId.toString();
+      }
+      onSubmit(correctVariableFormValues);
     }
-
-    // Prevent form submission if all required fields not complete
-    const isFormValid = requiredFields.every((field) => formValues[field] !== '');
-    if (!isFormValid) {
-      return;
-    }
-
-    // If the input is for cost, check if the value is greater than 0
-    const cost = parseFloat(formValues.cost);
-    if (cost.isNaN || cost <= 0) {
-      return;
-    }
-
-    const formattedValues = {
-      ...formValues,
-      // Split ingredients into array
-      ingredientsList: formValues.ingredientsList.split(',').map((ingredient) => ingredient.trim()),
-
-      // Allergens are already an array
-      allergenList: formValues.allergenList,
-
-      // Sale price will be rendered based on cost & markup calculation
-      salePrice: calculateSalePrice()
-    };
-    onSubmit(formattedValues);
   };
 
   return (
@@ -328,10 +416,12 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
           onBlur={handleBlur}
           onChange={handleChange}
           dropdownOptions={field.dropdownOptions || []}
+          error={errors[field.id]}
         />
       ))}
       <div className='input-field'>
-        <label htmlFor='salePrice'>Sale Price:
+        <label htmlFor='salePrice'>
+          Sale Price:
           <input id='salePrice' type='text' value={`$${calculateSalePrice()}`} readOnly />
         </label>
       </div>

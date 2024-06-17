@@ -1,3 +1,5 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable max-len */
 /* eslint-disable no-alert */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/no-static-element-interactions */

@@ -115,6 +115,16 @@ h2 {
   text-align: left;
 }
 
+.error {
+  border: 1px solid red;
+}
+
+.input-field .error-message {
+  color: red;
+  font-size: 0.875em;
+  margin-top: 0.25em;
+}
+
 .input-flex {
   width: 100%;
   padding-right: 30px;
@@ -122,6 +132,18 @@ h2 {
   box-sizing: border-box;
   border: 1px solid black;
   border-radius: 4px;
+}
+
+.input-flex-error {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid red;
+  border-radius: 4px;
+}
+
+.input-multi-select {
+  border: 1px solid black;
 }
 
 .input-wrapper {
