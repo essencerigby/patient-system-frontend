@@ -27,6 +27,7 @@ import StickyHeadTable, { createRow } from '../Component/Table';
 import { getProducts } from '../apiService';
 import { productFields } from './ProductFields';
 import ProductModal from './ProductModal';
+import EditProductModal from './EditProductModal';
 
 export default function ProductPage() {
   // Create column names, id's, minimum width
@@ -87,7 +88,7 @@ export default function ProductPage() {
       // eslint-disable-next-line implicit-arrow-linebreak
       rows.push(
         createRow(columns, [
-          product.id,
+          <EditProductModal product={product} onRefresh={handleRefresh} />,
           product.name,
           product.description,
           <input type='checkbox' defaultChecked={product.active} />,
