@@ -2,8 +2,17 @@
 /* eslint-disable no-confusing-arrow */
 import React, { useState } from 'react';
 
-// Create input fields with child elements of Form component
-// Separate InputField Component
+/**
+ * InputField component represents an input field within a form.
+ *
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {string} props.id - The unique identifier for the input field.
+ * @param {string} props.label - The label text for the input field.
+ * @param {string} props.value - The current value of the input field.
+ * @param {function} props.onChange - The function to handle changes to the input field.
+ * @returns {JSX.Element} A React component representing an input field.
+ */
 // eslint-disable-next-line object-curly-newline
 function InputField({ id, label, value, onChange }) {
   return (
@@ -14,20 +23,36 @@ function InputField({ id, label, value, onChange }) {
   );
 }
 
-// State set to empty strings for all input values
-export default function Form() {
-  const [formValues, setFormValues] = useState({
-    vendorName: '',
-    streetAddress1: '',
-    streetAddress2: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    contactName: ''
-  });
+/**
+ * Form component renders a form based on provided fields configuration.
+ *
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {Array} props.fields - An array of field configurations.
+ * @returns {JSX.Element} A React component representing a form.
+ */
+export default function Form({ fields }) {
+  /**
+   * Initializes form values based on the provided fields configuration.
+   *
+   * @returns {Object} Initial form values with keys corresponding to field IDs.
+   */
+  const initializedValues = () => {
+    const initialValues = {};
+    fields.forEach((field) => {
+      initialValues[field.id] = '';
+    });
+    return initialValues;
+  };
 
-  // Destructure target property to extract id and value
-  // Update state to include new id Key + corresponding value
+  // State to manage form values
+  const [formValues, setFormValues] = useState(initializedValues);
+
+  /**
+   * Handles changes to form input fields.
+   *
+   * @param {Object} e - The event object.
+   */
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormValues((prevValues) => ({
@@ -36,33 +61,25 @@ export default function Form() {
     }));
   };
 
+  /**
+   * Handles form submission.
+   *
+   * @param {Object} e - The event object.
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Add form submission logic here if needed
   };
 
-  // Array of form field data
-  const formFields = [
-    { id: 'vendorName', label: 'Vendor Name' },
-    { id: 'streetAddress1', label: 'Street Address 1' },
-    { id: 'streetAddress2', label: 'Street Address 2' },
-    { id: 'city', label: 'City' },
-    { id: 'state', label: 'State' },
-    { id: 'zipCode', label: 'Zip Code' },
-    { id: 'contact', label: 'Contact' },
-    { id: 'email', label: 'Email' },
-    { id: 'phoneNumber', label: 'Phone Number' },
-    { id: 'role', label: 'Role' }
-  ];
-
-  // Return desired setup for input field parameters
   return (
     <form className='input-container' onSubmit={handleSubmit}>
-      {formFields.map((field) => (
+      {/* Render input fields based on the provided fields configuration */}
+      {fields.map((field) => (
         <InputField
           key={field.id}
           id={field.id}
           label={field.label}
-          value={formValues[field.id]}
+          value={formValues[field.id] || ''}
           onChange={handleChange}
         />
       ))}
