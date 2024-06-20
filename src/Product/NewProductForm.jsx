@@ -175,24 +175,24 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
     </div>
   );
 }
-const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
-  const initializedValues = () => {
-    const initialValues = {};
-    fields.forEach((field) => {
-      if (field.type === 'checkbox') {
-        initialValues[field.id] = false;
-      } else if (field.type === 'multiselect') {
-        initialValues[field.id] = [];
-      } else if (field.id === 'cost') {
-        initialValues[field.id] = '0.00';
-      } else {
-        initialValues[field.id] = '';
-      }
-    });
-    return initialValues;
-  };
+const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
+  // const initializedValues = () => {
+  //   const initialValues = {};
+  //   fields.forEach((field) => {
+  //     if (field.type === 'checkbox') {
+  //       initialValues[field.id] = false;
+  //     } else if (field.type === 'multiselect') {
+  //       initialValues[field.id] = [];
+  //     } else if (field.id === 'cost') {
+  //       initialValues[field.id] = '0.00';
+  //     } else {
+  //       initialValues[field.id] = '';
+  //     }
+  //   });
+  //   return initialValues;
+  // };
 
-  const [formValues, setFormValues] = useState(initializedValues);
+  const [formValues, setFormValues] = useState({});
 
   const handleChange = (e) => {
     const { id, type, checked, multiple, options, value } = e.target;
@@ -412,7 +412,7 @@ const ProductForm = forwardRef(({ fields, onSubmit }, ref) => {
           label={field.label}
           multiple={field.multiple || false} // changed
           type={field.type || 'text'}
-          value={formValues[field.id] || ''}
+          value={product}
           onBlur={handleBlur}
           onChange={handleChange}
           dropdownOptions={field.dropdownOptions || []}
