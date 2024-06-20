@@ -58,6 +58,15 @@ export const getProductById = async (id) => {
   }
 };
 
+export const editProduct = async (productToEdit) => {
+  try {
+    const response = await axios.put(`${productsApiUrl}/${productToEdit.id}`, productToEdit);
+    return response.data;
+  } catch (error) {
+    throw Error('Error updating vendor', error);
+  }
+};
+
 /**
  * Fetches customer data from the backend.
  *
