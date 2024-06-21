@@ -74,3 +74,8 @@ export const getCustomers = async () => {
     throw Error('Error fetching customers', error);
   }
 };
+
+export const createCustomer = async (customerToCreate) => {
+  const response = await axios.post(customersApiUrl, customerToCreate);
+  return response.data;
+};
