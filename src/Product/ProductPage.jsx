@@ -88,7 +88,7 @@ export default function ProductPage() {
       // eslint-disable-next-line implicit-arrow-linebreak
       rows.push(
         createRow(columns, [
-          <EditProductModal product={product} onRefresh={handleRefresh} />,
+          <EditProductModal product={product} fields={productFields} onRefresh={handleRefresh} />,
           product.name,
           product.description,
           <input type='checkbox' defaultChecked={product.active} />,
@@ -98,7 +98,7 @@ export default function ProductPage() {
           formatList(product.ingredientsList),
           formatList(product.allergenList),
           formatPrice(product.cost),
-          formatPercentage(product.markup),
+          `${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`,
           formatPrice(product.salePrice)
         ])
       )
