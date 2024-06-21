@@ -23,6 +23,7 @@
 
 import React, { useEffect, useState } from 'react';
 import '../index.css';
+import '../Component/Modal.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import { getProducts } from '../apiService';
 import { productFields } from './ProductFields';
@@ -32,7 +33,7 @@ import EditProductModal from './EditProductModal';
 export default function ProductPage() {
   // Create column names, id's, minimum width
   const columns = [
-    { id: 'id', label: 'ID', minWidth: 40 },
+    { id: 'id', label: 'ID', minWidth: 80 },
     { id: 'name', label: 'Name', minWidth: 100 },
     { id: 'description', label: 'Description', minWidth: 100 },
     { id: 'active', label: 'Active', minWidth: 20 },
@@ -75,6 +76,10 @@ export default function ProductPage() {
     return `${value}%`;
   };
 
+  const displayDash = (value) => {
+    return value === '' || value.toLowerCase() === 'n/a' ? '-' : value;
+  };
+
   // Toggles the refresh state, to trigger a refresh when a new vendor is successfully submitted.
   const handleRefresh = () => {
     setRefresh((prev) => !prev);
@@ -91,14 +96,14 @@ export default function ProductPage() {
           <EditProductModal product={product} fields={productFields} onRefresh={handleRefresh} />,
           product.name,
           product.description,
-          <input type='checkbox' defaultChecked={product.active} />,
+          <input type='checkbox' checked={product.active} onChange={() => {}} disabled />,
           product.classification,
-          product.type,
-          product.vendorId,
+          displayDash(product.type),
+          displayDash(product.vendorId),
           formatList(product.ingredientsList),
-          formatList(product.allergenList),
+          displayDash(formatList(product.allergenList)),
           formatPrice(product.cost),
-          `${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`,
+          displayDash(`${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`),
           formatPrice(product.salePrice)
         ])
       )
