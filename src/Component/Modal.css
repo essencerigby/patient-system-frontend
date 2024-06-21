@@ -48,6 +48,25 @@ h2 {
   white-space: nowrap;
 }
 
+.clear-button {
+  position: absolute;
+  right: 10px;
+  top: 70%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.clear-button:hover {
+  color: #000;
+}
+
 .close-modal {
   background-color: #d9d9d9;
   border: none;
@@ -234,6 +253,24 @@ h2 {
   margin-left: 2px; /* Adjust as needed */
 }
 
+.close-modal,
+.submit-close-modal {
+  width: 100px; /* Fixed width */
+  padding: 10px; /* Fixed padding */
+  box-sizing: border-box; /* Ensure padding and borders are included in the width and height */
+  border: 1px solid transparent; /* Invisible border initially */
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease; /* Smooth transition for background and border color change */
+}
+
+.close-modal:hover,
+.submit-close-modal:hover {
+  background-color: #8ca0c7; /* Change background color on hover */
+  border-color: #000; /* Change border color on hover */
+  font-weight: bold; /* Make text bold on hover */
+}
+
 label {
   display: block;
   margin-bottom: 5px;
@@ -249,29 +286,4 @@ input {
 
 textarea {
   resize: none;
-}
-
-.clear-button {
-  position: absolute;
-  right: 10px;
-  top: 70%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #888;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0;
-  margin: 0;
-  line-height: 1;
-}
-
-.clear-button:hover {
-  color: #000;
-}
-
-.close-modal:hover,
-.submit-close-modal:hover {
-  font-weight: bold;
-  border: 2px solid #000;
 }
