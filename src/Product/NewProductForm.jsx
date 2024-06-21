@@ -176,27 +176,30 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
   );
 }
 const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
-  // const initializedValues = () => {
-  //   const initialValues = {};
-  //   fields.forEach((field) => {
-  //     if (field.type === 'checkbox') {
-  //       initialValues[field.id] = false;
-  //     } else if (field.type === 'multiselect') {
-  //       initialValues[field.id] = [];
-  //     } else if (field.id === 'cost') {
-  //       initialValues[field.id] = '0.00';
-  //     } else {
-  //       initialValues[field.id] = '';
-  //     }
-  //   });
-  //   return initialValues;
-  // };
+  const initializedValues = () => {
+    let initialValues = {};
+    if (product) {
+      initialValues = product;
+    } else if (!product) {
+      fields.forEach((field) => {
+        if (field.type === 'checkbox') {
+          initialValues[field.id] = false;
+        } else if (field.type === 'multiselect') {
+          initialValues[field.id] = [];
+        } else if (field.id === 'cost') {
+          initialValues[field.id] = '0.00';
+        } else {
+          initialValues[field.id] = '';
+        }
+      });
+    }
+    return initialValues;
+  };
 
-  const [formValues, setFormValues] = useState({});
+  const [formValues, setFormValues] = useState({ initializedValues });
 
   const handleChange = (e) => {
     const { id, type, checked, multiple, options, value } = e.target;
-
     if (id === 'vendorId') {
       const numericValue = value.replace(/\D/g, ''); // Remove non-numeric characters
       setFormValues((prevValues) => ({
@@ -412,7 +415,7 @@ const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
           label={field.label}
           multiple={field.multiple || false} // changed
           type={field.type || 'text'}
-          value={product}
+          value={product || formValues[field.id] || ''}
           onBlur={handleBlur}
           onChange={handleChange}
           dropdownOptions={field.dropdownOptions || []}
