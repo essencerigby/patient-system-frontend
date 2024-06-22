@@ -92,20 +92,24 @@ export default function ProductPage() {
     (product) =>
       // eslint-disable-next-line implicit-arrow-linebreak
       rows.push(
-        createRow(columns, [
-          <EditProductModal product={product} fields={productFields} onRefresh={handleRefresh} />,
-          product.name,
-          product.description,
-          <input type='checkbox' checked={product.active} onChange={() => {}} disabled />,
-          product.classification,
-          displayDash(product.type),
-          displayDash(product.vendorId),
-          formatList(product.ingredientsList),
-          displayDash(formatList(product.allergenList)),
-          formatPrice(product.cost),
-          displayDash(`${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`),
-          formatPrice(product.salePrice)
-        ])
+        createRow(
+          columns,
+          [
+            <EditProductModal product={product} fields={productFields} onRefresh={handleRefresh} />,
+            product.name,
+            product.description,
+            <input type='checkbox' checked={product.active} onChange={() => {}} disabled />,
+            product.classification,
+            displayDash(product.type),
+            displayDash(product.vendorId),
+            formatList(product.ingredientsList),
+            displayDash(formatList(product.allergenList)),
+            formatPrice(product.cost),
+            displayDash(`${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`),
+            formatPrice(product.salePrice)
+          ],
+          product.id
+        )
       )
     // eslint-disable-next-line function-paren-newline
   );
