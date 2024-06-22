@@ -16,10 +16,19 @@ export default function EditProductModal({ fields, type, product, onRefresh }) {
     setModal(!modal);
   };
 
-  const handleSubmit = async () => {
-    await editProduct(currentProduct);
-    toggleModal();
-    onRefresh();
+  const handleSubmit = async (formValues) => {
+    try {
+      const productToEdit = {
+        ...formValues,
+        salePrice: formValues.salePrice
+      };
+      await editProduct(productToEdit);
+      toggleModal();
+      onRefresh();
+    } catch (error) {
+      // eslint-disable-next-line no-alert
+      alert('Error updating product:', error);
+    }
   };
 
   if (modal) {
@@ -46,7 +55,7 @@ export default function EditProductModal({ fields, type, product, onRefresh }) {
           <div className='overlay' onClick={toggleModal} />
           <div className='modal-content'>
             <div className='modal-header'>
-              <h2>NEW PRODUCT FORM</h2>
+              <h2>EDIT PRODUCT FORM</h2>
             </div>
             {/* eslint-disable-next-line max-len */}
             <ProductForm fields={fields} ref={formRef} type={type} product={currentProduct} onSubmit={handleSubmit} />
