@@ -56,6 +56,7 @@ export default function ProductPage() {
     const fetchProducts = async () => {
       try {
         const data = await getProducts();
+        data.sort((a, b) => (a.id > b.id ? 1 : -1));
         setProducts(data);
       } catch (err) {
         setError(err);
