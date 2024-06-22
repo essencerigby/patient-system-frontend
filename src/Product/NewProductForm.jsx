@@ -5,10 +5,10 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable import/no-extraneous-dependencies */
 
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, useEffect } from 'react';
 import { NumericFormat } from 'react-number-format';
 
-function InputField({ id, label, dropdownOptions, multiple, required, type, value, onBlur, onChange, error }) {
+function InputField({ id, label, dropdownOptions, multiple, required, type, value, onBlur, onChange, onClear, error }) {
   if (type === 'dropdown') {
     return (
       <div className={`input-field ${id}}`} id={id}>
@@ -57,6 +57,11 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
           onChange={onChange}
           required={required}
         />
+        {value && (
+          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
         {error && <div className='error-message'>{error}</div>}
       </div>
     );
@@ -103,6 +108,11 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
             pattern='\d*'
           />
         </div>
+        {value && (
+          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
         {error && <div className='error-message'>{error}</div>}
       </div>
     );
@@ -129,6 +139,11 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
             prefix='$'
           />
         </div>
+        {value && (
+          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
         {error && <div className='error-message'>{error}</div>}
       </div>
     );
@@ -154,6 +169,11 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
             suffix='%'
           />
         </div>
+        {value && (
+          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
         {error && <div className='error-message'>{error}</div>}
       </div>
     );
@@ -171,32 +191,40 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
           onChange={onChange}
         />
       </div>
+      {value && (
+        <button type='button' className='clear-button' onClick={() => onClear(id)}>
+          X
+        </button>
+      )}
       {error && <div className='error-message'>{error}</div>}
     </div>
   );
 }
 const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
   const initializedValues = () => {
-    let initialValues = {};
-    if (product) {
-      initialValues = product;
-    } else if (!product) {
-      fields.forEach((field) => {
-        if (field.type === 'checkbox') {
-          initialValues[field.id] = false;
-        } else if (field.type === 'multiselect') {
-          initialValues[field.id] = [];
-        } else if (field.id === 'cost') {
-          initialValues[field.id] = '0.00';
-        } else {
-          initialValues[field.id] = '';
-        }
-      });
-    }
+    const initialValues = {};
+    fields.forEach((field) => {
+      if (field.type === 'checkbox') {
+        initialValues[field.id] = false;
+      } else if (field.type === 'multiselect') {
+        initialValues[field.id] = [];
+      } else if (field.id === 'cost') {
+        initialValues[field.id] = '0.00';
+      } else {
+        initialValues[field.id] = '';
+      }
+    });
+
     return initialValues;
   };
 
   const [formValues, setFormValues] = useState({ initializedValues });
+
+  useEffect(() => {
+    if (product) {
+      setFormValues(product);
+    }
+  }, [product]);
 
   const handleChange = (e) => {
     const { id, type, checked, multiple, options, value } = e.target;
@@ -343,25 +371,25 @@ const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
    */
   const isFormValid = () => {
     const error = {};
-    if (formValues.description.length > 100) {
+    if (!formValues.description || formValues.description.length > 100) {
       error.description = 'Description must be 100 characters or less.';
     }
-    if (formValues.description.length < 1) {
+    if (!formValues.description || formValues.description.length < 1) {
       error.description = 'Must have a product description';
     }
-    if (formValues.name.length > 50) {
+    if (!formValues.name || formValues.name.length > 50) {
       error.name = 'Name must be 50 characters or less.';
     }
-    if (formValues.name.length < 1) {
+    if (!formValues.name || formValues.name.length < 1) {
       error.name = 'Must include product name.';
     }
-    if (formValues.classification === 'Baked Good' && formValues.vendorId.length < 1) {
+    if (formValues.classification === 'Baked Good' && (!formValues.vendorId || formValues.vendorId.length < 1)) {
       error.vendorId = 'Must include Vendor Id for Baked Good Products.';
     }
-    if (formValues.ingredientsList.length < 1) {
+    if (!formValues.ingredientsList || formValues.ingredientsList.length < 1) {
       error.ingredientsList = 'Must have at least 1 ingredient.';
     }
-    if (formValues.classification === '') {
+    if (!formValues.classification || formValues.classification === '') {
       error.classification = 'Classification must be Drink or Baked Good.';
     }
     if (formValues.classification === 'Drink' && formValues.type === '') {
@@ -390,10 +418,18 @@ const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
     e.preventDefault();
 
     if (isFormValid(formValues)) {
-      const filteredAllergenList = formValues.allergenList.filter((allergen) => allergen !== '');
+      let filteredAllergenList = [];
+      if (formValues.allergenList) {
+        filteredAllergenList = formValues.allergenList.filter((allergen) => allergen !== '');
+      }
       const correctVariableFormValues = {
         ...formValues,
-        ingredientsList: formValues.ingredientsList.split(',').map((ingredient) => ingredient.trim()),
+        ingredientsList: Array.isArray(formValues.ingredientsList)
+          ? formValues.ingredientsList
+              .join(', ')
+              .split(',')
+              .map((ingredient) => ingredient.trim())
+          : formValues.ingredientsList.split(',').map((ingredient) => ingredient.trim()),
         allergenList: filteredAllergenList,
         cost: formValues.cost.toString(),
         salePrice: calculateSalePrice().toString()
@@ -401,11 +437,25 @@ const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
       if (formValues.classification === 'Baked Good') {
         correctVariableFormValues.markup = formValues.markup.toString();
         correctVariableFormValues.vendorId = formValues.vendorId.toString();
+        correctVariableFormValues.type = 'n/a';
+      }
+      if (formValues.classification === 'Drink') {
+        correctVariableFormValues.vendorId = 'n/a';
+        correctVariableFormValues.markup = 'n/a';
       }
       onSubmit(correctVariableFormValues);
     }
   };
 
+  const handleClear = (fieldKeys) => {
+    const event = {
+      target: {
+        id: fieldKeys,
+        value: ''
+      }
+    };
+    handleChange(event);
+  };
   return (
     <form className='input-container' onSubmit={handleSubmit} ref={ref}>
       {allFields.map((field) => (
@@ -415,9 +465,10 @@ const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
           label={field.label}
           multiple={field.multiple || false} // changed
           type={field.type || 'text'}
-          value={product || formValues[field.id] || ''}
+          value={formValues[field.id] || ''}
           onBlur={handleBlur}
           onChange={handleChange}
+          onClear={handleClear}
           dropdownOptions={field.dropdownOptions || []}
           error={errors[field.id]}
         />
