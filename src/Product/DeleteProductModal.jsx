@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import { getProductById, deleteProduct } from '../apiService';
 
-export default function DeleteProductModal({ product, onRefresh }) {
+export default function DeleteProductModal({ product, onDeleteSuccess }) {
   const [modal, setModal] = useState(false);
   const [currentProduct, setCurrentProduct] = useState({});
   // eslint-disable-next-line no-unused-vars
@@ -17,7 +17,7 @@ export default function DeleteProductModal({ product, onRefresh }) {
     setModal(!modal);
   };
 
-  const handleDeleteProduct = async (id) => {
+  const handleGetProduct = async (id) => {
     const productToDelete = await getProductById(id);
     setCurrentProduct(productToDelete);
     toggleModal();
@@ -28,11 +28,11 @@ export default function DeleteProductModal({ product, onRefresh }) {
     toggleModal();
   };
 
-  const handleSubmit = async () => {
+  const handleDeleteProduct = async () => {
     try {
       await deleteProduct(currentProduct);
       toggleModal();
-      onRefresh();
+      onDeleteSuccess();
     } catch (errors) {
       alert('Error deleting product:', error);
     }
@@ -41,24 +41,23 @@ export default function DeleteProductModal({ product, onRefresh }) {
   return (
     <>
       <div className='delete-container'>
-        <IconButton className='delete-icon' fontSize='small' onClick={() => handleDeleteProduct(product.id)}>
+        <IconButton className='delete-icon' fontSize='small' onClick={() => handleGetProduct(product.id)}>
           <DeleteIcon />
         </IconButton>
       </div>
       {modal && (
         <div className='modal'>
           <div className='overlay' />
-          <div className='modal-content'>
+          <div className='delete-modal-content'>
             <div className='delete-modal-header'>
-              <h1>{product.name} </h1>
+              <h2>Are you sure you want to delete this product? </h2>
             </div>
-            <h3>Are you sure you want to delete this product?</h3>
-            <div className='btn-container'>
+            <div className='delete-btn-container'>
               <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
               </button>
-              <button type='button' className='submit-close-modal' onClick={handleSubmit}>
-                Yes
+              <button type='button' className='delete-submit-close-modal' onClick={handleDeleteProduct}>
+                Delete
               </button>
             </div>
           </div>
