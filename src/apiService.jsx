@@ -67,6 +67,15 @@ export const editProduct = async (productToEdit) => {
   }
 };
 
+export const deleteProduct = async (productToDelete) => {
+  try {
+    const response = await axios.delete(`${productsApiUrl}/${productToDelete.id}`, productToDelete.id);
+    return response.data;
+  } catch (error) {
+    throw Error('Error deleting product', error);
+  }
+};
+
 /**
  * Fetches customer data from the backend.
  *
