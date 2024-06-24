@@ -23,15 +23,17 @@
 
 import React, { useEffect, useState } from 'react';
 import '../index.css';
+import '../Component/Modal.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import { getProducts } from '../apiService';
 import { productFields } from './ProductFields';
 import ProductModal from './ProductModal';
+import EditProductModal from './EditProductModal';
 
 export default function ProductPage() {
   // Create column names, id's, minimum width
   const columns = [
-    { id: 'id', label: 'ID', minWidth: 40 },
+    { id: 'id', label: 'ID', minWidth: 80 },
     { id: 'name', label: 'Name', minWidth: 100 },
     { id: 'description', label: 'Description', minWidth: 100 },
     { id: 'active', label: 'Active', minWidth: 20 },
@@ -54,6 +56,7 @@ export default function ProductPage() {
     const fetchProducts = async () => {
       try {
         const data = await getProducts();
+        data.sort((a, b) => (a.id > b.id ? 1 : -1));
         setProducts(data);
       } catch (err) {
         setError(err);
@@ -74,6 +77,10 @@ export default function ProductPage() {
     return `${value}%`;
   };
 
+  const displayDash = (value) => {
+    return value === '' || value.toLowerCase() === 'n/a' ? '-' : value;
+  };
+
   // Toggles the refresh state, to trigger a refresh when a new vendor is successfully submitted.
   const handleRefresh = () => {
     setRefresh((prev) => !prev);
@@ -86,20 +93,24 @@ export default function ProductPage() {
     (product) =>
       // eslint-disable-next-line implicit-arrow-linebreak
       rows.push(
-        createRow(columns, [
-          product.id,
-          product.name,
-          product.description,
-          <input type='checkbox' defaultChecked={product.active} />,
-          product.classification,
-          product.type,
-          product.vendorId,
-          formatList(product.ingredientsList),
-          formatList(product.allergenList),
-          formatPrice(product.cost),
-          formatPercentage(product.markup),
-          formatPrice(product.salePrice)
-        ])
+        createRow(
+          columns,
+          [
+            <EditProductModal product={product} fields={productFields} onRefresh={handleRefresh} />,
+            product.name,
+            product.description,
+            <input type='checkbox' checked={product.active} onChange={() => {}} disabled />,
+            product.classification,
+            displayDash(product.type),
+            displayDash(product.vendorId),
+            formatList(product.ingredientsList),
+            displayDash(formatList(product.allergenList)),
+            formatPrice(product.cost),
+            displayDash(`${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`),
+            formatPrice(product.salePrice)
+          ],
+          product.id
+        )
       )
     // eslint-disable-next-line function-paren-newline
   );

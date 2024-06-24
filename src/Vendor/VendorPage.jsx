@@ -73,15 +73,19 @@ export default function VendorPage() {
   vendors.map((vendor) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     rows.push(
-      createRow(columns, [
-        <EditVendor vendor={vendor} onRefresh={handleRefresh} />,
-        vendor.name,
-        `${vendor.address.street}${vendor.address.street2 ? `, ${vendor.address.street2}` : ''}, ${vendor.address.city}, ${vendor.address.state} ${vendor.address.zipCode}`,
-        vendor.contact.contactName,
-        vendor.contact.email,
-        vendor.contact.phone,
-        vendor.contact.titleOrRole
-      ])
+      createRow(
+        columns,
+        [
+          <EditVendor vendor={vendor} onRefresh={handleRefresh} />,
+          vendor.name,
+          `${vendor.address.street}${vendor.address.street2 ? `, ${vendor.address.street2}` : ''}, ${vendor.address.city}, ${vendor.address.state} ${vendor.address.zipCode}`,
+          vendor.contact.contactName,
+          vendor.contact.email,
+          vendor.contact.phone,
+          vendor.contact.titleOrRole
+        ],
+        vendor.id
+      )
     )
   );
 

@@ -43,8 +43,10 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
  * @param {Array} values - The values for the row.
  * @returns {Object} A row object with column IDs as keys and values as corresponding values.
  */
-export function createRow(columns, values) {
-  const row = {};
+export function createRow(columns, values, id) {
+  const row = {
+    sortId: id
+  };
   columns.forEach((column, index) => {
     row[column.id] = values[index];
   });
@@ -75,9 +77,15 @@ export function createRow(columns, values) {
 export default function StickyHeadTable({ columns, rows }) {
   const [sortConfig, setSortConfig] = React.useState({ key: null, direction: 'asc' });
 
-  // Separate empty and non-empty rows
-  const emptyRows = rows.filter((row) => Object.values(row).every((value) => value === ''));
-  const nonEmptyRows = rows.filter((row) => !Object.values(row).every((value) => value === ''));
+  const requestSort = (key, direction) => {
+    const newKey = key === 'id' ? 'sortId' : key;
+    setSortConfig({ key: newKey, direction });
+  };
+
+  // Separate empty rows, dash rows, and non-empty rows
+  const emptyRows = rows.filter((row) => row[sortConfig.key] === '');
+  const dashRows = rows.filter((row) => row[sortConfig.key] === '-');
+  const nonEmptyRows = rows.filter((row) => row[sortConfig.key] !== '' && row[sortConfig.key] !== '-');
 
   // Sort the non-empty rows
   const sortedNonEmptyRows = [...nonEmptyRows].sort((a, b) => {
@@ -92,18 +100,8 @@ export default function StickyHeadTable({ columns, rows }) {
     return 0;
   });
 
-  // Combine sorted non-empty rows with empty rows
-  const sortedData = [...sortedNonEmptyRows, ...emptyRows];
-
-  /**
-   * Requests sorting by a specific key and direction.
-   *
-   * @param {string} key - The key to sort by.
-   * @param {string} direction - The direction to sort ('asc' or 'desc').
-   */
-  const requestSort = (key, direction) => {
-    setSortConfig({ key, direction });
-  };
+  // Combine sorted non-empty rows with dash rows and empty rows
+  const sortedData = [...sortedNonEmptyRows, ...dashRows, ...emptyRows];
 
   return (
     <Paper sx={{ padding: 0, overflow: 'hidden', overflowX: 'auto' }}>
