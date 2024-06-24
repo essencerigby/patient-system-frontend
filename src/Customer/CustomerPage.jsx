@@ -21,10 +21,11 @@
  * @returns {JSX.Element} A React component that displays a customer page.
  */
 
+import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import Modal from '../Component/Modal';
-import { getCustomers } from '../apiService';
+import { getCustomers, deleteCustomerById } from '../apiService';
 
 export default function CustomerPage() {
   const columns = [
@@ -33,7 +34,8 @@ export default function CustomerPage() {
     { id: 'name', label: 'Customer Name', minWidth: 100 },
     { id: 'email', label: 'Email', minWidth: 100 },
     { id: 'lifetimeSpent', label: 'Lifetime Spent', minWidth: 100 },
-    { id: 'cutomerSince', label: 'Customer Since', minWidth: 100 }
+    { id: 'customerSince', label: 'Customer Since', minWidth: 100 },
+    { id: 'deleteIcon', minWidth: 50 }
   ];
 
   const [customers, setCustomers] = useState([]);
@@ -53,6 +55,15 @@ export default function CustomerPage() {
     fetchCustomers();
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      await deleteCustomerById(id); // Adjust according to your API service
+      const updatedCustomers = customers.filter((customer) => customer.id !== id);
+      setCustomers(updatedCustomers);
+    } catch (err) {
+      setError(err);
+    }
+  };
   const rows = [];
 
   // Create rows from the product array
@@ -62,11 +73,12 @@ export default function CustomerPage() {
       rows.push(
         createRow(columns, [
           customer.id,
-          <input type='checkbox' checked={customer.active} />,
+          <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
           customer.name,
           customer.emailAddress,
           customer.lifetimeSpent,
-          customer.customerSince
+          customer.customerSince,
+          <DeleteIcon className='delete-icon' fontSize='small' onClick={() => handleDelete(customer.id)} />
         ])
       )
     // eslint-disable-next-line function-paren-newline
@@ -84,7 +96,7 @@ export default function CustomerPage() {
     { id: 'name', label: 'Customer Name' },
     { id: 'emailAddress', label: 'Email' },
     { id: 'lifetimeSpent', label: 'Lifetime Spent' },
-    { id: 'cutomerSince', label: 'Customer Since' }
+    { id: 'customerSince', label: 'Customer Since' }
   ];
 
   return (
@@ -94,6 +106,7 @@ export default function CustomerPage() {
         <Modal fields={temporaryFields} />
       </div>
       <StickyHeadTable columns={columns} rows={rows} />
+
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
     </div>
   );

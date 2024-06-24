@@ -83,3 +83,21 @@ export const getCustomers = async () => {
     throw Error('Error fetching customers', error);
   }
 };
+
+export const getCustomerById = async (id) => {
+  try {
+    const response = await axios.get(`${customersApiUrl}/${id}`);
+    return response.data;
+  } catch (error) {
+    throw Error('Could not fetch customer', error);
+  }
+};
+
+export const deleteCustomerById = async (id) => {
+  try {
+    const response = await axios.delete(`${customersApiUrl}/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Error deleting customer', error);
+  }
+};
