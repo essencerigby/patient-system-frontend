@@ -217,6 +217,10 @@ h2 {
   padding: 2px 16px;
 }
 
+.delete-modal-header h1 {
+  text-align: left;
+}
+
 .modal,
 .overlay {
   bottom: 0;
