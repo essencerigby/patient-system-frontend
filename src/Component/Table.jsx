@@ -82,7 +82,7 @@ export default function StickyHeadTable({ columns, rows }) {
     setSortConfig({ key: newKey, direction });
   };
 
-  // Separate empty and non-empty rows
+  // Separate empty rows, dash rows, and non-empty rows
   const emptyRows = rows.filter((row) => row[sortConfig.key] === '');
   const dashRows = rows.filter((row) => row[sortConfig.key] === '-');
   const nonEmptyRows = rows.filter((row) => row[sortConfig.key] !== '' && row[sortConfig.key] !== '-');
@@ -100,7 +100,7 @@ export default function StickyHeadTable({ columns, rows }) {
     return 0;
   });
 
-  // Combine sorted non-empty rows with empty rows
+  // Combine sorted non-empty rows with dash rows and empty rows
   const sortedData = [...sortedNonEmptyRows, ...dashRows, ...emptyRows];
 
   return (
