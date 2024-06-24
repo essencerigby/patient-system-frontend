@@ -28,6 +28,7 @@ import StickyHeadTable, { createRow } from '../Component/Table';
 import { getProducts } from '../apiService';
 import { productFields } from './ProductFields';
 import ProductModal from './ProductModal';
+import DeleteProductModal from './DeleteProductModal';
 import EditProductModal from './EditProductModal';
 
 export default function ProductPage() {
@@ -44,7 +45,8 @@ export default function ProductPage() {
     { id: 'allergenList', label: 'Allergen List', minWidth: 160 },
     { id: 'cost', label: 'Cost', minWidth: 80 },
     { id: 'markup', label: 'Markup', minWidth: 80 },
-    { id: 'salePrice', label: 'Sale Price', minWidth: 120 }
+    { id: 'salePrice', label: 'Sale Price', minWidth: 120 },
+    { id: 'deleteIcon', label: '', minWidth: 20 }
   ];
 
   const [products, setProducts] = useState([]);
@@ -107,7 +109,8 @@ export default function ProductPage() {
             displayDash(formatList(product.allergenList)),
             formatPrice(product.cost),
             displayDash(`${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`),
-            formatPrice(product.salePrice)
+            formatPrice(product.salePrice),
+            <DeleteProductModal product={product} onRefresh={handleRefresh} />
           ],
           product.id
         )
