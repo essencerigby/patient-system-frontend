@@ -3,28 +3,66 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import '../Component/Modal.css';
-import axios from 'axios';
+import { createCustomer } from '../apiService';
+import CustomerForm from './CustomerForm';
 
-export default function CustomerModal({ fields, type, onRefresh }) {
+const fields = [
+  { id: 'active', label: 'Active', keys: 'active' },
+  { id: 'name', label: 'Name', keys: 'name' },
+  { id: 'emailAddress', label: 'Email', keys: 'emailAddress' },
+  { id: 'lifetimeSpent', label: 'Lifetime Spent' },
+  { id: 'cutomerSince', label: 'Customer Since' }
+];
+
+export default function CustomerModal({ onRefresh }) {
   const [modal, setModal] = useState(false);
-  const formRef = useRef(null);
+  const [customer, setCustomer] = useState({
+    id: '',
+    active: '',
+    name: '',
+    emailAddress: '',
+    lifeTimeSpent: '',
+    customerSince: ''
+  });
+  const [error, setError] = useState();
 
   const toggleModal = () => {
     setModal(!modal);
   };
 
-  const handleSubmit = async (formValues) => {
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setCustomer((prevValues) => ({
+      ...prevValues,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async () => {
     try {
       const customerToCreate = {
-        ...formValues
+        active: customer.active,
+        name: customer.name,
+        emailAddress: customer.emailAddress,
+        lifeTimeSpent: customer.lifeTimeSpent
       };
-      await axios.post('http://localhost:8085/customers', customerToCreate);
+      console.log(customerToCreate);
+      await createCustomer(customerToCreate);
+      setError(null);
       toggleModal();
       onRefresh();
-    } catch (error) {
-      alert('Error making Post Request:', error);
+      setCustomer({
+        active: true,
+        name: '',
+        emailAddress: '',
+        lifeTimeSpent: '',
+        customerSince: ''
+      });
+    } catch (err) {
+      setError(err.response ? err.response.data : err.message);
+      alert(`Post Failed: ${error.message}`);
     }
   };
 
@@ -37,7 +75,7 @@ export default function CustomerModal({ fields, type, onRefresh }) {
   return (
     <>
       <button type='button' onClick={toggleModal} className='btn-modal'>
-        <strong>Add New Customer</strong>
+        <strong>Add New Customer +</strong>
       </button>
 
       {modal && (
@@ -47,7 +85,7 @@ export default function CustomerModal({ fields, type, onRefresh }) {
             <div className='modal-header'>
               <h2>NEW CUSTOMER FORM</h2>
             </div>
-            { /* Customer form goes here? fields={fields} ref={formRef} type={type} onSubmit={handleSubmit} */ }
+            <CustomerForm fields={fields} customer={customer} onChange={handleChange} />
             <div className='btn-container'>
               <button type='button' className='close-modal' onClick={toggleModal}>
                 Cancel
@@ -55,7 +93,7 @@ export default function CustomerModal({ fields, type, onRefresh }) {
               <button
                 type='submit'
                 className='submit-close-modal'
-                onClick={() => formRef.current.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))}
+                onClick={handleSubmit}
               >
                 Submit
               </button>

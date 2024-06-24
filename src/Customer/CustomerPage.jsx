@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * Customer Page Component
  *
@@ -23,7 +24,7 @@
 
 import React, { useEffect, useState } from 'react';
 import StickyHeadTable, { createRow } from '../Component/Table';
-import Modal from '../Component/Modal';
+import CustomerModal from './NewCustomerModal';
 import { getCustomers } from '../apiService';
 
 export default function CustomerPage() {
@@ -38,6 +39,7 @@ export default function CustomerPage() {
 
   const [customers, setCustomers] = useState([]);
   const [error, setError] = useState(null);
+  const [refresh, setRefresh] = useState(false);
 
   // Get all customers from the database and store it in customers array
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function CustomerPage() {
     };
 
     fetchCustomers();
-  }, []);
+  }, [refresh]);
 
   const rows = [];
 
@@ -87,11 +89,15 @@ export default function CustomerPage() {
     { id: 'cutomerSince', label: 'Customer Since' }
   ];
 
+  const handleRefresh = () => {
+    setRefresh((prev) => !prev);
+  };
+
   return (
     <div className='pages-table'>
       <div className='header-modal-container'>
         <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Customers</h1>
-        <Modal fields={temporaryFields} />
+        <CustomerModal onRefresh={handleRefresh} />
       </div>
       <StickyHeadTable columns={columns} rows={rows} />
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
