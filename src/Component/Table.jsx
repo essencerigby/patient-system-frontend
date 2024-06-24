@@ -114,7 +114,7 @@ export default function StickyHeadTable({ columns, rows }) {
                 <StyledTableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span>{column.label}</span>
-                    <SortDropdown onSort={(order) => requestSort(column.id, order)} />
+                    {column.id !== 'deleteIcon' && <SortDropdown onSort={(order) => requestSort(column.id, order)} />}
                   </div>
                 </StyledTableCell>
               ))}
