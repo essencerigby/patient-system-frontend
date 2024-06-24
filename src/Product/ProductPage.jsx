@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable react/jsx-tag-spacing */
 /* eslint-disable arrow-body-style */
 /**
  * ProductPage Component
@@ -52,6 +54,7 @@ export default function ProductPage() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   // Get all products from the database and store it in products array
   useEffect(() => {
@@ -88,6 +91,15 @@ export default function ProductPage() {
     setRefresh((prev) => !prev);
   };
 
+  const handleDeleteSuccess = () => {
+    setSuccessMessage('Product was successfully deleted.');
+    handleRefresh();
+  };
+
+  const clearSuccessMessage = () => {
+    setSuccessMessage('');
+  };
+
   const rows = [];
 
   // Create rows from the product array
@@ -98,7 +110,12 @@ export default function ProductPage() {
         createRow(
           columns,
           [
-            <EditProductModal product={product} fields={productFields} onRefresh={handleRefresh} />,
+            <EditProductModal
+              product={product}
+              fields={productFields}
+              onRefresh={handleRefresh}
+              onSuccess={clearSuccessMessage}
+            />,
             product.name,
             product.description,
             <input type='checkbox' checked={product.active} onChange={() => {}} disabled />,
@@ -110,7 +127,7 @@ export default function ProductPage() {
             formatPrice(product.cost),
             displayDash(`${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`),
             formatPrice(product.salePrice),
-            <DeleteProductModal product={product} onRefresh={handleRefresh} />
+            <DeleteProductModal product={product} onRefresh={handleRefresh} onDeleteSuccess={handleDeleteSuccess} />
           ],
           product.id
         )
@@ -126,9 +143,10 @@ export default function ProductPage() {
   // Displaying ProductModal which shows NewProductForm
   return (
     <div className='pages-table'>
+      {successMessage && <p style={{ color: 'red', fontWeight: 'bold' }}>{successMessage}</p>}
       <div className='header-modal-container'>
         <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Products</h1>
-        <ProductModal fields={productFields} onRefresh={handleRefresh} />
+        <ProductModal fields={productFields} onRefresh={handleRefresh} onSuccess={clearSuccessMessage} />
       </div>
       <StickyHeadTable columns={columns} rows={rows} />
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
