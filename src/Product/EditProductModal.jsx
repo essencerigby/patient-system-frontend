@@ -1,12 +1,15 @@
+/* eslint-disable no-alert */
+/* eslint-disable max-len */
+/* eslint-disable object-curly-newline */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import React, { useState, useRef } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import '../Component/Modal.css';
 import ProductForm from './NewProductForm';
 import { editProduct, getProductById } from '../apiService';
 
-// eslint-disable-next-line object-curly-newline
 export default function EditProductModal({ fields, type, product, onRefresh }) {
   const [modal, setModal] = useState(false);
   const formRef = useRef(null);
@@ -26,7 +29,6 @@ export default function EditProductModal({ fields, type, product, onRefresh }) {
       toggleModal();
       onRefresh();
     } catch (error) {
-      // eslint-disable-next-line no-alert
       alert('Error updating product:', error);
     }
   };
@@ -57,7 +59,6 @@ export default function EditProductModal({ fields, type, product, onRefresh }) {
             <div className='modal-header'>
               <h2>EDIT PRODUCT FORM</h2>
             </div>
-            {/* eslint-disable-next-line max-len */}
             <ProductForm fields={fields} ref={formRef} type={type} product={currentProduct} onSubmit={handleSubmit} />
             <div className='btn-container'>
               <button type='button' className='close-modal' onClick={toggleModal}>
