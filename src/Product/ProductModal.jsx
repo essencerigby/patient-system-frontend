@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
 /* eslint-disable no-alert */
@@ -10,7 +11,7 @@ import '../Component/Modal.css';
 import axios from 'axios';
 import ProductForm from './NewProductForm';
 
-export default function ProductModal({ fields, type, onRefresh }) {
+export default function ProductModal({ fields, type, onRefresh, onSuccess }) {
   const [modal, setModal] = useState(false);
   const formRef = useRef(null);
 
@@ -26,6 +27,7 @@ export default function ProductModal({ fields, type, onRefresh }) {
       };
       await axios.post('http://localhost:8085/products', productToCreate);
       toggleModal(); // Close modal after successful submission
+      onSuccess();
       onRefresh();
     } catch (error) {
       alert('Error making POST request:', error);
