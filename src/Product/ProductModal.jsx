@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
 /* eslint-disable no-alert */

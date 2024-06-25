@@ -1,6 +1,6 @@
 import { React } from 'react';
 
-export default function DeletionSuccessModal({ domain, onClose }) {
+export default function DeleteProductModal({ domain, onClose }) {
   const handleClose = () => {
     onClose();
   };
@@ -9,7 +9,7 @@ export default function DeletionSuccessModal({ domain, onClose }) {
     <div className='modal'>
       <div className='overlay' />
       <div className='delete-modal-content' style={{ maxWidth: '390px' }}>
-        <div className='delete-modal-header'>
+        <div className='delete-modal-header' style={{ fontFamily: 'Roboto, Helvetica, Arial, sans-serif' }}>
           <h2>{domain} was deleted successfully </h2>
         </div>
         <div className='delete-btn-container'>

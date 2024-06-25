@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable react/jsx-tag-spacing */
 /* eslint-disable arrow-body-style */
 /**
  * ProductPage Component
@@ -28,6 +30,8 @@ import StickyHeadTable, { createRow } from '../Component/Table';
 import { getProducts } from '../apiService';
 import { productFields } from './ProductFields';
 import ProductModal from './ProductModal';
+import DeleteProductModal from './DeleteProductModal';
+import DeletionSuccessModal from '../Component/DeletionSuccessModal';
 import EditProductModal from './EditProductModal';
 
 export default function ProductPage() {
@@ -44,12 +48,14 @@ export default function ProductPage() {
     { id: 'allergenList', label: 'Allergen List', minWidth: 160 },
     { id: 'cost', label: 'Cost', minWidth: 80 },
     { id: 'markup', label: 'Markup', minWidth: 80 },
-    { id: 'salePrice', label: 'Sale Price', minWidth: 120 }
+    { id: 'salePrice', label: 'Sale Price', minWidth: 120 },
+    { id: 'deleteIcon', label: '', minWidth: 20 }
   ];
 
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
   // Get all products from the database and store it in products array
   useEffect(() => {
@@ -86,6 +92,14 @@ export default function ProductPage() {
     setRefresh((prev) => !prev);
   };
 
+  // Function to toggle the visibility of the success modal
+  const toggleSuccessModal = () => {
+    if (successModal) {
+      setError(null);
+    }
+    setSuccessModal(!successModal);
+  };
+
   const rows = [];
 
   // Create rows from the product array
@@ -107,7 +121,8 @@ export default function ProductPage() {
             displayDash(formatList(product.allergenList)),
             formatPrice(product.cost),
             displayDash(`${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`),
-            formatPrice(product.salePrice)
+            formatPrice(product.salePrice),
+            <DeleteProductModal product={product} onRefresh={handleRefresh} toggleSuccessModal={toggleSuccessModal} />
           ],
           product.id
         )
@@ -128,6 +143,7 @@ export default function ProductPage() {
         <ProductModal fields={productFields} onRefresh={handleRefresh} />
       </div>
       <StickyHeadTable columns={columns} rows={rows} />
+      {successModal && <DeletionSuccessModal domain='Product' onClose={toggleSuccessModal} />}
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
     </div>
   );
