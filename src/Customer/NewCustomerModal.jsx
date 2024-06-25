@@ -9,7 +9,9 @@ import { createCustomer } from '../apiService';
 import CustomerForm from './CustomerForm';
 
 const fields = [
-  { id: 'active', label: 'Active', keys: 'active' },
+  {
+    id: 'active', label: 'Active', keys: 'active', type: 'checkbox'
+  },
   { id: 'name', label: 'Name', keys: 'name' },
   { id: 'emailAddress', label: 'Email', keys: 'emailAddress' }
 ];
@@ -30,11 +32,13 @@ export default function CustomerModal({ onRefresh }) {
   };
 
   const handleChange = (e) => {
-    const { id, value, active } = e.target;
+    const {
+      id, type, checked, value
+
+    } = e.target;
     setCustomer((prevValues) => ({
       ...prevValues,
-      [id]: value,
-      [active]: !!value
+      [id]: type === 'checkbox' ? checked : value
     }));
     // console.log(customer);
   };
