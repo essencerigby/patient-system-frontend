@@ -26,6 +26,7 @@ import StickyHeadTable, { createRow } from '../Component/Table';
 import Modal from '../Component/Modal';
 import { getCustomers } from '../apiService';
 import DeleteCustomer from './DeleteCustomer';
+import DeletionSuccessModal from '../Component/DeletionSuccessModal';
 
 export default function CustomerPage() {
   const columns = [
@@ -41,6 +42,7 @@ export default function CustomerPage() {
   const [customers, setCustomers] = useState([]);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
   // Get all customers from the database and store it in customers array
   useEffect(() => {
@@ -60,6 +62,13 @@ export default function CustomerPage() {
     setRefresh((prev) => !prev);
   };
 
+  const toggleSuccessModal = () => {
+    setSuccessModal(!successModal);
+  };
+
+  const handleCloseSuccessModal = () => {
+    setSuccessModal(false);
+  };
   const rows = [];
 
   // Create rows from the product array
@@ -76,7 +85,8 @@ export default function CustomerPage() {
             customer.emailAddress,
             customer.lifetimeSpent,
             customer.customerSince,
-            <DeleteCustomer customer={customer} onRefresh={handleRefresh} />
+            // eslint-disable-next-line max-len
+            <DeleteCustomer customer={customer} onRefresh={handleRefresh} toggleSuccessModal={toggleSuccessModal} />
           ],
           customer.id
         )
@@ -100,14 +110,17 @@ export default function CustomerPage() {
   ];
 
   return (
-    <div className='pages-table'>
-      <div className='header-modal-container'>
-        <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Customers</h1>
-        <Modal fields={temporaryFields} />
-      </div>
-      <StickyHeadTable columns={columns} rows={rows} />
+    <>
+      <div className='pages-table'>
+        <div className='header-modal-container'>
+          <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Customers</h1>
+          <Modal fields={temporaryFields} />
+        </div>
+        <StickyHeadTable columns={columns} rows={rows} />
 
-      {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
-    </div>
+        {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
+      </div>
+      {successModal && <DeletionSuccessModal domain='Customer' onClose={handleCloseSuccessModal} />}
+    </>
   );
 }

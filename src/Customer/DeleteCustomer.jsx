@@ -2,12 +2,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useState } from 'react';
 import '../Component/Modal.css';
 import { deleteCustomerById, getCustomerById } from '../apiService';
-import DeletionSuccessModal from '../Component/DeletionSuccessModal';
 
-export default function DeleteCustomer({ customer, onRefresh }) {
+export default function DeleteCustomer({ customer, onRefresh, toggleSuccessModal }) {
   const [currentCustomer, setCurrentCustomer] = useState({});
   const [modal, setModal] = useState(false);
-  const [successModal, setSuccessModal] = useState(false);
+
   const [error, setError] = useState(null);
 
   const toggleModal = () => {
@@ -22,20 +21,11 @@ export default function DeleteCustomer({ customer, onRefresh }) {
     toggleModal();
   };
 
-  const toggleSuccessModal = () => {
-    setSuccessModal(!successModal);
-  };
-
-  const handleCloseSuccessModal = () => {
-    setSuccessModal(false);
-    onRefresh();
-  };
-
   const handleDeleteCustomer = async () => {
     try {
       await deleteCustomerById(currentCustomer.id);
       toggleModal();
-
+      onRefresh();
       toggleSuccessModal();
     } catch (errors) {
       setError(error.message);
@@ -77,7 +67,6 @@ export default function DeleteCustomer({ customer, onRefresh }) {
           </div>
         </div>
       )}
-      {successModal && <DeletionSuccessModal domain='Customer' onClose={handleCloseSuccessModal} />}
     </>
   );
 }
