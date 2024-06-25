@@ -11,7 +11,7 @@ import '../Component/Modal.css';
 import axios from 'axios';
 import ProductForm from './NewProductForm';
 
-export default function ProductModal({ fields, type, onRefresh, onSuccess }) {
+export default function ProductModal({ fields, type, onRefresh }) {
   const [modal, setModal] = useState(false);
   const formRef = useRef(null);
 
@@ -27,7 +27,6 @@ export default function ProductModal({ fields, type, onRefresh, onSuccess }) {
       };
       await axios.post('http://localhost:8085/products', productToCreate);
       toggleModal(); // Close modal after successful submission
-      onSuccess();
       onRefresh();
     } catch (error) {
       alert('Error making POST request:', error);
