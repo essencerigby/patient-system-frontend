@@ -21,11 +21,11 @@
  * @returns {JSX.Element} A React component that displays a customer page.
  */
 
-import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import Modal from '../Component/Modal';
-import { getCustomers, deleteCustomerById } from '../apiService';
+import { getCustomers } from '../apiService';
+import DeleteCustomer from './DeleteCustomer';
 
 export default function CustomerPage() {
   const columns = [
@@ -40,6 +40,7 @@ export default function CustomerPage() {
 
   const [customers, setCustomers] = useState([]);
   const [error, setError] = useState(null);
+  const [refresh, setRefresh] = useState(false);
 
   // Get all customers from the database and store it in customers array
   useEffect(() => {
@@ -53,17 +54,12 @@ export default function CustomerPage() {
     };
 
     fetchCustomers();
-  }, []);
+  }, [refresh]);
 
-  const handleDelete = async (id) => {
-    try {
-      await deleteCustomerById(id); // Adjust according to your API service
-      const updatedCustomers = customers.filter((customer) => customer.id !== id);
-      setCustomers(updatedCustomers);
-    } catch (err) {
-      setError(err);
-    }
+  const handleRefresh = () => {
+    setRefresh((prev) => !prev);
   };
+
   const rows = [];
 
   // Create rows from the product array
@@ -71,15 +67,19 @@ export default function CustomerPage() {
     (customer) =>
       // eslint-disable-next-line implicit-arrow-linebreak
       rows.push(
-        createRow(columns, [
-          customer.id,
-          <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
-          customer.name,
-          customer.emailAddress,
-          customer.lifetimeSpent,
-          customer.customerSince,
-          <DeleteIcon className='delete-icon' fontSize='small' onClick={() => handleDelete(customer.id)} />
-        ])
+        createRow(
+          columns,
+          [
+            customer.id,
+            <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
+            customer.name,
+            customer.emailAddress,
+            customer.lifetimeSpent,
+            customer.customerSince,
+            <DeleteCustomer customer={customer} onRefresh={handleRefresh} />
+          ],
+          customer.id
+        )
       )
     // eslint-disable-next-line function-paren-newline
   );
