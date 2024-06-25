@@ -1,17 +1,16 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
 import { React, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import { getProductById, deleteProduct } from '../apiService';
-import DeletionSuccessModal from '../Component/DeletionSuccessModal';
 
-export default function DeleteProductModal({ product, onRefresh }) {
+// This component renders a modal for deleting a product
+export default function DeleteProductModal({ product, onRefresh, toggleSuccessModal }) {
   const [modal, setModal] = useState(false);
   const [currentProduct, setCurrentProduct] = useState({});
   const [error, setError] = useState(null);
-  const [successModal, setSuccessModal] = useState(false);
 
+  // Function to toggle the modal's visibility
   const toggleModal = () => {
     if (modal) {
       setError(null);
@@ -19,37 +18,29 @@ export default function DeleteProductModal({ product, onRefresh }) {
     setModal(!modal);
   };
 
+  // Function to fetch the product details by its id and show the modal
   const handleGetProduct = async (id) => {
     const productToDelete = await getProductById(id);
     setCurrentProduct(productToDelete);
     toggleModal();
   };
 
+  // Function to handle the cancel action and close the modal
   const handleCancel = () => {
     setCurrentProduct({});
     toggleModal();
   };
 
-  const toggleSuccessModal = () => {
-    if (successModal) {
-      setError(null);
-    }
-    setSuccessModal(!successModal);
-  };
-
+  // Function to handle the product deletion
   const handleDeleteProduct = async () => {
     try {
       await deleteProduct(currentProduct);
       toggleModal();
+      onRefresh();
       toggleSuccessModal();
     } catch (errors) {
       alert('Error deleting product:', error);
     }
-  };
-
-  const handleCloseSuccessModal = () => {
-    toggleSuccessModal();
-    onRefresh();
   };
 
   return (
@@ -77,7 +68,6 @@ export default function DeleteProductModal({ product, onRefresh }) {
           </div>
         </div>
       )}
-      {successModal && <DeletionSuccessModal domain='Product' onClose={handleCloseSuccessModal} />}
     </>
   );
 }
