@@ -31,7 +31,7 @@ import { getProducts } from '../apiService';
 import { productFields } from './ProductFields';
 import ProductModal from './ProductModal';
 import DeleteProductModal from './DeleteProductModal';
-import DeletionSuccessModal from '../Component/DeletionSuccessModal';
+import SuccessModal from '../Component/SuccessModal';
 import EditProductModal from './EditProductModal';
 
 export default function ProductPage() {
@@ -142,8 +142,8 @@ export default function ProductPage() {
         <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Products</h1>
         <ProductModal fields={productFields} onRefresh={handleRefresh} />
       </div>
+      {successModal && <SuccessModal message='Product was successfully deleted!' onClose={toggleSuccessModal} />}
       <StickyHeadTable columns={columns} rows={rows} />
-      {successModal && <DeletionSuccessModal domain='Product' onClose={toggleSuccessModal} />}
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
     </div>
   );
