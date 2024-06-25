@@ -31,6 +31,7 @@ import { getProducts } from '../apiService';
 import { productFields } from './ProductFields';
 import ProductModal from './ProductModal';
 import DeleteProductModal from './DeleteProductModal';
+import DeletionSuccessModal from '../Component/DeletionSuccessModal';
 import EditProductModal from './EditProductModal';
 
 export default function ProductPage() {
@@ -54,6 +55,7 @@ export default function ProductPage() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
   // Get all products from the database and store it in products array
   useEffect(() => {
@@ -90,6 +92,12 @@ export default function ProductPage() {
     setRefresh((prev) => !prev);
   };
 
+  const toggleSuccessModal = () => {
+    if (successModal) {
+      setError(null);
+    }
+    setSuccessModal(!successModal);
+  };
   const rows = [];
 
   // Create rows from the product array
@@ -112,7 +120,12 @@ export default function ProductPage() {
             formatPrice(product.cost),
             displayDash(`${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`),
             formatPrice(product.salePrice),
-            <DeleteProductModal product={product} onRefresh={handleRefresh} />
+            <DeleteProductModal
+              product={product}
+              onRefresh={handleRefresh}
+              toggleSuccessModal={toggleSuccessModal}
+              successModal={successModal}
+            />
           ],
           product.id
         )
@@ -133,6 +146,7 @@ export default function ProductPage() {
         <ProductModal fields={productFields} onRefresh={handleRefresh} />
       </div>
       <StickyHeadTable columns={columns} rows={rows} />
+      {successModal && <DeletionSuccessModal domain='Product' onClose={toggleSuccessModal} />}
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
     </div>
   );
