@@ -1,4 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton } from '@mui/material';
 import React, { useState } from 'react';
 import '../Component/Modal.css';
 import { deleteCustomerById, getCustomerById } from '../apiService';
@@ -6,9 +7,9 @@ import { deleteCustomerById, getCustomerById } from '../apiService';
 export default function DeleteCustomer({ customer, onRefresh, toggleSuccessModal }) {
   const [currentCustomer, setCurrentCustomer] = useState({});
   const [modal, setModal] = useState(false);
-
   const [error, setError] = useState(null);
 
+  // Function to toggle the modal's visibility
   const toggleModal = () => {
     if (modal) {
       setError(null);
@@ -16,36 +17,41 @@ export default function DeleteCustomer({ customer, onRefresh, toggleSuccessModal
     setModal(!modal);
   };
 
+  // Function to handle the cancel action and close the modal
   const handleCancel = () => {
     setCurrentCustomer({});
     toggleModal();
   };
 
+  // Function to handle the customer deletion
   const handleDeleteCustomer = async () => {
     try {
       await deleteCustomerById(currentCustomer.id);
       toggleModal();
       onRefresh();
       toggleSuccessModal();
-    } catch (errors) {
-      setError(error.message);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
+  // Function to fetch the customer details by its id and show the modal
   const handleGetCustomer = async (id) => {
     try {
       const customerById = await getCustomerById(id);
       setCurrentCustomer(customerById);
       toggleModal();
-    } catch (errors) {
-      setError(errors.message);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
   return (
     <>
       <div className='delete-container'>
-        <DeleteIcon className='delete-icon' fontSize='small' onClick={() => handleGetCustomer(customer.id)} />
+        <IconButton className='delete-icon' fontSize='small' onClick={() => handleGetCustomer(customer.id)}>
+          <DeleteIcon />
+        </IconButton>
       </div>
 
       {modal && (
