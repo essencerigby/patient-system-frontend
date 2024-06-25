@@ -1,3 +1,4 @@
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -19,12 +20,9 @@ const fields = [
 export default function CustomerModal({ onRefresh }) {
   const [modal, setModal] = useState(false);
   const [customer, setCustomer] = useState({
-    id: '',
     active: '',
     name: '',
-    emailAddress: '',
-    lifetimeSpent: '',
-    customerSince: ''
+    emailAddress: ''
   });
   const [error, setError] = useState();
 
@@ -36,24 +34,23 @@ export default function CustomerModal({ onRefresh }) {
   };
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
+    const { id, value, active } = e.target;
     setCustomer((prevValues) => ({
       ...prevValues,
-      [id]: value
+      [id]: value,
+      [active]: value
     }));
   };
 
   const handleSubmit = async () => {
     try {
       const customerToCreate = {
-        id: customer.id,
-        active: customer.active,
+        active: customer.active ? true : false,
         name: customer.name,
         emailAddress: customer.emailAddress,
-        customerSince: customer.customerSince,
-        lifetimeSpent: customer.lifetimeSpent
+        lifetimeSpent: 0
       };
-      console.log(customerToCreate);
+      console.log(customerToCreate); // delete this line later
       await createCustomer(customerToCreate);
       setError(null);
       toggleModal();
@@ -67,7 +64,7 @@ export default function CustomerModal({ onRefresh }) {
       });
     } catch (err) {
       setError(err.response ? err.response.data : err.message);
-      // alert(`Post Failed: ${error.message}`);
+      // alert(`Post Failed: ${error.message}`); delete this line later
     }
   };
 
