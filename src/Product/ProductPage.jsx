@@ -92,12 +92,14 @@ export default function ProductPage() {
     setRefresh((prev) => !prev);
   };
 
+  // Function to toggle the visibility of the success modal
   const toggleSuccessModal = () => {
     if (successModal) {
       setError(null);
     }
     setSuccessModal(!successModal);
   };
+
   const rows = [];
 
   // Create rows from the product array
@@ -120,12 +122,7 @@ export default function ProductPage() {
             formatPrice(product.cost),
             displayDash(`${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`),
             formatPrice(product.salePrice),
-            <DeleteProductModal
-              product={product}
-              onRefresh={handleRefresh}
-              toggleSuccessModal={toggleSuccessModal}
-              successModal={successModal}
-            />
+            <DeleteProductModal product={product} onRefresh={handleRefresh} toggleSuccessModal={toggleSuccessModal} />
           ],
           product.id
         )
