@@ -30,7 +30,7 @@ import StickyHeadTable, { createRow } from '../Component/Table';
 import Modal from '../Component/Modal';
 import { getCustomers } from '../apiService';
 import DeleteCustomer from './DeleteCustomer';
-import DeletionSuccessModal from '../Component/DeletionSuccessModal';
+import SuccessModal from '../Component/SuccessModal';
 
 export default function CustomerPage() {
   const columns = [
@@ -121,7 +121,7 @@ export default function CustomerPage() {
         <StickyHeadTable columns={columns} rows={rows} />
         {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
       </div>
-      {successModal && <DeletionSuccessModal domain='Customer' onClose={handleSuccessModal} />}
+      {successModal && <SuccessModal message='Customer was successfully deleted!' onClose={handleSuccessModal} />}
     </>
   );
 }

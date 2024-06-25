@@ -66,6 +66,21 @@ h2 {
 .clear-button:hover {
   color: #000;
 }
+.close-success-modal {
+  width: 100px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  background-color: #d9534f;
+  color: white;
+  transition: border-color 0.3s ease;
+}
+
+.close-success-modal:hover {
+  border-color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
 
 .close-modal {
   background-color: #d9d9d9;
@@ -294,6 +309,37 @@ h2 {
 }
 .percent-sign {
   margin-left: 2px; /* Adjust as needed */
+}
+
+.success-modal {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.success-modal-content {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.success-modal-header {
+  display: flex;
+  justify-content: center;
+}
+
+.success-modal-body {
+  text-align: center;
+  margin-top: 10px;
 }
 
 .close-modal,
