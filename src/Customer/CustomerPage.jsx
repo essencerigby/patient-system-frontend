@@ -64,7 +64,7 @@ export default function CustomerPage() {
       rows.push(
         createRow(columns, [
           customer.id,
-          <input type='checkbox' checked={customer.active} />,
+          <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
           customer.name,
           customer.emailAddress,
           customer.lifetimeSpent,
@@ -78,16 +78,6 @@ export default function CustomerPage() {
   while (rows.length < 6) {
     rows.push(createRow(columns, Array(columns.length).fill('')));
   }
-
-  // Define customerModal fields - able to be modified
-  const temporaryFields = [
-    { id: 'id', label: 'ID' },
-    { id: 'active', label: 'Active' },
-    { id: 'name', label: 'Customer Name' },
-    { id: 'emailAddress', label: 'Email' },
-    { id: 'lifetimeSpent', label: 'Lifetime Spent' },
-    { id: 'cutomerSince', label: 'Customer Since' }
-  ];
 
   const handleRefresh = () => {
     setRefresh((prev) => !prev);

@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
@@ -34,13 +32,11 @@ export default function CustomerModal({ onRefresh }) {
   const handleChange = (e) => {
     const {
       id, type, checked, value
-
     } = e.target;
     setCustomer((prevValues) => ({
       ...prevValues,
       [id]: type === 'checkbox' ? checked : value
     }));
-    // console.log(customer);
   };
 
   const handleSubmit = async () => {
@@ -51,7 +47,6 @@ export default function CustomerModal({ onRefresh }) {
         emailAddress: customer.emailAddress,
         lifetimeSpent: 0
       };
-      console.log(customerToCreate); // delete this line later
       await createCustomer(customerToCreate);
       setError(null);
       toggleModal();
