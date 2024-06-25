@@ -1,14 +1,16 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
 import { React, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import { getProductById, deleteProduct } from '../apiService';
+import DeletionSuccessModal from '../Component/DeletionSuccessModal';
 
-export default function DeleteProductModal({ product, onDeleteSuccess }) {
+export default function DeleteProductModal({ product, onRefresh }) {
   const [modal, setModal] = useState(false);
   const [currentProduct, setCurrentProduct] = useState({});
-  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
+  const [successModal, setSuccessModal] = useState(false);
 
   const toggleModal = () => {
     if (modal) {
@@ -28,14 +30,26 @@ export default function DeleteProductModal({ product, onDeleteSuccess }) {
     toggleModal();
   };
 
+  const toggleSuccessModal = () => {
+    if (successModal) {
+      setError(null);
+    }
+    setSuccessModal(!successModal);
+  };
+
   const handleDeleteProduct = async () => {
     try {
       await deleteProduct(currentProduct);
       toggleModal();
-      onDeleteSuccess();
+      toggleSuccessModal();
     } catch (errors) {
       alert('Error deleting product:', error);
     }
+  };
+
+  const handleCloseSuccessModal = () => {
+    toggleSuccessModal();
+    onRefresh();
   };
 
   return (
@@ -63,6 +77,7 @@ export default function DeleteProductModal({ product, onDeleteSuccess }) {
           </div>
         </div>
       )}
+      {successModal && <DeletionSuccessModal domain='Product' onClose={handleCloseSuccessModal} />}
     </>
   );
 }
