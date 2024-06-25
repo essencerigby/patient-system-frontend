@@ -1,4 +1,3 @@
-/* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -12,9 +11,7 @@ import CustomerForm from './CustomerForm';
 const fields = [
   { id: 'active', label: 'Active', keys: 'active' },
   { id: 'name', label: 'Name', keys: 'name' },
-  { id: 'emailAddress', label: 'Email', keys: 'emailAddress' },
-  { id: 'lifetimeSpent', label: 'Lifetime Spent' },
-  { id: 'cutomerSince', label: 'Customer Since' }
+  { id: 'emailAddress', label: 'Email', keys: 'emailAddress' }
 ];
 
 export default function CustomerModal({ onRefresh }) {
@@ -25,7 +22,6 @@ export default function CustomerModal({ onRefresh }) {
     emailAddress: ''
   });
   const [error, setError] = useState();
-
   const toggleModal = () => {
     if (modal) {
       setError(null); // Reset error when closing the modal
@@ -38,14 +34,15 @@ export default function CustomerModal({ onRefresh }) {
     setCustomer((prevValues) => ({
       ...prevValues,
       [id]: value,
-      [active]: value
+      [active]: !!value
     }));
+    // console.log(customer);
   };
 
   const handleSubmit = async () => {
     try {
       const customerToCreate = {
-        active: customer.active ? true : false,
+        active: !!customer.active,
         name: customer.name,
         emailAddress: customer.emailAddress,
         lifetimeSpent: 0
@@ -64,7 +61,6 @@ export default function CustomerModal({ onRefresh }) {
       });
     } catch (err) {
       setError(err.response ? err.response.data : err.message);
-      // alert(`Post Failed: ${error.message}`); delete this line later
     }
   };
 
