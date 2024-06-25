@@ -21,6 +21,10 @@
  * @returns {JSX.Element} A React component that displays a customer page.
  */
 
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable max-len */
+/* eslint-disable function-paren-newline */
+
 import React, { useEffect, useState } from 'react';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import Modal from '../Component/Modal';
@@ -36,7 +40,7 @@ export default function CustomerPage() {
     { id: 'email', label: 'Email', minWidth: 100 },
     { id: 'lifetimeSpent', label: 'Lifetime Spent', minWidth: 100 },
     { id: 'customerSince', label: 'Customer Since', minWidth: 100 },
-    { id: 'deleteIcon', minWidth: 50 }
+    { id: 'deleteIcon', minWidth: 20 }
   ];
 
   const [customers, setCustomers] = useState([]);
@@ -58,40 +62,38 @@ export default function CustomerPage() {
     fetchCustomers();
   }, [refresh]);
 
+  // Trigger a refresh when needed.
   const handleRefresh = () => {
     setRefresh((prev) => !prev);
   };
 
-  const toggleSuccessModal = () => {
+  // Toggle the visibility of the success modal
+  const handleSuccessModal = () => {
+    if (successModal) {
+      setError(null);
+    }
     setSuccessModal(!successModal);
   };
 
-  const handleCloseSuccessModal = () => {
-    setSuccessModal(false);
-  };
   const rows = [];
 
   // Create rows from the product array
-  customers.map(
-    (customer) =>
-      // eslint-disable-next-line implicit-arrow-linebreak
-      rows.push(
-        createRow(
-          columns,
-          [
-            customer.id,
-            <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
-            customer.name,
-            customer.emailAddress,
-            customer.lifetimeSpent,
-            customer.customerSince,
-            // eslint-disable-next-line max-len
-            <DeleteCustomer customer={customer} onRefresh={handleRefresh} toggleSuccessModal={toggleSuccessModal} />
-          ],
-          customer.id
-        )
+  customers.map((customer) =>
+    rows.push(
+      createRow(
+        columns,
+        [
+          customer.id,
+          <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
+          customer.name,
+          customer.emailAddress,
+          customer.lifetimeSpent,
+          customer.customerSince,
+          <DeleteCustomer customer={customer} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
+        ],
+        customer.id
       )
-    // eslint-disable-next-line function-paren-newline
+    )
   );
 
   // If there are less than 6 rows, create empty rows to fill out table
@@ -117,10 +119,9 @@ export default function CustomerPage() {
           <Modal fields={temporaryFields} />
         </div>
         <StickyHeadTable columns={columns} rows={rows} />
-
         {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
       </div>
-      {successModal && <DeletionSuccessModal domain='Customer' onClose={handleCloseSuccessModal} />}
+      {successModal && <DeletionSuccessModal domain='Customer' onClose={handleSuccessModal} />}
     </>
   );
 }
