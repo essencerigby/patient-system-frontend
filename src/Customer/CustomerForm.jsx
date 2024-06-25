@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 
 function InputField({
-  id, label, value, onChange
+  id, label, value, onChange, onClear
 }) {
   if (id === 'active') {
     return (
@@ -26,12 +25,17 @@ function InputField({
         onChange={onChange}
         style={{ position: 'relative' }}
       />
+      {value && (
+        <button type='button' className='clear-button' onClick={() => onClear(id)}>
+          X
+        </button>
+      )}
     </div>
   );
 }
 
 export default function CustomerForm({
-  fields, onChange
+  fields, onChange, customer
 }) {
   const handleClear = (fieldKeys) => {
     const event = {
@@ -50,6 +54,7 @@ export default function CustomerForm({
           key={field.id}
           id={field.id}
           label={field.label}
+          value={field.keys.split('.').reduce((o, i) => o[i], customer)}
           onChange={onChange}
           onClear={handleClear}
         />
