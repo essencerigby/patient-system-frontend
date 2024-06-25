@@ -23,13 +23,16 @@ export default function CustomerModal({ onRefresh }) {
     active: '',
     name: '',
     emailAddress: '',
-    lifeTimeSpent: '',
+    lifetimeSpent: '',
     customerSince: ''
   });
   const [error, setError] = useState();
 
   const toggleModal = () => {
-    setModal(!modal);
+    if (modal) {
+      setError(null); // Reset error when closing the modal
+    }
+    setModal(!modal); // Toggle modal visibility
   };
 
   const handleChange = (e) => {
@@ -43,10 +46,12 @@ export default function CustomerModal({ onRefresh }) {
   const handleSubmit = async () => {
     try {
       const customerToCreate = {
+        id: customer.id,
         active: customer.active,
         name: customer.name,
         emailAddress: customer.emailAddress,
-        lifeTimeSpent: customer.lifeTimeSpent
+        customerSince: customer.customerSince,
+        lifetimeSpent: customer.lifetimeSpent
       };
       console.log(customerToCreate);
       await createCustomer(customerToCreate);
@@ -54,15 +59,15 @@ export default function CustomerModal({ onRefresh }) {
       toggleModal();
       onRefresh();
       setCustomer({
-        active: true,
+        active: '',
         name: '',
         emailAddress: '',
-        lifeTimeSpent: '',
+        lifetimeSpent: '',
         customerSince: ''
       });
     } catch (err) {
       setError(err.response ? err.response.data : err.message);
-      alert(`Post Failed: ${error.message}`);
+      // alert(`Post Failed: ${error.message}`);
     }
   };
 
@@ -77,7 +82,6 @@ export default function CustomerModal({ onRefresh }) {
       <button type='button' onClick={toggleModal} className='btn-modal'>
         <strong>Add New Customer +</strong>
       </button>
-
       {modal && (
         <div className='modal'>
           <div className='overlay' onClick={toggleModal} />
@@ -86,6 +90,7 @@ export default function CustomerModal({ onRefresh }) {
               <h2>NEW CUSTOMER FORM</h2>
             </div>
             <CustomerForm fields={fields} customer={customer} onChange={handleChange} />
+            {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
             <div className='btn-container'>
               <button type='button' className='close-modal' onClick={toggleModal}>
                 Cancel
