@@ -42,7 +42,7 @@ export default function CustomerModal({ onRefresh }) {
   const handleSubmit = async () => {
     try {
       const customerToCreate = {
-        active: !!customer.active,
+        active: customer.active,
         name: customer.name,
         emailAddress: customer.emailAddress,
         lifetimeSpent: 0
