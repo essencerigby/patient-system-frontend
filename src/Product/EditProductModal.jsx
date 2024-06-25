@@ -10,7 +10,7 @@ import '../Component/Modal.css';
 import ProductForm from './NewProductForm';
 import { editProduct, getProductById } from '../apiService';
 
-export default function EditProductModal({ fields, type, product, onRefresh, onSuccess }) {
+export default function EditProductModal({ fields, type, product, onRefresh }) {
   const [modal, setModal] = useState(false);
   const formRef = useRef(null);
   const [currentProduct, setCurrentProduct] = useState({});
@@ -27,7 +27,6 @@ export default function EditProductModal({ fields, type, product, onRefresh, onS
       };
       await editProduct(productToEdit);
       toggleModal();
-      onSuccess();
       onRefresh();
     } catch (error) {
       alert('Error updating product:', error);
