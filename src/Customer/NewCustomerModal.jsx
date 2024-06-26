@@ -129,7 +129,7 @@ export default function CustomerModal({ onRefresh }) {
               customer={customer}
               onChange={handleChange}
               error={error}
-              
+              validationErrors={validationErrors}
             />
             {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
             <div className='btn-container'>

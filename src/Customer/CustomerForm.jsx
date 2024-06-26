@@ -1,8 +1,13 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 
 function InputField({
-  id, label, value, onChange, onClear
+  id, label, value, onChange, onClear, validationErrors
 }) {
+  const { nameError, emailError } = validationErrors;
+
+  console.log(emailError);
+
   if (id === 'active') {
     return (
       <div className={`input-field checkbox-field ${id}`} id={id}>
@@ -30,12 +35,13 @@ function InputField({
           X
         </button>
       )}
+      {nameError && <div className='error-message'>{nameError}</div>}
     </div>
   );
 }
 
 export default function CustomerForm({
-  fields, onChange, customer
+  fields, onChange, customer, validationErrors
 }) {
   const handleClear = (fieldKeys) => {
     const event = {
@@ -57,6 +63,7 @@ export default function CustomerForm({
           value={field.keys.split('.').reduce((o, i) => o[i], customer)}
           onChange={onChange}
           onClear={handleClear}
+          validationErrors={validationErrors}
         />
       ))}
     </form>
