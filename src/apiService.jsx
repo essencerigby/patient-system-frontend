@@ -40,6 +40,15 @@ export const editVendor = async (vendorToEdit) => {
   }
 };
 
+export const deleteVendorById = async (vendorId) => {
+  try {
+    const response = await axios.delete(`${vendorsApiUrl}/${vendorId}`);
+    return response.data;
+  } catch (error) {
+    throw Error('Error deleting vendor', error);
+  }
+};
+
 export const getProducts = async () => {
   try {
     const response = await axios.get(productsApiUrl);
