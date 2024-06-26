@@ -1,19 +1,19 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable operator-linebreak */
-/* eslint-disable max-len */
 /* eslint-disable no-alert */
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable max-len */
+/* eslint-disable object-curly-newline */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 import React, { useState, useRef } from 'react';
+import EditIcon from '@mui/icons-material/Edit';
 import '../Component/Modal.css';
-import axios from 'axios';
 import ProductForm from './NewProductForm';
+import { editProduct, getProductById } from '../apiService';
 
-export default function ProductModal({ fields, type, onRefresh }) {
+export default function EditProductModal({ fields, type, product, onRefresh }) {
   const [modal, setModal] = useState(false);
   const formRef = useRef(null);
+  const [currentProduct, setCurrentProduct] = useState({});
 
   const toggleModal = () => {
     setModal(!modal);
@@ -21,15 +21,15 @@ export default function ProductModal({ fields, type, onRefresh }) {
 
   const handleSubmit = async (formValues) => {
     try {
-      const productToCreate = {
+      const productToEdit = {
         ...formValues,
-        salePrice: formValues.salePrice // Calculate salePrice as needed
+        salePrice: formValues.salePrice
       };
-      await axios.post('http://localhost:8085/products', productToCreate);
-      toggleModal(); // Close modal after successful submission
+      await editProduct(productToEdit);
+      toggleModal();
       onRefresh();
     } catch (error) {
-      alert('Error making POST request:', error);
+      alert('Error updating product:', error);
     }
   };
 
@@ -39,20 +39,27 @@ export default function ProductModal({ fields, type, onRefresh }) {
     document.body.classList.remove('active-modal');
   }
 
+  const handleEditProduct = async (id) => {
+    const productById = await getProductById(id);
+    setCurrentProduct(productById);
+    toggleModal();
+  };
+
   return (
     <>
-      <button type='button' onClick={toggleModal} className='btn-modal'>
-        <strong>Add New Product +</strong>
-      </button>
+      <div className='edit-container'>
+        <EditIcon className='edit-icon' fontSize='small' onClick={() => handleEditProduct(product.id)} />
+        <div className='id-number'>{product.id}</div>
+      </div>
 
       {modal && (
         <div className='modal'>
           <div className='overlay' onClick={toggleModal} />
           <div className='modal-content'>
             <div className='modal-header'>
-              <h2>NEW PRODUCT FORM</h2>
+              <h2>EDIT PRODUCT FORM</h2>
             </div>
-            <ProductForm fields={fields} ref={formRef} type={type} onSubmit={handleSubmit} />
+            <ProductForm fields={fields} ref={formRef} type={type} product={currentProduct} onSubmit={handleSubmit} />
             <div className='btn-container'>
               <button type='button' className='close-modal' onClick={toggleModal}>
                 Cancel

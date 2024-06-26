@@ -40,6 +40,15 @@ export const editVendor = async (vendorToEdit) => {
   }
 };
 
+export const deleteVendorById = async (vendorId) => {
+  try {
+    const response = await axios.delete(`${vendorsApiUrl}/${vendorId}`);
+    return response.data;
+  } catch (error) {
+    throw Error('Error deleting vendor', error);
+  }
+};
+
 export const getProducts = async () => {
   try {
     const response = await axios.get(productsApiUrl);
@@ -55,6 +64,24 @@ export const getProductById = async (id) => {
     return response.data;
   } catch (error) {
     throw Error('Could not fetch product', error);
+  }
+};
+
+export const editProduct = async (productToEdit) => {
+  try {
+    const response = await axios.put(`${productsApiUrl}/${productToEdit.id}`, productToEdit);
+    return response.data;
+  } catch (error) {
+    throw Error('Error updating vendor', error);
+  }
+};
+
+export const deleteProduct = async (productToDelete) => {
+  try {
+    const response = await axios.delete(`${productsApiUrl}/${productToDelete.id}`, productToDelete.id);
+    return response.data;
+  } catch (error) {
+    throw Error('Error deleting product', error);
   }
 };
 

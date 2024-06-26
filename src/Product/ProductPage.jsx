@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable react/jsx-tag-spacing */
 /* eslint-disable arrow-body-style */
 /**
  * ProductPage Component
@@ -23,15 +25,19 @@
 
 import React, { useEffect, useState } from 'react';
 import '../index.css';
+import '../Component/Modal.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import { getProducts } from '../apiService';
 import { productFields } from './ProductFields';
 import ProductModal from './ProductModal';
+import DeleteProductModal from './DeleteProductModal';
+import SuccessModal from '../Component/SuccessModal';
+import EditProductModal from './EditProductModal';
 
 export default function ProductPage() {
   // Create column names, id's, minimum width
   const columns = [
-    { id: 'id', label: 'ID', minWidth: 40 },
+    { id: 'id', label: 'ID', minWidth: 80 },
     { id: 'name', label: 'Name', minWidth: 100 },
     { id: 'description', label: 'Description', minWidth: 100 },
     { id: 'active', label: 'Active', minWidth: 20 },
@@ -42,18 +48,21 @@ export default function ProductPage() {
     { id: 'allergenList', label: 'Allergen List', minWidth: 160 },
     { id: 'cost', label: 'Cost', minWidth: 80 },
     { id: 'markup', label: 'Markup', minWidth: 80 },
-    { id: 'salePrice', label: 'Sale Price', minWidth: 120 }
+    { id: 'salePrice', label: 'Sale Price', minWidth: 120 },
+    { id: 'deleteIcon', label: '', minWidth: 20 }
   ];
 
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
   // Get all products from the database and store it in products array
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const data = await getProducts();
+        data.sort((a, b) => (a.id > b.id ? 1 : -1));
         setProducts(data);
       } catch (err) {
         setError(err);
@@ -74,9 +83,21 @@ export default function ProductPage() {
     return `${value}%`;
   };
 
+  const displayDash = (value) => {
+    return value === '' || value.toLowerCase() === 'n/a' ? '-' : value;
+  };
+
   // Toggles the refresh state, to trigger a refresh when a new vendor is successfully submitted.
   const handleRefresh = () => {
     setRefresh((prev) => !prev);
+  };
+
+  // Function to toggle the visibility of the success modal
+  const toggleSuccessModal = () => {
+    if (successModal) {
+      setError(null);
+    }
+    setSuccessModal(!successModal);
   };
 
   const rows = [];
@@ -86,20 +107,25 @@ export default function ProductPage() {
     (product) =>
       // eslint-disable-next-line implicit-arrow-linebreak
       rows.push(
-        createRow(columns, [
-          product.id,
-          product.name,
-          product.description,
-          <input type='checkbox' defaultChecked={product.active} />,
-          product.classification,
-          product.type,
-          product.vendorId,
-          formatList(product.ingredientsList),
-          formatList(product.allergenList),
-          formatPrice(product.cost),
-          formatPercentage(product.markup),
-          formatPrice(product.salePrice)
-        ])
+        createRow(
+          columns,
+          [
+            <EditProductModal product={product} fields={productFields} onRefresh={handleRefresh} />,
+            product.name,
+            product.description,
+            <input type='checkbox' checked={product.active} onChange={() => {}} disabled />,
+            product.classification,
+            displayDash(product.type),
+            displayDash(product.vendorId),
+            formatList(product.ingredientsList),
+            displayDash(formatList(product.allergenList)),
+            formatPrice(product.cost),
+            displayDash(`${product.markup === 'n/a' ? product.markup : formatPercentage(product.markup)}`),
+            formatPrice(product.salePrice),
+            <DeleteProductModal product={product} onRefresh={handleRefresh} toggleSuccessModal={toggleSuccessModal} />
+          ],
+          product.id
+        )
       )
     // eslint-disable-next-line function-paren-newline
   );
@@ -116,6 +142,7 @@ export default function ProductPage() {
         <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Products</h1>
         <ProductModal fields={productFields} onRefresh={handleRefresh} />
       </div>
+      {successModal && <SuccessModal message='Product was successfully deleted!' onClose={toggleSuccessModal} />}
       <StickyHeadTable columns={columns} rows={rows} />
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
     </div>
