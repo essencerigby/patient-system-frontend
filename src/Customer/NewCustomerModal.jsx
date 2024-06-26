@@ -1,3 +1,5 @@
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
@@ -23,6 +25,10 @@ export default function CustomerModal({ onRefresh }) {
     emailAddress: ''
   });
   const [error, setError] = useState();
+  const [validationErrors, setValidationErrors] = useState({
+    nameError: '',
+    emailError: ''
+  });
 
   // Toggles Modal visibility
   const toggleModal = () => {
@@ -30,6 +36,35 @@ export default function CustomerModal({ onRefresh }) {
       setError(null); // Reset error when closing the modal
     }
     setModal(!modal); // Toggle modal visibility
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // "input-flex-error" class used to change input border style
+  // "error-message" class used for error message text
+  const isFormValid = (customerToValidate) => {
+    const errors = {
+      nameError: '',
+      emailError: ''
+    };
+
+    if (!customerToValidate.name || customerToValidate.name.length >= 50) {
+      errors.nameError = 'Name must be 50 characters or less.';
+    }
+
+    if (!validateEmail(customerToValidate.emailAddress)) {
+      errors.emailError = 'Must be a valid email.';
+    }
+
+    setValidationErrors({
+      nameError: errors.nameError,
+      emailError: errors.emailError
+    });
+
+    console.log(validationErrors);
   };
 
   // Handles changes to Customer according to values from Modal
@@ -43,21 +78,6 @@ export default function CustomerModal({ onRefresh }) {
     }));
   };
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const isFormValid = (customerToValidate) => {
-    if (!customerToValidate.name || customerToValidate.name.length >= 50) {
-      console.log('Name must be 50 characters or less.');
-    }
-
-    if (customerToValidate.emailAddress) {
-      console.log(`${validateEmail(customerToValidate.emailAddress)} Email not Valid`);
-    }
-  };
-
   // Creates a new customer and performs a post request with new customer.
   const handleSubmit = async () => {
     try {
@@ -67,7 +87,9 @@ export default function CustomerModal({ onRefresh }) {
         emailAddress: customer.emailAddress,
         lifetimeSpent: 0
       };
+
       isFormValid(customerToCreate);
+
       await createCustomer(customerToCreate);
       setError(null); // Reset error on success
       toggleModal(); // Disable modal on success
@@ -102,7 +124,13 @@ export default function CustomerModal({ onRefresh }) {
             <div className='modal-header'>
               <h2>NEW CUSTOMER FORM</h2>
             </div>
-            <CustomerForm fields={fields} customer={customer} onChange={handleChange} />
+            <CustomerForm
+              fields={fields}
+              customer={customer}
+              onChange={handleChange}
+              error={error}
+              
+            />
             {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
             <div className='btn-container'>
               <button type='button' className='close-modal' onClick={toggleModal}>
@@ -115,6 +143,12 @@ export default function CustomerModal({ onRefresh }) {
               >
                 Submit
               </button>
+
+              {/* Delete this later */}
+              <button type='button' onClick={() => { isFormValid(customer); }}>
+                ValidateForm
+              </button>
+
             </div>
           </div>
         </div>
