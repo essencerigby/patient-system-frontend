@@ -62,7 +62,7 @@ export default function CustomerPage() {
     };
 
     fetchCustomers();
-  }, [refreshrefresh]);
+  }, [refresh]);
 
   // Trigger a refresh when needed.
   const handleRefresh = () => {
@@ -118,7 +118,7 @@ export default function CustomerPage() {
       <div className='pages-table'>
         <div className='header-modal-container'>
           <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Customers</h1>
-          <Modal fields={temporaryFields} />
+          <CustomerModal onRefresh={handleRefresh} />
         </div>
         <StickyHeadTable columns={columns} rows={rows} />
         {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
