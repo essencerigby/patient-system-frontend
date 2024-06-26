@@ -52,11 +52,9 @@ export default function CustomerModal({ onRefresh }) {
       toggleModal();
       onRefresh();
       setCustomer({
-        active: '',
+        active: false,
         name: '',
-        emailAddress: '',
-        lifetimeSpent: '',
-        customerSince: ''
+        emailAddress: ''
       });
     } catch (err) {
       setError(err.response ? err.response.data : err.message);
