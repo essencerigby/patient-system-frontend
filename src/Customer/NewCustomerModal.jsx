@@ -17,7 +17,7 @@ const fields = [
 export default function CustomerModal({ onRefresh }) {
   const [modal, setModal] = useState(false);
   const [customer, setCustomer] = useState({
-    active: '',
+    active: false,
     name: '',
     emailAddress: ''
   });
