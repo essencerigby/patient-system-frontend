@@ -6,7 +6,7 @@ function InputField({
 }) {
   const { nameError, emailError } = validationErrors;
 
-  console.log(emailError);
+  console.log(id);
 
   if (id === 'active') {
     return (
@@ -15,6 +15,33 @@ function InputField({
           <input type='checkbox' id={id} checked={value} onChange={onChange} />
           {label}
         </label>
+      </div>
+    );
+  }
+
+  if (id === 'emailAddress') {
+    return (
+      <div className={`input-field ${id}`}>
+        <label htmlFor={id}>{label}:</label>
+        <input
+          className='input-flex'
+          id={id}
+          type='text'
+          value={value}
+          onChange={onChange}
+          style={{ position: 'relative' }}
+        />
+        {value && emailError.length === 0 && (
+          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
+        {value && emailError && (
+          <button type='button' className='clear-button-error' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
+        {emailError && <div className='error-message'>{emailError}</div>}
       </div>
     );
   }
@@ -30,10 +57,15 @@ function InputField({
         onChange={onChange}
         style={{ position: 'relative' }}
       />
-      {value && (
-        <button type='button' className='clear-button' onClick={() => onClear(id)}>
-          X
-        </button>
+      {value && nameError.length === 0 && (
+      <button type='button' className='clear-button' onClick={() => onClear(id)}>
+        X
+      </button>
+      )}
+      {value && nameError && (
+      <button type='button' className='clear-button-error' onClick={() => onClear(id)}>
+        X
+      </button>
       )}
       {nameError && <div className='error-message'>{nameError}</div>}
     </div>
