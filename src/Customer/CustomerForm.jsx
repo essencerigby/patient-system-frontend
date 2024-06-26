@@ -23,6 +23,7 @@ function InputField({
     return (
       <div className={`input-field ${id}`}>
         <label htmlFor={id}>{label}:</label>
+        {emailError.length === 0 && (
         <input
           className='input-flex'
           id={id}
@@ -31,6 +32,17 @@ function InputField({
           onChange={onChange}
           style={{ position: 'relative' }}
         />
+        )}
+        {emailError && (
+        <input
+          className='input-flex-error'
+          id={id}
+          type='text'
+          value={value}
+          onChange={onChange}
+          style={{ position: 'relative' }}
+        />
+        )}
         {value && emailError.length === 0 && (
           <button type='button' className='clear-button' onClick={() => onClear(id)}>
             X
@@ -49,14 +61,26 @@ function InputField({
   return (
     <div className={`input-field ${id}`}>
       <label htmlFor={id}>{label}:</label>
-      <input
-        className='input-flex'
-        id={id}
-        type='text'
-        value={value}
-        onChange={onChange}
-        style={{ position: 'relative' }}
-      />
+      {nameError.length === 0 && (
+        <input
+          className='input-flex'
+          id={id}
+          type='text'
+          value={value}
+          onChange={onChange}
+          style={{ position: 'relative' }}
+        />
+      )}
+      {nameError && (
+        <input
+          className='input-flex-error'
+          id={id}
+          type='text'
+          value={value}
+          onChange={onChange}
+          style={{ position: 'relative' }}
+        />
+      )}
       {value && nameError.length === 0 && (
       <button type='button' className='clear-button' onClick={() => onClear(id)}>
         X
