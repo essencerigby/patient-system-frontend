@@ -21,10 +21,16 @@
  * @returns {JSX.Element} A React component that displays a customer page.
  */
 
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable max-len */
+/* eslint-disable function-paren-newline */
+
 import React, { useEffect, useState } from 'react';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import Modal from '../Component/Modal';
 import { getCustomers } from '../apiService';
+import DeleteCustomer from './DeleteCustomer';
+import SuccessModal from '../Component/SuccessModal';
 
 export default function CustomerPage() {
   const columns = [
@@ -33,17 +39,21 @@ export default function CustomerPage() {
     { id: 'name', label: 'Customer Name', minWidth: 100 },
     { id: 'email', label: 'Email', minWidth: 100 },
     { id: 'lifetimeSpent', label: 'Lifetime Spent', minWidth: 100 },
-    { id: 'cutomerSince', label: 'Customer Since', minWidth: 100 }
+    { id: 'customerSince', label: 'Customer Since', minWidth: 100 },
+    { id: 'deleteIcon', minWidth: 20 }
   ];
 
   const [customers, setCustomers] = useState([]);
   const [error, setError] = useState(null);
+  const [refresh, setRefresh] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
   // Get all customers from the database and store it in customers array
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
         const data = await getCustomers();
+        data.sort((a, b) => (a.id > b.id ? 1 : -1));
         setCustomers(data);
       } catch (err) {
         setError(err);
@@ -51,25 +61,40 @@ export default function CustomerPage() {
     };
 
     fetchCustomers();
-  }, []);
+  }, [refresh]);
+
+  // Trigger a refresh when needed.
+  const handleRefresh = () => {
+    setRefresh((prev) => !prev);
+  };
+
+  // Toggle the visibility of the success modal
+  const handleSuccessModal = () => {
+    if (successModal) {
+      setError(null);
+    }
+    setSuccessModal(!successModal);
+  };
 
   const rows = [];
 
   // Create rows from the product array
-  customers.map(
-    (customer) =>
-      // eslint-disable-next-line implicit-arrow-linebreak
-      rows.push(
-        createRow(columns, [
+  customers.map((customer) =>
+    rows.push(
+      createRow(
+        columns,
+        [
           customer.id,
-          <input type='checkbox' checked={customer.active} />,
+          <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
           customer.name,
           customer.emailAddress,
           customer.lifetimeSpent,
-          customer.customerSince
-        ])
+          customer.customerSince,
+          <DeleteCustomer customer={customer} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
+        ],
+        customer.id
       )
-    // eslint-disable-next-line function-paren-newline
+    )
   );
 
   // If there are less than 6 rows, create empty rows to fill out table
@@ -84,17 +109,20 @@ export default function CustomerPage() {
     { id: 'name', label: 'Customer Name' },
     { id: 'emailAddress', label: 'Email' },
     { id: 'lifetimeSpent', label: 'Lifetime Spent' },
-    { id: 'cutomerSince', label: 'Customer Since' }
+    { id: 'customerSince', label: 'Customer Since' }
   ];
 
   return (
-    <div className='pages-table'>
-      <div className='header-modal-container'>
-        <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Customers</h1>
-        <Modal fields={temporaryFields} />
+    <>
+      <div className='pages-table'>
+        <div className='header-modal-container'>
+          <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Customers</h1>
+          <Modal fields={temporaryFields} />
+        </div>
+        <StickyHeadTable columns={columns} rows={rows} />
+        {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
       </div>
-      <StickyHeadTable columns={columns} rows={rows} />
-      {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
-    </div>
+      {successModal && <SuccessModal message='Customer was successfully deleted!' onClose={handleSuccessModal} />}
+    </>
   );
 }
