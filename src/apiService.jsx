@@ -111,6 +111,15 @@ export const getCustomerById = async (customerId) => {
   }
 };
 
+export const editCustomer = async (customerToEdit) => {
+  try {
+    const response = await axios.put(`${customersApiUrl}/${customerToEdit.id}`, customerToEdit);
+    return response.data;
+  } catch (error) {
+    throw Error('Error updating vendor', error);
+  }
+};
+
 export const deleteCustomerById = async (customerId) => {
   try {
     const response = await axios.delete(`${customersApiUrl}/${customerId}`);
