@@ -6,14 +6,6 @@ import '../Component/Modal.css';
 import { createCustomer } from '../apiService';
 import CustomerForm from './CustomerForm';
 
-const fields = [
-  {
-    id: 'active', label: 'Active', keys: 'active', type: 'checkbox'
-  },
-  { id: 'name', label: 'Name', keys: 'name' },
-  { id: 'emailAddress', label: 'Email', keys: 'emailAddress' }
-];
-
 export default function CustomerModal({ onRefresh }) {
   const [modal, setModal] = useState(false);
   const [customer, setCustomer] = useState({
@@ -28,6 +20,14 @@ export default function CustomerModal({ onRefresh }) {
     }
     setModal(!modal); // Toggle modal visibility
   };
+
+  const fields = [
+    {
+      id: 'active', label: 'Active', keys: 'active', type: 'checkbox'
+    },
+    { id: 'name', label: 'Name', keys: 'name' },
+    { id: 'emailAddress', label: 'Email', keys: 'emailAddress' }
+  ];
 
   const handleChange = (e) => {
     const {
