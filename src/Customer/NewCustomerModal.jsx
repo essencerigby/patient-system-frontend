@@ -43,6 +43,21 @@ export default function CustomerModal({ onRefresh }) {
     }));
   };
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const isFormValid = (customerToValidate) => {
+    if (!customerToValidate.name || customerToValidate.name.length >= 50) {
+      console.log('Name must be 50 characters or less.');
+    }
+
+    if (customerToValidate.emailAddress) {
+      console.log(`${validateEmail(customerToValidate.emailAddress)} Email not Valid`);
+    }
+  };
+
   // Creates a new customer and performs a post request with new customer.
   const handleSubmit = async () => {
     try {
@@ -52,6 +67,7 @@ export default function CustomerModal({ onRefresh }) {
         emailAddress: customer.emailAddress,
         lifetimeSpent: 0
       };
+      isFormValid(customerToCreate);
       await createCustomer(customerToCreate);
       setError(null); // Reset error on success
       toggleModal(); // Disable modal on success
