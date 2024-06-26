@@ -53,6 +53,7 @@ export default function CustomerPage() {
     const fetchCustomers = async () => {
       try {
         const data = await getCustomers();
+        data.sort((a, b) => (a.id > b.id ? 1 : -1));
         setCustomers(data);
       } catch (err) {
         setError(err);

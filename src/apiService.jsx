@@ -102,18 +102,18 @@ export const getCustomers = async () => {
   }
 };
 
-export const getCustomerById = async (id) => {
+export const getCustomerById = async (customerId) => {
   try {
-    const response = await axios.get(`${customersApiUrl}/${id}`);
+    const response = await axios.get(`${customersApiUrl}/${customerId}`);
     return response.data;
   } catch (error) {
     throw Error('Could not fetch customer', error);
   }
 };
 
-export const deleteCustomerById = async (id) => {
+export const deleteCustomerById = async (customerId) => {
   try {
-    const response = await axios.delete(`${customersApiUrl}/${id}`);
+    const response = await axios.delete(`${customersApiUrl}/${customerId}`);
     return response.data;
   } catch (error) {
     throw new Error('Error deleting customer', error);
