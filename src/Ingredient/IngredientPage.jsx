@@ -5,6 +5,23 @@ import StickyHeadTable, { createRow } from '../Component/Table';
 import { getIngredients } from '../apiService';
 import SuccessModal from '../Component/SuccessModal';
 
+/**
+ *  * IngredientPage Component
+ *
+ * This component is responsible for displaying a table of ingredients retrieved from the backend.
+ * It utilizes the Table component for the table structure. The component fetches ingredient data
+ * using an asynchronous call to getingredients and handles potential errors.
+ *
+ * Functionality:
+ * - Defines columns for the table, specifying the column ID, label, and minimum width
+ * - Manages state for ingredients data and error handling
+ * - Fetches ingredient data when the component mounts using useEffect, and updates state
+ * - Dynamically creates rows for the table from the fetched ingredients data
+ * - Displays the table with ingredients data and handles errors by displaying any errors
+ *
+ * @returns {JSX.Element} A React component that displays a ingredient page
+ */
+
 export default function IngredientPage() {
   const columns = [
     { id: 'id', label: 'ID', minWidth: 80 },
@@ -18,9 +35,9 @@ export default function IngredientPage() {
 
   const [ingredients, setIngredients] = useState([]);
   const [error, setError] = useState(null);
-  // const [refresh, setRefresh] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
+  // Updating data display in table upon change in ingredients data provided by backend
   useEffect(() => {
     const fetchIngredients = async () => {
       try {
@@ -33,18 +50,12 @@ export default function IngredientPage() {
     };
     fetchIngredients();
   });
-  //   fetchIngredients();
-  // }, [refresh]);
 
   const formatPrice = (price) => `$${price.toFixed(2)}`;
 
   const formatList = (list) => (list ? list.join(', ') : '');
 
   const displayDash = (value) => (value === '' || value.toLowerCase() === 'n/a' ? '-' : value);
-
-  // const handleRefresh = () => {
-  //   setRefresh((prev) => !prev);
-  // };
 
   const toggleSuccessModal = () => {
     if (successModal) {
@@ -55,13 +66,14 @@ export default function IngredientPage() {
 
   const rows = [];
 
+  // Mapping ingredient data from API response body to column/row data
   ingredients.map(
     (ingredient) => rows.push(
       createRow(
         columns,
         [
           ingredient.id,
-          // <EditIngredientModal ingredient={ingredient} fields={ingredientFields}
+          // PLACEHOLDER <EditIngredientModal ingredient={ingredient} fields={ingredientFields}
           // onRefresh={handleRefresh} />,
           <input type='checkbox' checked={ingredient.active} onChange={() => { }} disabled />,
           ingredient.name,
@@ -69,7 +81,7 @@ export default function IngredientPage() {
           ingredient.amount,
           ingredient.unitOfMeasure,
           displayDash(formatList(ingredient.allergens))
-          // <DeleteIngredientModal ingredient={ingredient} onRefresh={handleRefresh}
+          // PLACEHOLDER <DeleteIngredientModal ingredient={ingredient} onRefresh={handleRefresh}
           // toggleSuccessModal={toggleSuccessModal} />
         ]
       )
@@ -85,6 +97,7 @@ export default function IngredientPage() {
     <div className='pages-table'>
       <div className='header-modal-container'>
         <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Ingredients</h1>
+        {/* PLACEHOLDER */}
         {/* <IngredientModal fields={} onRefresh={handleRefresh} /> */}
       </div>
       {successModal && <SuccessModal message='Ingredient was successfully deleted!' onClose={toggleSuccessModal} />}

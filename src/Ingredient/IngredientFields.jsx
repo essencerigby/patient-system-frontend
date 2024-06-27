@@ -2,7 +2,7 @@
 export const IngredientFields = [
   {
     id: 'active',
-    label: 'Active:',
+    label: 'Active',
     required: false,
     type: 'checkbox'
   },
@@ -27,14 +27,14 @@ export const IngredientFields = [
   {
     id: 'allergens',
     dropdownOptions: ['Dairy', 'Gluten', 'Nuts', 'Soy'],
-    label: 'Allergens:',
+    label: 'Allergens',
     multiple: true,
     required: false,
     type: 'multiselect'
   },
   {
     id: 'unitOfMeasure',
-    dropdownOptions: ['Baked Good', 'Drink'],
+    dropdownOptions: ['OZ', 'ML', 'KG', 'LB', 'TSP', 'TBSP', 'CUPS'],
     label: 'Unit of Measure',
     required: true,
     type: 'dropdown'
