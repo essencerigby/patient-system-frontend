@@ -103,6 +103,11 @@ export const getCustomers = async () => {
   }
 };
 
+export const createCustomer = async (customerToCreate) => {
+  const response = await axios.post(customersApiUrl, customerToCreate);
+  return response.data;
+};
+
 export const getCustomerById = async (customerId) => {
   try {
     const response = await axios.get(`${customersApiUrl}/${customerId}`);
