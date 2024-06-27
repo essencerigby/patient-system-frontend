@@ -33,7 +33,44 @@ export default function EditCustomerModal({ customer, onRefresh }) {
     customerSince: ''
   });
 
-  const [error, setError] = useState();
+  const [error, setError] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({
+    nameError: '',
+    emailError: ''
+  });
+
+  // Validates that provided email address is in x@x.x format.
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Validates that text fields to ensure they have value and are in the right format.
+  const isFormValid = (customerToValidate) => {
+    const errors = {
+      nameError: 'Name must be 50 characters or less.',
+      emailError: 'Must be a valid email.'
+    };
+
+    if (!customerToValidate.name || customerToValidate.name.length >= 50) {
+      errors.nameError = 'Name must be 50 characters or less.';
+    } else {
+      errors.nameError = '';
+    }
+
+    if (!validateEmail(customerToValidate.emailAddress)) {
+      errors.emailError = 'Email must be in x@x.x format.';
+    } else {
+      errors.emailError = '';
+    }
+
+    setValidationErrors({
+      nameError: errors.nameError,
+      emailError: errors.emailError
+    }); // sets validation errors for text fields
+
+    return errors;
+  };
 
   // Toggles Modal visibility
   const toggleModal = () => {
@@ -42,7 +79,6 @@ export default function EditCustomerModal({ customer, onRefresh }) {
     }
     setModal(!modal); // Toggle modal visibility
   };
-
   // Handles changes to Customer according to values from Modal
   const handleChange = (e) => {
     const { id, type, checked, value } = e.target;
@@ -52,8 +88,12 @@ export default function EditCustomerModal({ customer, onRefresh }) {
     }));
   };
 
-  // Creates a new customer and performs a post request with new customer.
+  // Edit a customer and performs a put request with updated customer.
   const handleSubmit = async () => {
+    const errors = isFormValid(currentCustomer);
+    if (errors.emailError.length !== 0 || errors.nameError.length !== 0) {
+      return;
+    }
     try {
       const customerToEdit = {
         id: currentCustomer.id,
@@ -120,7 +160,14 @@ export default function EditCustomerModal({ customer, onRefresh }) {
             <div className='modal-header'>
               <h2>EDIT CUSTOMER FORM</h2>
             </div>
-            <CustomerForm fields={fields} customer={currentCustomer} onChange={handleChange} />
+
+            <CustomerForm
+              fields={fields}
+              customer={currentCustomer}
+              onChange={handleChange}
+              error={error}
+              validationErrors={validationErrors}
+            />
             {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
             <div className='btn-container'>
               <button type='button' className='close-modal' onClick={toggleModal}>
