@@ -78,7 +78,7 @@ export default function IngredientPage() {
 
   const unitOfMeasure = ['OZ', 'LB', 'KG', 'ML', 'TSP', 'TBSP', 'CUPS'];
   const allergenList = ['Dairy', 'Gluten', 'Nuts', 'Soy'];
-  const style = { gridTemplateColumns: '1fr 1fr', maxWidth: '275px' };
+  const style = { gridTemplateColumns: '1fr 1fr', maxWidth: '290px' };
   const rows = [];
 
   // Mapping ingredient data from API response body to column/row data
