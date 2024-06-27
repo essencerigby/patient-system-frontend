@@ -23,6 +23,10 @@ export default function CustomerModal({ onRefresh }) {
     emailAddress: ''
   });
   const [error, setError] = useState();
+  const [validationErrors, setValidationErrors] = useState({
+    nameError: '',
+    emailError: ''
+  });
 
   // Toggles Modal visibility
   const toggleModal = () => {
@@ -30,6 +34,39 @@ export default function CustomerModal({ onRefresh }) {
       setError(null); // Reset error when closing the modal
     }
     setModal(!modal); // Toggle modal visibility
+  };
+
+  // Validates that provided email address is in x@x.x format.
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Validates that text fields to ensure they have value and are in the right format.
+  const isFormValid = (customerToValidate) => {
+    const errors = {
+      nameError: 'Name must be 50 characters or less.',
+      emailError: 'Must be a valid email.'
+    };
+
+    if (!customerToValidate.name || customerToValidate.name.length >= 50) {
+      errors.nameError = 'Name must be 50 characters or less.';
+    } else {
+      errors.nameError = '';
+    }
+
+    if (!validateEmail(customerToValidate.emailAddress)) {
+      errors.emailError = 'Email must be in x@x.x format.';
+    } else {
+      errors.emailError = '';
+    }
+
+    setValidationErrors({
+      nameError: errors.nameError,
+      emailError: errors.emailError
+    }); // sets validation errors for text fields
+
+    return errors;
   };
 
   // Handles changes to Customer according to values from Modal
@@ -45,6 +82,10 @@ export default function CustomerModal({ onRefresh }) {
 
   // Creates a new customer and performs a post request with new customer.
   const handleSubmit = async () => {
+    const errors = isFormValid(customer);
+    if (errors.emailError.length !== 0 || errors.nameError.length !== 0) {
+      return;
+    }
     try {
       const customerToCreate = {
         active: customer.active,
@@ -86,7 +127,13 @@ export default function CustomerModal({ onRefresh }) {
             <div className='modal-header'>
               <h2>NEW CUSTOMER FORM</h2>
             </div>
-            <CustomerForm fields={fields} customer={customer} onChange={handleChange} />
+            <CustomerForm
+              fields={fields}
+              customer={customer}
+              onChange={handleChange}
+              error={error}
+              validationErrors={validationErrors}
+            />
             {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
             <div className='btn-container'>
               <button type='button' className='close-modal' onClick={toggleModal}>
