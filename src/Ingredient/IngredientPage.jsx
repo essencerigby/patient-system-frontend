@@ -73,7 +73,8 @@ export default function IngredientPage() {
         columns,
         [
           ingredient.id,
-          // PLACEHOLDER <EditIngredientModal ingredient={ingredient} fields={ingredientFields}
+          // PLACEHOLDER FOR EditIngredient
+          // <EditIngredientModal ingredient={ingredient} fields={ingredientFields}
           // onRefresh={handleRefresh} />,
           <input type='checkbox' checked={ingredient.active} onChange={() => { }} disabled />,
           ingredient.name,
@@ -81,7 +82,8 @@ export default function IngredientPage() {
           ingredient.amount,
           ingredient.unitOfMeasure,
           displayDash(formatList(ingredient.allergens))
-          // PLACEHOLDER <DeleteIngredientModal ingredient={ingredient} onRefresh={handleRefresh}
+          // PLACEHOLDER FOR DeleteIngredient & toggleSuccessModal
+          // <DeleteIngredientModal ingredient={ingredient} onRefresh={handleRefresh}
           // toggleSuccessModal={toggleSuccessModal} />
         ]
       )
