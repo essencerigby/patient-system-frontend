@@ -1,8 +1,7 @@
+/* eslint-disable object-curly-newline */
 import React from 'react';
 
-function InputField({
-  id, label, value, onChange, onClear
-}) {
+function InputField({ id, label, value, onChange, onClear }) {
   if (id === 'active') {
     return (
       <div className={`input-field checkbox-field ${id}`} id={id}>
@@ -34,9 +33,7 @@ function InputField({
   );
 }
 
-export default function CustomerForm({
-  fields, onChange, customer
-}) {
+export default function CustomerForm({ fields, onChange, customer }) {
   const handleClear = (fieldKeys) => {
     const event = {
       target: {
