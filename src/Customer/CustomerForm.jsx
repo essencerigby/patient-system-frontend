@@ -6,8 +6,6 @@ function InputField({
 }) {
   const { nameError, emailError } = validationErrors;
 
-  console.log(id);
-
   if (id === 'active') {
     return (
       <div className={`input-field checkbox-field ${id}`} id={id}>

@@ -47,16 +47,20 @@ export default function CustomerModal({ onRefresh }) {
   // "error-message" class used for error message text
   const isFormValid = (customerToValidate) => {
     const errors = {
-      nameError: '',
-      emailError: ''
+      nameError: 'Name must be 50 characters or less.',
+      emailError: 'Must be a valid email.'
     };
 
     if (!customerToValidate.name || customerToValidate.name.length >= 50) {
       errors.nameError = 'Name must be 50 characters or less.';
+    } else {
+      errors.nameError = '';
     }
 
     if (!validateEmail(customerToValidate.emailAddress)) {
-      errors.emailError = 'Must be a valid email.';
+      errors.emailError = 'Email must be in x@x.x format.';
+    } else {
+      errors.emailError = '';
     }
 
     setValidationErrors({
@@ -64,7 +68,7 @@ export default function CustomerModal({ onRefresh }) {
       emailError: errors.emailError
     });
 
-    console.log(validationErrors);
+    return errors;
   };
 
   // Handles changes to Customer according to values from Modal
@@ -80,6 +84,10 @@ export default function CustomerModal({ onRefresh }) {
 
   // Creates a new customer and performs a post request with new customer.
   const handleSubmit = async () => {
+    const errors = isFormValid(customer);
+    if (errors.emailError.length !== 0 || errors.nameError.length !== 0) {
+      return;
+    }
     try {
       const customerToCreate = {
         active: customer.active,
@@ -87,9 +95,6 @@ export default function CustomerModal({ onRefresh }) {
         emailAddress: customer.emailAddress,
         lifetimeSpent: 0
       };
-
-      isFormValid(customerToCreate);
-
       await createCustomer(customerToCreate);
       setError(null); // Reset error on success
       toggleModal(); // Disable modal on success
@@ -143,12 +148,6 @@ export default function CustomerModal({ onRefresh }) {
               >
                 Submit
               </button>
-
-              {/* Delete this later */}
-              <button type='button' onClick={() => { isFormValid(customer); }}>
-                ValidateForm
-              </button>
-
             </div>
           </div>
         </div>
