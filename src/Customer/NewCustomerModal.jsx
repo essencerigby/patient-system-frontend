@@ -1,5 +1,3 @@
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
@@ -38,13 +36,13 @@ export default function CustomerModal({ onRefresh }) {
     setModal(!modal); // Toggle modal visibility
   };
 
+  // Validates that provided email address is in x@x.x format.
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  // "input-flex-error" class used to change input border style
-  // "error-message" class used for error message text
+  // Validates that text fields to ensure they have value and are in the right format.
   const isFormValid = (customerToValidate) => {
     const errors = {
       nameError: 'Name must be 50 characters or less.',
@@ -66,7 +64,7 @@ export default function CustomerModal({ onRefresh }) {
     setValidationErrors({
       nameError: errors.nameError,
       emailError: errors.emailError
-    });
+    }); // sets validation errors for text fields
 
     return errors;
   };

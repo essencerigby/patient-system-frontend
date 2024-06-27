@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 
 function InputField({
@@ -17,6 +16,7 @@ function InputField({
     );
   }
 
+  // Uses conditional rendering using email validation results from NewCustomerModal
   if (id === 'emailAddress') {
     return (
       <div className={`input-field ${id}`}>
@@ -56,6 +56,7 @@ function InputField({
     );
   }
 
+  // Uses conditional rendering using name validation results from NewCustomerModal
   return (
     <div className={`input-field ${id}`}>
       <label htmlFor={id}>{label}:</label>
