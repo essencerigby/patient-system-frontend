@@ -20,7 +20,8 @@ const fields = [
     type: 'checkbox'
   },
   { id: 'name', label: 'Name', keys: 'name' },
-  { id: 'emailAddress', label: 'Email', keys: 'emailAddress' }
+  { id: 'emailAddress', label: 'Email', keys: 'emailAddress' },
+  { id: 'lifetimeSpent', label: 'Lifetime Spent', keys: 'lifetimeSpent' }
 ];
 export default function EditCustomerModal({ customer, onRefresh }) {
   const [modal, setModal] = useState(false);
@@ -29,14 +30,14 @@ export default function EditCustomerModal({ customer, onRefresh }) {
     active: false,
     name: '',
     emailAddress: '',
-    lifetimeSpent: '',
-    customerSince: ''
+    lifetimeSpent: ''
   });
 
   const [error, setError] = useState(null);
   const [validationErrors, setValidationErrors] = useState({
     nameError: '',
-    emailError: ''
+    emailError: '',
+    lifetimeSpentError: ''
   });
 
   // Validates that provided email address is in x@x.x format.
@@ -49,7 +50,8 @@ export default function EditCustomerModal({ customer, onRefresh }) {
   const isFormValid = (customerToValidate) => {
     const errors = {
       nameError: 'Name must be 50 characters or less.',
-      emailError: 'Must be a valid email.'
+      emailError: 'Must be a valid email.',
+      lifetimeSpentError: 'Must be a valid number.'
     };
 
     if (!customerToValidate.name || customerToValidate.name.length >= 50) {
@@ -66,7 +68,8 @@ export default function EditCustomerModal({ customer, onRefresh }) {
 
     setValidationErrors({
       nameError: errors.nameError,
-      emailError: errors.emailError
+      emailError: errors.emailError,
+      lifetimeSpentError: errors.lifetimeSpentError
     }); // sets validation errors for text fields
 
     return errors;
@@ -100,8 +103,7 @@ export default function EditCustomerModal({ customer, onRefresh }) {
         active: currentCustomer.active,
         name: currentCustomer.name,
         emailAddress: currentCustomer.emailAddress,
-        lifetimeSpent: currentCustomer.lifetimeSpent,
-        customerSince: currentCustomer.customerSince
+        lifetimeSpent: currentCustomer.lifetimeSpent
       };
       await editCustomer(customerToEdit);
       setError(null); // Reset error on success
@@ -114,8 +116,7 @@ export default function EditCustomerModal({ customer, onRefresh }) {
         active: false,
         name: '',
         emailAddress: '',
-        lifetimeSpent: '',
-        customerSince: ''
+        lifetimeSpent: ''
       });
     } catch (err) {
       setError(err.response ? err.response.data : err.message); // Set error message on fail

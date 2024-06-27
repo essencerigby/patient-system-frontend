@@ -18,7 +18,7 @@ function InputField({ id, label, value, onChange, onClear, validationErrors }) {
   // Uses conditional rendering using email validation results from NewCustomerModal
   if (id === 'emailAddress') {
     return (
-      <div className={`input-field ${id}`}>
+      <div className={`input-field ${id}`} id={id}>
         <label htmlFor={id}>{label}:</label>
         {emailError.length === 0 && (
           <input
@@ -51,6 +51,25 @@ function InputField({ id, label, value, onChange, onClear, validationErrors }) {
           </button>
         )}
         {emailError && <div className='error-message'>{emailError}</div>}
+      </div>
+    );
+  }
+
+  if (id === 'lifetimeSpent') {
+    return (
+      <div className={`input-field ${id}`} id={id}>
+        <label htmlFor={id}>{label}:</label>
+        <input
+          className='input-flex'
+          id={id}
+          type='text'
+          value={value}
+          onChange={onChange}
+          style={{ position: 'relative' }}
+        />
+        <button type='button' className='clear-button' onClick={() => onClear(id)}>
+          X
+        </button>
       </div>
     );
   }
