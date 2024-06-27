@@ -1,9 +1,15 @@
+/* eslint-disable function-paren-newline */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable object-curly-newline */
 import React, { useEffect, useState } from 'react';
 import '../index.css';
 import '../Component/Modal.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
-import { getIngredients } from '../apiService';
+import { getIngredients, createIngredient } from '../apiService';
+import ReusableModal from '../Component/ReusableModal';
 import SuccessModal from '../Component/SuccessModal';
+import { ingredientValidation } from '../Component/Validation';
+import { ingredientFormatting } from '../Component/Formatting';
 
 /**
  *  * IngredientPage Component
@@ -24,18 +30,19 @@ import SuccessModal from '../Component/SuccessModal';
 
 export default function IngredientPage() {
   const columns = [
-    { id: 'id', label: 'ID', minWidth: 80 },
-    { id: 'active', label: 'Active', minWidth: 20 },
-    { id: 'name', label: 'Ingredient Name', minWidth: 100 },
-    { id: 'purchasingCost', label: 'Purchasing Cost', minWidth: 100 },
-    { id: 'amount', label: 'Unit Amount', minWidth: 100 },
-    { id: 'unitOfMeasure', label: 'Unit of Measure', minWidth: 100 },
-    { id: 'allergens', label: 'Allergens', minWidth: 100 }
+    { id: 'id', label: 'ID', minWidth: 50, type: 'none', formOrder: 0 },
+    { id: 'name', label: 'Name', minWidth: 100, type: 'text', formOrder: 2 },
+    { id: 'active', label: 'Active', minWidth: 100, type: 'checkbox', formOrder: 1 },
+    { id: 'purchasingCost', label: 'Purchasing Cost', minWidth: 100, type: 'numericDollar', formOrder: 5 },
+    { id: 'amount', label: 'Unit Amount', minWidth: 100, type: 'numeric', formOrder: 3, gridNum: 1 },
+    { id: 'unitOfMeasure', label: 'Unit of Measure', minWidth: 100, type: 'dropdown', formOrder: 4, gridNum: 2 },
+    { id: 'allergens', label: 'Allergens', minWidth: 100, type: 'multiselect', formOrder: 6 }
   ];
 
   const [ingredients, setIngredients] = useState([]);
   const [error, setError] = useState(null);
   const [successModal, setSuccessModal] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   // Updating data display in table upon change in ingredients data provided by backend
   useEffect(() => {
@@ -49,7 +56,12 @@ export default function IngredientPage() {
       }
     };
     fetchIngredients();
-  });
+  }, [refresh]);
+
+  // Toggles the refresh state, to trigger a refresh when a new vendor is successfully submitted.
+  const handleRefresh = () => {
+    setRefresh((prev) => !prev);
+  };
 
   const formatPrice = (price) => `$${price.toFixed(2)}`;
 
@@ -64,29 +76,29 @@ export default function IngredientPage() {
     setSuccessModal(!successModal);
   };
 
+  const unitOfMeasure = ['OZ', 'LB', 'KG', 'ML', 'TSP', 'TBSP', 'CUPS'];
+  const allergenList = ['Dairy', 'Gluten', 'Nuts', 'Soy'];
+  const style = { gridTemplateColumns: '1fr 1fr', maxWidth: '275px' };
   const rows = [];
 
   // Mapping ingredient data from API response body to column/row data
-  ingredients.map(
-    (ingredient) => rows.push(
-      createRow(
-        columns,
-        [
-          ingredient.id,
-          // PLACEHOLDER FOR EditIngredient
-          // <EditIngredientModal ingredient={ingredient} fields={ingredientFields}
-          // onRefresh={handleRefresh} />,
-          <input type='checkbox' checked={ingredient.active} onChange={() => { }} disabled />,
-          ingredient.name,
-          formatPrice(ingredient.purchasingCost),
-          ingredient.amount,
-          ingredient.unitOfMeasure,
-          displayDash(formatList(ingredient.allergens))
-          // PLACEHOLDER FOR DeleteIngredient & toggleSuccessModal
-          // <DeleteIngredientModal ingredient={ingredient} onRefresh={handleRefresh}
-          // toggleSuccessModal={toggleSuccessModal} />
-        ]
-      )
+  ingredients.map((ingredient) =>
+    rows.push(
+      createRow(columns, [
+        ingredient.id,
+        // PLACEHOLDER FOR EditIngredient
+        // <EditIngredientModal ingredient={ingredient} fields={ingredientFields}
+        // onRefresh={handleRefresh} />,
+        <input type='checkbox' checked={ingredient.active} onChange={() => {}} disabled />,
+        ingredient.name,
+        formatPrice(ingredient.purchasingCost),
+        ingredient.amount,
+        ingredient.unitOfMeasure,
+        displayDash(formatList(ingredient.allergens))
+        // PLACEHOLDER FOR DeleteIngredient & toggleSuccessModal
+        // <DeleteIngredientModal ingredient={ingredient} onRefresh={handleRefresh}
+        // toggleSuccessModal={toggleSuccessModal} />
+      ])
     )
   );
 
@@ -99,8 +111,17 @@ export default function IngredientPage() {
     <div className='pages-table'>
       <div className='header-modal-container'>
         <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Ingredients</h1>
-        {/* PLACEHOLDER */}
-        {/* <IngredientModal fields={} onRefresh={handleRefresh} /> */}
+        <ReusableModal
+          fields={columns}
+          header='NEW INGREDIENT FORM'
+          dropDownOptions={unitOfMeasure}
+          multiSelectOptions={allergenList}
+          onRefresh={handleRefresh}
+          createObject={createIngredient}
+          validation={ingredientValidation}
+          format={ingredientFormatting}
+          style={style}
+        />
       </div>
       {successModal && <SuccessModal message='Ingredient was successfully deleted!' onClose={toggleSuccessModal} />}
       <StickyHeadTable columns={columns} rows={rows} />
