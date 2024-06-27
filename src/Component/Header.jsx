@@ -13,7 +13,7 @@ import { NavLink } from 'react-router-dom';
 import logo from '../assets/SprintRunnersTeamLogo.jpg';
 
 // Labels used for NavLink directory
-const pages = ['Vendors', 'Customers', 'Products', 'Promotions'];
+const pages = ['Vendors', 'Customers', 'Products', 'Ingredients', 'Promotions'];
 
 const LogoIcon = styled('img')({
   width: '50px',
