@@ -27,22 +27,26 @@ import StickyHeadTable, { createRow } from '../Component/Table';
 import { getVendors } from '../apiService';
 import AddVendor from './AddVendor';
 import EditVendor from './EditVendor';
+import DeleteVendor from './DeleteVendor';
+import SuccessModal from '../Component/SuccessModal';
 
 export default function VendorPage() {
   // Create column names, id's, minimum width
   const columns = [
-    { id: 'id', label: 'ID', minWidth: 60 },
+    { id: 'id', label: 'ID', minWidth: 50 },
     { id: 'vendorName', label: 'Vendor Name', minWidth: 100 },
     { id: 'address', label: 'Address', minWidth: 100 },
     { id: 'contact', label: 'Contact', minWidth: 100 },
     { id: 'email', label: 'Email', minWidth: 100 },
     { id: 'phone number', label: 'Phone Number', minWidth: 100 },
-    { id: 'role', label: 'Role', minWidth: 100 }
+    { id: 'role', label: 'Role', minWidth: 100 },
+    { id: 'deleteIcon', label: '', minWidth: 25 }
   ];
 
   const [vendors, setVendors] = useState([]);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [currentVendor, setCurrentVendor] = useState({});
 
@@ -67,21 +71,37 @@ export default function VendorPage() {
     setRefresh((prev) => !prev);
   };
 
+  // toggles success modal and refreshes to handle delete
+  const handleDeleteSuccess = () => {
+    setShowSuccessModal(true);
+    handleRefresh();
+  };
+
+  // closes success modal
+  const closeSuccessModal = () => {
+    setShowSuccessModal(false);
+  };
+
   const rows = [];
 
   // Create rows from the vendor array
   vendors.map((vendor) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     rows.push(
-      createRow(columns, [
-        <EditVendor vendor={vendor} onRefresh={handleRefresh} />,
-        vendor.name,
-        `${vendor.address.street}${vendor.address.street2 ? `, ${vendor.address.street2}` : ''}, ${vendor.address.city}, ${vendor.address.state} ${vendor.address.zipCode}`,
-        vendor.contact.contactName,
-        vendor.contact.email,
-        vendor.contact.phone,
-        vendor.contact.titleOrRole
-      ])
+      createRow(
+        columns,
+        [
+          <EditVendor vendor={vendor} onRefresh={handleRefresh} />,
+          vendor.name,
+          `${vendor.address.street}${vendor.address.street2 ? `, ${vendor.address.street2}` : ''}, ${vendor.address.city}, ${vendor.address.state} ${vendor.address.zipCode}`,
+          vendor.contact.contactName,
+          vendor.contact.email,
+          vendor.contact.phone,
+          vendor.contact.titleOrRole,
+          <DeleteVendor vendorId={vendor.id} onDeleteSuccess={handleDeleteSuccess} />
+        ],
+        vendor.id
+      )
     )
   );
 
@@ -96,6 +116,9 @@ export default function VendorPage() {
         <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Vendors</h1>
         <AddVendor onRefresh={handleRefresh} />
       </div>
+      {showSuccessModal && (
+        <SuccessModal message='Vendor was successfully deleted!' onClose={closeSuccessModal} />
+      )}
       <StickyHeadTable columns={columns} rows={rows} />
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
     </div>
