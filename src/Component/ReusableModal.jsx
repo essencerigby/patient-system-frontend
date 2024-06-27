@@ -11,7 +11,7 @@
 import { React, useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import './Modal.css';
-import Form from './Form';
+import ReusableForm from './ReusableForm';
 
 /**
  * Modal component for creating and editing objects.
@@ -206,7 +206,7 @@ export default function Modal({
             <div className='modal-header'>
               <h2>{header}</h2>
             </div>
-            <Form
+            <ReusableForm
               fields={fields}
               dropDownOptions={dropDownOptions}
               multiSelectOptions={multiSelectOptions}
