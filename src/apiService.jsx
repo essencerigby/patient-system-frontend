@@ -152,6 +152,11 @@ export const getIngredientById = async (id) => {
   }
 };
 
+export const createIngredient = async (ingredientToCreate) => {
+  const response = await axios.post(ingredientsApiUrl, ingredientToCreate);
+  return response.data;
+};
+
 export const editIngredient = async (ingredientToEdit) => {
   try {
     const response = await axios.put(`${ingredientsApiUrl}/${ingredientToEdit.id}`, ingredientToEdit);
