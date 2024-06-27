@@ -9,11 +9,11 @@ export default function IngredientPage() {
   const columns = [
     { id: 'id', label: 'ID', minWidth: 80 },
     { id: 'active', label: 'Active', minWidth: 20 },
-    { id: 'name', label: 'Name', minWidth: 100 },
+    { id: 'name', label: 'Ingredient Name', minWidth: 100 },
     { id: 'purchasingCost', label: 'Purchasing Cost', minWidth: 100 },
-    { id: 'unitAmount', label: 'Unit Amount', minWidth: 100 },
-    { id: 'unitMeasure', label: 'Unit of Measure', minWidth: 100 },
-    { id: 'allergenList', label: 'Allergens', minWidth: 100 }
+    { id: 'amount', label: 'Unit Amount', minWidth: 100 },
+    { id: 'unitOfMeasure', label: 'Unit of Measure', minWidth: 100 },
+    { id: 'allergens', label: 'Allergens', minWidth: 100 }
   ];
 
   const [ingredients, setIngredients] = useState([]);
@@ -36,9 +36,9 @@ export default function IngredientPage() {
   //   fetchIngredients();
   // }, [refresh]);
 
-  const formatPrice = (price) => `$${price}`;
+  const formatPrice = (price) => `$${price.toFixed(2)}`;
 
-  const formatList = (list) => list.join(', ');
+  const formatList = (list) => (list ? list.join(', ') : '');
 
   const displayDash = (value) => (value === '' || value.toLowerCase() === 'n/a' ? '-' : value);
 
@@ -60,14 +60,15 @@ export default function IngredientPage() {
       createRow(
         columns,
         [
+          ingredient.id,
           // <EditIngredientModal ingredient={ingredient} fields={ingredientFields}
           // onRefresh={handleRefresh} />,
-          ingredient.name,
           <input type='checkbox' checked={ingredient.active} onChange={() => { }} disabled />,
-          formatPrice(ingredient.purchastingCost),
-          ingredient.unitAmount,
-          ingredient.unitMeasure,
-          displayDash(formatList(ingredient.allergenList))
+          ingredient.name,
+          formatPrice(ingredient.purchasingCost),
+          ingredient.amount,
+          ingredient.unitOfMeasure,
+          displayDash(formatList(ingredient.allergens))
           // <DeleteIngredientModal ingredient={ingredient} onRefresh={handleRefresh}
           // toggleSuccessModal={toggleSuccessModal} />
         ]
