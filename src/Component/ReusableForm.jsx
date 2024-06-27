@@ -75,7 +75,7 @@ function InputField({
     return (
       <div className={`input-field ${id}`} id={id} style={style}>
         <label htmlFor={id}>{label}:</label>
-        <div className='input-wrapper'>
+        <div className='input-wrapper-numeric'>
           <NumericFormat
             className={`${error ? 'input-flex-error' : 'input-flex'}`}
             id={id}
@@ -93,7 +93,7 @@ function InputField({
           />
 
           {value && (
-            <button type='button' className='clear-button' onClick={() => onClear(id)}>
+            <button type='button' className='clear-button-numeric' onClick={() => onClear(id)}>
               X
             </button>
           )}
