@@ -469,6 +469,21 @@ textarea {
   line-height: 1;
 }
 
+.clear-button-error {
+  position: absolute;
+  right: 10px;
+  top: 70%;
+  transform: translateY(-130%);
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
 .clear-button:hover {
   color: #000;
 }
