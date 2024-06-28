@@ -6,6 +6,7 @@ import ProductPage from './Product/ProductPage';
 import VendorPage from './Vendor/VendorPage';
 import ResponsiveAppBar from './Component/Header';
 import CustomerPage from './Customer/CustomerPage';
+import IngredientPage from './Ingredient/IngredientPage';
 
 /**
  * App component serves as the main entry point for the application.
@@ -24,6 +25,7 @@ function App() {
           <Route path='/vendors' element={<VendorPage />} />
           <Route path='/customers' element={<CustomerPage />} />
           <Route path='/products' element={<ProductPage />} />
+          <Route path='/ingredients' element={<IngredientPage />} />
           {/* <Route path='/promotions' element={<Promotions />} /> */}
         </Routes>
       </Router>
