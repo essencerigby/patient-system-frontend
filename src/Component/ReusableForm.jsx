@@ -35,7 +35,7 @@ function InputField({
 
   if (type === 'text') {
     return (
-      <div className={`input-field ${id}`} id={id} style={gridStyle}>
+      <div className={`input-field ${id}`} style={gridStyle}>
         <label htmlFor={id}>{label}:</label>
         <input
           className={`${error ? 'input-flex-error' : 'input-flex'}`}
@@ -60,7 +60,7 @@ function InputField({
   }
   if (type === 'textBig') {
     return (
-      <div className={`input-field ${id}`} id={id} style={gridStyle}>
+      <div className={`input-field ${id}`} style={gridStyle}>
         <label htmlFor={id}>{label}:</label>
         <textarea
           className={`${error ? 'input-flex-error' : 'input-flex'}`}
@@ -79,7 +79,7 @@ function InputField({
   }
   if (type.includes('numeric')) {
     return (
-      <div className={`input-field ${id}`} id={id} style={gridStyle}>
+      <div className={`input-field ${id}`} style={gridStyle}>
         <label htmlFor={id}>{label}:</label>
         <div className='input-wrapper'>
           <NumericFormat
@@ -115,7 +115,7 @@ function InputField({
   }
   if (type === 'checkbox') {
     return (
-      <div className={`input-field checkbox-field ${id}`} id={id} style={gridStyle}>
+      <div className={`input-field checkbox-field ${id}`} style={gridStyle}>
         <label htmlFor={id}>
           <input type='checkbox' id={id} checked={value} onChange={onChange} style={{ marginRight: '170px' }} />
           {label}:
@@ -141,7 +141,7 @@ function InputField({
   }
   if (type === 'multiselect') {
     return (
-      <div className={`input-field ${id}`} id={id} style={gridStyle}>
+      <div className={`input-field ${id}`} style={gridStyle}>
         <label htmlFor={id}>{label}:</label>
         <select
           className='input-multi-select'
