@@ -17,6 +17,7 @@ import { NumericFormat } from 'react-number-format';
  * @param {Array} [props.multiSelectOptions] - The options for multiselect fields.
  * @param {string} [props.error] - The error message for the input field.
  * @param {number} [props.gridNum] - The grid column number for the input field.
+ * @param {Object} [props.style] - Custom styles for the input field.
  */
 function InputField({
   id,
