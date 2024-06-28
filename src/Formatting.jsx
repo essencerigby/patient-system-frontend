@@ -7,7 +7,8 @@ export const ingredientFormatting = (formValues) => {
   }
   const ingredientJson = {
     ...formValues,
-    allergens: filteredAllergenList
+    allergens: filteredAllergenList,
+    active: formValues.active === '' ? false : formValues.active
   };
   return ingredientJson;
 };
