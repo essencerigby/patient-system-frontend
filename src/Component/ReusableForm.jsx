@@ -28,13 +28,14 @@ function InputField({
   dropDownOptions,
   multiSelectOptions,
   error,
-  gridNum
+  gridNum,
+  style
 }) {
-  const style = gridNum ? { gridColumn: gridNum } : {};
+  const gridStyle = gridNum ? { gridColumn: gridNum } : {};
 
   if (type === 'text') {
     return (
-      <div className={`input-field ${id}`} id={id} style={style}>
+      <div className={`input-field ${id}`} id={id} style={gridStyle}>
         <label htmlFor={id}>{label}:</label>
         <input
           className={`${error ? 'input-flex-error' : 'input-flex'}`}
@@ -44,7 +45,12 @@ function InputField({
           onChange={onChange}
         />
         {value && (
-          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+          <button
+            type='button'
+            className='clear-button'
+            style={error && style.xButtonError}
+            onClick={() => onClear(id)}
+          >
             X
           </button>
         )}
@@ -54,7 +60,7 @@ function InputField({
   }
   if (type === 'textBig') {
     return (
-      <div className={`input-field ${id}`} id={id} style={style}>
+      <div className={`input-field ${id}`} id={id} style={gridStyle}>
         <label htmlFor={id}>{label}:</label>
         <textarea
           className={`${error ? 'input-flex-error' : 'input-flex'}`}
@@ -73,7 +79,7 @@ function InputField({
   }
   if (type.includes('numeric')) {
     return (
-      <div className={`input-field ${id}`} id={id} style={style}>
+      <div className={`input-field ${id}`} id={id} style={gridStyle}>
         <label htmlFor={id}>{label}:</label>
         <div className='input-wrapper'>
           <NumericFormat
@@ -109,7 +115,7 @@ function InputField({
   }
   if (type === 'checkbox') {
     return (
-      <div className={`input-field checkbox-field ${id}`} id={id} style={style}>
+      <div className={`input-field checkbox-field ${id}`} id={id} style={gridStyle}>
         <label htmlFor={id}>
           <input type='checkbox' id={id} checked={value} onChange={onChange} style={{ marginRight: '170px' }} />
           {label}:
@@ -119,7 +125,7 @@ function InputField({
   }
   if (type === 'dropdown') {
     return (
-      <div className={`input-field ${id}`} style={style}>
+      <div className={`input-field ${id}`} style={gridStyle}>
         <label htmlFor={id}>{label}:</label>
         <select className={`${error ? 'input-flex-error' : 'input-flex'}`} id={id} value={value} onChange={onChange}>
           <option value=''>Select Type</option>
@@ -135,7 +141,7 @@ function InputField({
   }
   if (type === 'multiselect') {
     return (
-      <div className={`input-field ${id}`} id={id} style={style}>
+      <div className={`input-field ${id}`} id={id} style={gridStyle}>
         <label htmlFor={id}>{label}:</label>
         <select
           className='input-multi-select'
@@ -187,7 +193,7 @@ export default function Form({ fields, object, dropDownOptions, multiSelectOptio
   const sortedFields = [...fields].filter((field) => field.formOrder !== 0).sort((a, b) => a.formOrder - b.formOrder);
 
   return (
-    <form className='input-container' style={style}>
+    <form className='input-container' style={style.modalStyling}>
       {sortedFields.map((field) => (
         <InputField
           key={field.id}
@@ -201,6 +207,7 @@ export default function Form({ fields, object, dropDownOptions, multiSelectOptio
           dropDownOptions={dropDownOptions}
           multiSelectOptions={multiSelectOptions}
           gridNum={field.gridNum}
+          style={style}
         />
       ))}
     </form>
