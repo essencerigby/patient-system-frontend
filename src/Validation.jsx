@@ -11,10 +11,16 @@ export const ingredientValidation = (formValues) => {
   if (formValues.unitOfMeasure === '') {
     error.unitOfMeasure = 'Must choose one';
   }
-  if (formValues.amount === '' || parseFloat(formValues.amount) <= 0) {
+  if (formValues.amount === '') {
+    error.amount = 'Must include amount';
+  }
+  if (parseFloat(formValues.amount) <= 0) {
     error.amount = 'Must be greater than 0';
   }
-  if (formValues.purchasingCost === '' || parseFloat(formValues.purchasingCost) <= 0) {
+  if (formValues.purchasingCost === '') {
+    error.purchasingCost = 'Must include purchasing cost';
+  }
+  if (parseFloat(formValues.purchasingCost) <= 0) {
     error.purchasingCost = 'Must be greater than 0';
   }
   return error;
