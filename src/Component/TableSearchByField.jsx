@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable array-callback-return */
 import React, { useState } from 'react';
 
 export default function TableSearchByField(props) {
   const [searchValue, setSearchValue] = useState('');
-  const { domainToSearch, setDomain } = props;
+  const { domainToSearch, setDomain, onRefresh } = props;
 
   const handleWordInputChange = (event) => {
     const { value } = event.target;
@@ -23,17 +21,20 @@ export default function TableSearchByField(props) {
   };
 
   return (
-    <>
+    <div className='search-table'>
       <input
         className='input-flex'
         id='test'
         type='text'
         onChange={(event) => handleWordInputChange(event)}
-        style={{ position: 'relative' }}
+        style={{ position: 'relative', width: 200 }}
       />
-      <button type='button' className='btn-modal' onClick={() => { filterDomainByAttribute(searchValue); }}>
+      <button type='button' style={{ transform: 'translateX(10%)' }} className='btn-modal' onClick={() => { filterDomainByAttribute(searchValue); }}>
         <strong>Search</strong>
       </button>
-    </>
+      <button type='button' style={{ transform: 'translateX(15%)' }} className='btn-modal' onClick={() => { onRefresh(); }}>
+        <strong>Refresh Table</strong>
+      </button>
+    </div>
   );
 }

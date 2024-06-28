@@ -484,6 +484,12 @@ textarea {
   line-height: 1;
 }
 
+.search-table {
+  display: flex; 
+  justify-content: flex-end;
+  transform: translate(-1%, 30%);
+}
+
 .clear-button:hover {
   color: #000;
 }
