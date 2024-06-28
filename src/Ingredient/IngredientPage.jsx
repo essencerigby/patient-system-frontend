@@ -76,9 +76,6 @@ export default function IngredientPage() {
     setSuccessModal(!successModal);
   };
 
-  const unitOfMeasure = ['OZ', 'LB', 'KG', 'ML', 'TSP', 'TBSP', 'CUPS'];
-  const allergenList = ['Dairy', 'Gluten', 'Nuts', 'Soy'];
-  const style = { gridTemplateColumns: '1fr 1fr', maxWidth: '290px' };
   const rows = [];
 
   // Mapping ingredient data from API response body to column/row data
@@ -107,6 +104,13 @@ export default function IngredientPage() {
     rows.push(createRow(columns, Array(columns.length).fill('')));
   }
 
+  // Props that get passed into the reusable modal
+  const unitOfMeasure = ['OZ', 'LB', 'KG', 'ML', 'TSP', 'TBSP', 'CUPS'];
+  const allergenList = ['Dairy', 'Gluten', 'Nuts', 'Soy'];
+  const style = {
+    modalStyling: { gridTemplateColumns: '1fr 1fr', maxWidth: '290px' },
+    xButtonError: { transform: 'translateY(-130%)' }
+  };
   return (
     <div className='pages-table'>
       <div className='header-modal-container'>
