@@ -166,7 +166,7 @@ function InputField({
  *
  * @param {Object} props - The properties object.
  * @param {Array} props.fields - The fields to be displayed in the form.
- * @param {Object} props.object - The current values of the form fields.
+ * @param {Object} props.object - The current values of the form fields. Used for edit functionality.
  * @param {Array} props.dropDownOptions - The options for dropdown fields.
  * @param {Array} props.multiSelectOptions - The options for multiselect fields.
  * @param {Function} props.onChange - The callback function to handle changes to the form fields.
