@@ -8,8 +8,8 @@ import StickyHeadTable, { createRow } from '../Component/Table';
 import { getIngredients, createIngredient } from '../apiService';
 import ReusableModal from '../Component/ReusableModal';
 import SuccessModal from '../Component/SuccessModal';
-import { ingredientValidation } from '../Component/Validation';
-import { ingredientFormatting } from '../Component/Formatting';
+import { ingredientValidation } from '../Validation';
+import { ingredientFormatting } from '../Formatting';
 
 /**
  *  * IngredientPage Component
