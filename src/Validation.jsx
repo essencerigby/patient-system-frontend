@@ -3,7 +3,19 @@
 export const ingredientValidation = (formValues) => {
   const error = {};
   if (formValues.name.length < 1) {
-    error.name = 'Must have a name';
+    error.name = 'Must include a name';
+  }
+  if (formValues.name.length > 50) {
+    error.name = 'Must be 50 characters or less.';
+  }
+  if (formValues.unitOfMeasure === '') {
+    error.unitOfMeasure = 'Must choose one';
+  }
+  if (formValues.amount === '' || parseFloat(formValues.amount) <= 0) {
+    error.amount = 'Must be greater than 0';
+  }
+  if (formValues.purchasingCost === '' || parseFloat(formValues.purchasingCost) <= 0) {
+    error.purchasingCost = 'Must be greater than 0';
   }
   return error;
 };
