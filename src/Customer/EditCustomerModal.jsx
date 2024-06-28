@@ -51,7 +51,7 @@ export default function EditCustomerModal({ customer, onRefresh }) {
     const errors = {
       nameError: 'Name must be 50 characters or less.',
       emailError: 'Must be a valid email.',
-      lifetimeSpentError: 'Must be a valid number.'
+      lifetimeSpentError: 'Must be a valid amount, greater than 0.'
     };
 
     if (!customerToValidate.name || customerToValidate.name.length >= 50) {
@@ -64,6 +64,19 @@ export default function EditCustomerModal({ customer, onRefresh }) {
       errors.emailError = 'Email must be in x@x.x format.';
     } else {
       errors.emailError = '';
+    }
+
+    const amountPattern = /^\d{0,4}\.\d{2}$/;
+    if (!amountPattern.test(customerToValidate.lifetimeSpent)) {
+      errors.lifetimeSpentError = 'Must be numbers in the following format: X.XX';
+    } else {
+      errors.lifetimeSpentError = '';
+    }
+
+    if (customerToValidate.lifetimeSpent < 0.0) {
+      errors.lifetimeSpentError = 'Lifetime Spent must be a non-negative value.';
+    } else {
+      errors.lifetimeSpentError = '';
     }
 
     setValidationErrors({
@@ -87,14 +100,14 @@ export default function EditCustomerModal({ customer, onRefresh }) {
     const { id, type, checked, value } = e.target;
     setCurrentCustomer((prevValues) => ({
       ...prevValues,
-      [id]: type === 'checkbox' ? checked : value // id:value ???
+      [id]: type === 'checkbox' ? checked : value
     }));
   };
 
   // Edit a customer and performs a put request with updated customer.
   const handleSubmit = async () => {
     const errors = isFormValid(currentCustomer);
-    if (errors.emailError.length !== 0 || errors.nameError.length !== 0) {
+    if (errors.emailError.length !== 0 || errors.nameError.length !== 0 || errors.lifetimeSpentError.length !== 0) {
       return;
     }
     try {

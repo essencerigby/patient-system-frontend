@@ -1,8 +1,10 @@
 /* eslint-disable object-curly-newline */
+/* eslint-disable operator-linebreak */
 import React from 'react';
+import { NumericFormat } from 'react-number-format';
 
 function InputField({ id, label, value, onChange, onClear, validationErrors }) {
-  const { nameError, emailError } = validationErrors;
+  const { nameError, emailError, lifetimeSpentError } = validationErrors;
 
   if (id === 'active') {
     return (
@@ -59,17 +61,51 @@ function InputField({ id, label, value, onChange, onClear, validationErrors }) {
     return (
       <div className={`input-field ${id}`} id={id}>
         <label htmlFor={id}>{label}:</label>
-        <input
-          className='input-flex'
-          id={id}
-          type='text'
-          value={value}
-          onChange={onChange}
-          style={{ position: 'relative' }}
-        />
-        <button type='button' className='clear-button' onClick={() => onClear(id)}>
-          X
-        </button>
+        <div className='input-wrapper'>
+          {lifetimeSpentError.length === 0 && (
+            <NumericFormat
+              className='input-flex'
+              id={id}
+              value={value}
+              onValueChange={(values) => {
+                const { value: formattedValue } = values;
+                onChange({ target: { id, value: formattedValue } });
+              }}
+              thousandSeparator={false}
+              defaultValue='0.00'
+              decimalScale={2}
+              fixedDecimalScale
+              prefix='$'
+            />
+          )}
+        </div>
+        {lifetimeSpentError && (
+          <NumericFormat
+            className='input-flex-error'
+            id={id}
+            value={value}
+            onValueChange={(values) => {
+              const { value: formattedValue } = values;
+              onChange({ target: { id, value: formattedValue } });
+            }}
+            thousandSeparator={false}
+            defaultValue='0.00'
+            decimalScale={2}
+            fixedDecimalScale
+            prefix='$'
+          />
+        )}
+        {value !== '0.00' && lifetimeSpentError.length === 0 && (
+          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
+        {value !== '0.00' && lifetimeSpentError && (
+          <button type='button' className='clear-button-error' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
+        {lifetimeSpentError && <div className='error-message'>{lifetimeSpentError}</div>}
       </div>
     );
   }
@@ -126,17 +162,24 @@ export default function CustomerForm({ fields, onChange, customer, validationErr
 
   return (
     <form style={{ paddingBottom: '5%' }} className='input-container'>
-      {fields.map((field) => (
-        <InputField
-          key={field.id}
-          id={field.id}
-          label={field.label}
-          value={field.keys.split('.').reduce((o, i) => o[i], customer)}
-          onChange={onChange}
-          onClear={handleClear}
-          validationErrors={validationErrors}
-        />
-      ))}
+      {fields.map((field) => {
+        const value =
+          field.id === 'lifetimeSpent'
+            ? customer[field.id] || '0.00'
+            : field.keys.split('.').reduce((o, i) => o[i], customer);
+
+        return (
+          <InputField
+            key={field.id}
+            id={field.id}
+            label={field.label}
+            value={value}
+            onChange={onChange}
+            onClear={handleClear}
+            validationErrors={validationErrors}
+          />
+        );
+      })}
     </form>
   );
 }

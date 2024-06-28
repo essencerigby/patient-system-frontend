@@ -48,14 +48,8 @@ export default function CustomerPage() {
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-  // const fields = [
-  //   { id: 'id', label: 'ID' },
-  //   { id: 'active', label: 'Active' },
-  //   { id: 'name', label: 'Customer Name' },
-  //   { id: 'emailAddress', label: 'Email' },
-  //   { id: 'lifetimeSpent', label: 'Lifetime Spent' },
-  //   { id: 'customerSince', label: 'Customer Since' }
-  // ];
+
+  const formatLifetimeSpent = (lifetimeSpent) => `$${Number(lifetimeSpent).toFixed(2)}`;
 
   // Get all customers from the database and store it in customers array
   useEffect(() => {
@@ -98,7 +92,7 @@ export default function CustomerPage() {
           <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
           customer.name,
           customer.emailAddress,
-          customer.lifetimeSpent,
+          formatLifetimeSpent(customer.lifetimeSpent || '0.00'),
           customer.customerSince,
           <DeleteCustomer customer={customer} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
         ],
