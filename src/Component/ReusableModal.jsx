@@ -191,7 +191,7 @@ export default function Modal({
           <strong>Add New +</strong>
         </button>
       )}
-      {/* If an object is passed as a prop, the edit icon will render along with the id.
+      {/* If an object is passed as a prop (Ex: object={vendor}), the edit icon will render along with the id.
       This makes the modal reusable for edit functionality */}
       {object && (
         <div className='edit-container'>
