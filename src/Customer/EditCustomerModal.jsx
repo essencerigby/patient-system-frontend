@@ -30,7 +30,7 @@ export default function EditCustomerModal({ customer, onRefresh }) {
     active: false,
     name: '',
     emailAddress: '',
-    lifetimeSpent: ''
+    lifetimeSpent: '0.00'
   });
 
   const [error, setError] = useState(null);
@@ -95,6 +95,7 @@ export default function EditCustomerModal({ customer, onRefresh }) {
     }
     setModal(!modal); // Toggle modal visibility
   };
+
   // Handles changes to Customer according to values from Modal
   const handleChange = (e) => {
     const { id, type, checked, value } = e.target;
@@ -116,12 +117,12 @@ export default function EditCustomerModal({ customer, onRefresh }) {
         active: currentCustomer.active,
         name: currentCustomer.name,
         emailAddress: currentCustomer.emailAddress,
-        lifetimeSpent: currentCustomer.lifetimeSpent
+        lifetimeSpent: currentCustomer.lifetimeSpent === '' ? '0.00' : currentCustomer.lifetimeSpent
       };
       await editCustomer(customerToEdit);
-      setError(null); // Reset error on success
-      toggleModal(); // Disable modal on success
-      onRefresh(); // Refresh customer list on success
+      setError(null);
+      toggleModal();
+      onRefresh();
 
       // Reset Customer to default values
       setCurrentCustomer({
@@ -129,7 +130,7 @@ export default function EditCustomerModal({ customer, onRefresh }) {
         active: false,
         name: '',
         emailAddress: '',
-        lifetimeSpent: ''
+        lifetimeSpent: '0.00'
       });
     } catch (err) {
       setError(err.response ? err.response.data : err.message); // Set error message on fail
@@ -138,13 +139,13 @@ export default function EditCustomerModal({ customer, onRefresh }) {
   const handleEditCustomer = async (id) => {
     try {
       const customerById = await getCustomerById(id);
-
+      const formattedLifetimeSpent = parseFloat(customerById.lifetimeSpent || '0.00').toFixed(2);
       const experimentCustomer = {
         id: customerById.id,
         active: customerById.active,
         name: customerById.name,
         emailAddress: customerById.emailAddress,
-        lifetimeSpent: customerById.lifetimeSpent,
+        lifetimeSpent: formattedLifetimeSpent,
         customerSince: customerById.customerSince
       };
       setCurrentCustomer(experimentCustomer);

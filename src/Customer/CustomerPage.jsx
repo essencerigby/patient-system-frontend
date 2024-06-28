@@ -49,6 +49,7 @@ export default function CustomerPage() {
   const [refresh, setRefresh] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
+  // Formats lifetimeSpent as a currency string with two decimal places
   const formatLifetimeSpent = (lifetimeSpent) => `$${Number(lifetimeSpent).toFixed(2)}`;
 
   // Get all customers from the database and store it in customers array
@@ -88,7 +89,6 @@ export default function CustomerPage() {
         columns,
         [
           <EditCustomerModal customer={customer} onRefresh={handleRefresh} />,
-
           <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
           customer.name,
           customer.emailAddress,
@@ -105,10 +105,6 @@ export default function CustomerPage() {
   while (rows.length < 6) {
     rows.push(createRow(columns, Array(columns.length).fill('')));
   }
-
-  // Define customerModal fields
-
-  //
 
   return (
     <>
