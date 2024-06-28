@@ -1,5 +1,14 @@
 /* eslint-disable import/prefer-default-export */
-// Errors should be named error.(fieldId) for reusability in the modal. Please see example below.
+
+/*
+ * The ingredientValidation function validates the form values for an ingredient.
+ * It checks the following conditions and adds corresponding error messages to the error object:
+ * - 'name' must not be empty and must be 50 characters or less.
+ * - 'unitOfMeasure' must be selected.
+ * - 'amount' must not be empty and must be greater than 0.
+ * - 'purchasingCost' must not be empty and must be greater than 0.
+ * Errors are stored in the error object with keys corresponding to the form field names.
+ */
 export const ingredientValidation = (formValues) => {
   const error = {};
   if (formValues.name.length < 1) {
