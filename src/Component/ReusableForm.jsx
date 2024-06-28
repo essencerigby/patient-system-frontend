@@ -43,6 +43,7 @@ function InputField({
           type='text'
           value={value}
           onChange={onChange}
+          autoComplete='on'
         />
         {value && (
           <button

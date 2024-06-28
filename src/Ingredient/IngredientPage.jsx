@@ -83,10 +83,7 @@ export default function IngredientPage() {
     rows.push(
       createRow(columns, [
         ingredient.id,
-        // PLACEHOLDER FOR EditIngredient
-        // <EditIngredientModal ingredient={ingredient} fields={ingredientFields}
-        // onRefresh={handleRefresh} />,
-        <input type='checkbox' checked={ingredient.active} onChange={() => {}} disabled />,
+        <input type='checkbox' checked={ingredient.active} onChange={() => {}} disabled id={ingredient.id} />,
         ingredient.name,
         formatPrice(ingredient.purchasingCost),
         ingredient.amount,
@@ -108,7 +105,7 @@ export default function IngredientPage() {
   const unitOfMeasure = ['OZ', 'LB', 'KG', 'ML', 'TSP', 'TBSP', 'CUPS'];
   const allergenList = ['Dairy', 'Gluten', 'Nuts', 'Soy'];
   const style = {
-    modalStyling: { gridTemplateColumns: '1fr 1fr', maxWidth: '290px' },
+    modalStyling: { gridTemplateColumns: '1fr 1fr 1fr', maxWidth: '400px' },
     xButtonError: { transform: 'translateY(-130%)' }
   };
   return (
