@@ -5,8 +5,9 @@ import React, { useEffect, useState } from 'react';
 import '../index.css';
 import '../Component/Modal.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
-import { getIngredients, createIngredient } from '../apiService';
+import { getIngredients, createIngredient, getIngredientById, deleteIngredient } from '../apiService';
 import ReusableModal from '../Component/ReusableModal';
+import ReusableDeleteModal from '../Component/ReusableDeleteModal';
 import SuccessModal from '../Component/SuccessModal';
 import { ingredientValidation } from '../Validation';
 import { ingredientFormatting } from '../Formatting';
@@ -36,7 +37,8 @@ export default function IngredientPage() {
     { id: 'purchasingCost', label: 'Purchasing Cost', minWidth: 100, type: 'numericDollar', formOrder: 5 },
     { id: 'amount', label: 'Unit Amount', minWidth: 100, type: 'numeric', formOrder: 3, gridNum: 1 },
     { id: 'unitOfMeasure', label: 'Unit of Measure', minWidth: 100, type: 'dropdown', formOrder: 4, gridNum: 2 },
-    { id: 'allergens', label: 'Allergens', minWidth: 100, type: 'multiselect', formOrder: 6 }
+    { id: 'allergens', label: 'Allergens', minWidth: 100, type: 'multiselect', formOrder: 6 },
+    { id: 'deleteIcon', label: '', minWidth: 30, type: 'none', formOrder: 0 }
   ];
 
   const [ingredients, setIngredients] = useState([]);
@@ -69,11 +71,18 @@ export default function IngredientPage() {
 
   const displayDash = (value) => (value === '' || value.toLowerCase() === 'n/a' ? '-' : value);
 
-  const toggleSuccessModal = () => {
+  const handleOpenSuccessModal = () => {
     if (successModal) {
       setError(null);
     }
-    setSuccessModal(!successModal);
+    setSuccessModal(true);
+  };
+
+  const handleCloseSuccessModal = () => {
+    if (successModal) {
+      setError(null);
+    }
+    setSuccessModal(false);
   };
 
   const rows = [];
@@ -88,10 +97,15 @@ export default function IngredientPage() {
         formatPrice(ingredient.purchasingCost),
         ingredient.amount,
         ingredient.unitOfMeasure,
-        displayDash(formatList(ingredient.allergens))
-        // PLACEHOLDER FOR DeleteIngredient & toggleSuccessModal
-        // <DeleteIngredientModal ingredient={ingredient} onRefresh={handleRefresh}
-        // toggleSuccessModal={toggleSuccessModal} />
+        displayDash(formatList(ingredient.allergens)),
+        <ReusableDeleteModal
+          id={ingredient.id}
+          domain='ingredient'
+          onRefresh={handleRefresh}
+          toggleSuccessModal={handleOpenSuccessModal}
+          getObjectById={getIngredientById}
+          deleteObject={deleteIngredient}
+        />
       ])
     )
   );
@@ -124,7 +138,9 @@ export default function IngredientPage() {
           style={style}
         />
       </div>
-      {successModal && <SuccessModal message='Ingredient was successfully deleted!' onClose={toggleSuccessModal} />}
+      {successModal && (
+        <SuccessModal message='Ingredient was successfully deleted!' onClose={handleCloseSuccessModal} />
+      )}
       <StickyHeadTable columns={columns} rows={rows} />
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
     </div>
