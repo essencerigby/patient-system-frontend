@@ -109,7 +109,8 @@ export default function CustomerPage() {
 
   const fields = [
     { id: 'id', label: 'ID' },
-    { id: 'active', label: 'Active' },
+    { id: 'active On', label: 'Active On' },
+    { id: 'active Off', label: 'Active Off' },
     { id: 'name', label: 'Customer Name' },
     { id: 'emailAddress', label: 'Email' },
     { id: 'lifetimeSpent', label: 'Lifetime Spent' },

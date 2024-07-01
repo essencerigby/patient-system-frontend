@@ -39,7 +39,7 @@ import React, { useState, useEffect } from 'react';
  */
 export default function TableFilter(props) {
   const [textSearchValue, setSearchValue] = useState('');
-  const [checkboxSearchValue, setCheckboxSearchValue] = useState(false);
+  /*  const [checkboxSearchValue, setCheckboxSearchValue] = useState(false); */
   const [fieldToFilterBy, setFieldToFilterBy] = useState('id');
   const [operandToFilterBy, setOperandToFilterBy] = useState('=');
   const [fieldPaths, setFieldPaths] = useState([]);
@@ -68,7 +68,8 @@ export default function TableFilter(props) {
 
   // List of fields that contain checkbox fields
   const checkboxFields = [
-    'active'
+    'active On',
+    'active Off'
   ];
 
   // List of operands for numerical data
@@ -111,12 +112,6 @@ export default function TableFilter(props) {
   const handleWordInputChange = (event) => {
     const { value } = event.target;
     setSearchValue(value);
-  };
-
-  // Sets checkbox search value on user input
-  const handleCheckBoxInputChange = (event) => {
-    const { checked } = event.target;
-    setCheckboxSearchValue(checked);
   };
 
   // Handles submission and filtering of data
@@ -170,9 +165,15 @@ export default function TableFilter(props) {
         }
       };
 
-      // Searchs data based on checkbox value
+      // Searchs data based on fieldToFilterBy
       const filterByCheckbox = () => {
-        filteredResults = domainToSearch.filter((obj) => obj.active === checkboxSearchValue);
+        const containsOn = /\bO\s*N\b/i;
+
+        if (containsOn.test(fieldToFilterBy)) {
+          filteredResults = domainToSearch.filter((obj) => obj.active === true);
+        } else {
+          filteredResults = domainToSearch.filter((obj) => obj.active === false);
+        }
       };
 
       // Searches data lists for matching value
@@ -205,7 +206,7 @@ export default function TableFilter(props) {
   // Return the search table component using conditional rendering.
   return (
     <div className='search-table'>
-      {fieldToFilterBy !== 'active' && (
+      {fieldToFilterBy !== 'active On' && fieldToFilterBy !== 'active Off' && (
       <input
         className='input-flex'
         placeholder={`Search by ${fieldToFilterBy}${'...'}`}
@@ -214,16 +215,6 @@ export default function TableFilter(props) {
         onChange={(event) => handleWordInputChange(event)}
         style={{ position: 'relative', width: 200, transform: 'translateX(-11%)' }}
       />
-      )}
-
-      {fieldToFilterBy === 'active' && (
-        <input
-          className='input-flex'
-          id='test'
-          type='checkbox'
-          onChange={(event) => handleCheckBoxInputChange(event)}
-          style={{ position: 'relative', width: 22, transform: 'translateX(-75%)' }}
-        />
       )}
 
       {numericalFields.includes(fieldToFilterBy) && (

@@ -42,7 +42,8 @@ export default function IngredientPage() {
 
   const temporaryFields = [
     { id: 'id', label: 'ID' },
-    { id: 'active', label: 'Active', keys: 'active' },
+    { id: 'active On', label: 'Active On', keys: 'active' },
+    { id: 'active Off', label: 'Active Off', keys: 'active' },
     { id: 'name', label: 'Name', keys: 'name' },
     { id: 'purchasingCost', label: 'Purchasing Cost', key: 'purchasingCost' },
     { id: 'amount', label: 'Unit Amount', keys: 'amount' },
