@@ -2,15 +2,22 @@
 /* eslint-disable operator-linebreak */
 import React from 'react';
 
-function InputField({ id, label, value, onChange, onClear, validationErrors }) {
+function InputField({ id, label, value, onChange, onClear, validationErrors, required }) {
   const { nameError, emailError, lifetimeSpentError } = validationErrors;
+
+  const renderRequired = () => {
+    if (required) {
+      return <span style={{ color: 'red' }}> *</span>;
+    }
+    return null;
+  };
 
   if (id === 'active') {
     return (
       <div className={`input-field checkbox-field ${id}`} id={id}>
         <label htmlFor={id}>
           <input type='checkbox' id={id} checked={value} onChange={onChange} />
-          {label}
+          {label}:{renderRequired()}
         </label>
       </div>
     );
@@ -20,7 +27,9 @@ function InputField({ id, label, value, onChange, onClear, validationErrors }) {
   if (id === 'emailAddress') {
     return (
       <div className={`input-field ${id}`} id={id}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         {emailError.length === 0 && (
           <input
             className='input-flex'
@@ -59,7 +68,9 @@ function InputField({ id, label, value, onChange, onClear, validationErrors }) {
   if (id === 'lifetimeSpent') {
     return (
       <div className={`input-field ${id}`} id={id}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <div className='input-wrapper'>
           {lifetimeSpentError.length === 0 && (
             <input
@@ -100,7 +111,9 @@ function InputField({ id, label, value, onChange, onClear, validationErrors }) {
   // Uses conditional rendering using name validation results from NewCustomerModal
   return (
     <div className={`input-field ${id}`}>
-      <label htmlFor={id}>{label}:</label>
+      <label htmlFor={id}>
+        {label}:{renderRequired()}
+      </label>
       {nameError.length === 0 && (
         <input
           className='input-flex'
@@ -158,6 +171,7 @@ export default function CustomerForm({ fields, onChange, customer, validationErr
           onChange={onChange}
           onClear={handleClear}
           validationErrors={validationErrors}
+          required={field.required}
         />
       ))}
     </form>

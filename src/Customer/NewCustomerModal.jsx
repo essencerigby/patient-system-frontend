@@ -13,10 +13,11 @@ const fields = [
     id: 'active',
     label: 'Active',
     keys: 'active',
-    type: 'checkbox'
+    type: 'checkbox',
+    required: false
   },
-  { id: 'name', label: 'Name', keys: 'name' },
-  { id: 'emailAddress', label: 'Email', keys: 'emailAddress' }
+  { id: 'name', label: 'Name', keys: 'name', required: true },
+  { id: 'emailAddress', label: 'Email', keys: 'emailAddress', required: true }
 ];
 
 export default function CustomerModal({ onRefresh }) {
@@ -145,6 +146,7 @@ export default function CustomerModal({ onRefresh }) {
                 Submit
               </button>
             </div>
+            <div style={{ color: 'red', marginLeft: '10px', textAlign: 'left' }}>* required fields</div>
           </div>
         </div>
       )}
