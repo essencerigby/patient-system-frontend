@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /**
  * Customer Page Component
  *
@@ -32,6 +31,7 @@ import CustomerModal from './NewCustomerModal';
 import { getCustomers } from '../apiService';
 import DeleteCustomer from './DeleteCustomer';
 import SuccessModal from '../Component/SuccessModal';
+import TableFilter from '../Component/TableFilter';
 
 export default function CustomerPage() {
   const columns = [
@@ -79,7 +79,7 @@ export default function CustomerPage() {
 
   const rows = [];
 
-  // Create rows from the product array
+  // Create rows from the customer array
   customers.map((customer) =>
     rows.push(
       createRow(
@@ -121,6 +121,13 @@ export default function CustomerPage() {
           <CustomerModal onRefresh={handleRefresh} />
         </div>
         <StickyHeadTable columns={columns} rows={rows} />
+        <TableFilter
+          fields={temporaryFields}
+          getDomain={getCustomers}
+          setDomain={setCustomers}
+          setError={setError}
+          onRefresh={handleRefresh}
+        />
         {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
       </div>
       {successModal && <SuccessModal message='Customer was successfully deleted!' onClose={handleSuccessModal} />}

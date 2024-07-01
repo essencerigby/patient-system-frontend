@@ -29,6 +29,7 @@ import AddVendor from './AddVendor';
 import EditVendor from './EditVendor';
 import DeleteVendor from './DeleteVendor';
 import SuccessModal from '../Component/SuccessModal';
+import TableFilter from '../Component/TableFilter';
 
 export default function VendorPage() {
   // Create column names, id's, minimum width
@@ -110,6 +111,38 @@ export default function VendorPage() {
     rows.push(createRow(columns, Array(columns.length).fill('')));
   }
 
+  const temporaryFields = [
+    { id: 'id', label: 'ID' },
+    { id: 'name', label: 'Name', keys: 'name' },
+    {
+      id: 'street', label: 'Street', keys: 'street', fieldPath: '.address.street'
+    },
+    {
+      id: 'street2', label: 'Street 2', keys: 'street2', fieldPath: '.address.street2'
+    },
+    {
+      id: 'city', label: 'City', keys: 'city', fieldPath: '.address.city'
+    },
+    {
+      id: 'state', label: 'State', keys: 'state', fieldPath: '.address.state'
+    },
+    {
+      id: 'zipCode', label: 'Zip Code', keys: 'zipCode', fieldPath: '.address.zipCode'
+    },
+    {
+      id: 'email', label: 'Email', keys: 'email', fieldPath: '.contact.email'
+    },
+    {
+      id: 'contactName', label: 'Contact Name', keys: 'contactName', fieldPath: '.contact.contactName'
+    },
+    {
+      id: 'titleOrRole', label: 'Title or Role', keys: 'titleOrRole', fieldPath: '.contact.titleOrRole'
+    },
+    {
+      id: 'phone', label: 'Phone', keys: 'phone', fieldPath: '.contact.phone'
+    }
+  ];
+
   return (
     <div className='pages-table'>
       <div className='header-modal-container'>
@@ -120,6 +153,13 @@ export default function VendorPage() {
         <SuccessModal message='Vendor was successfully deleted!' onClose={closeSuccessModal} />
       )}
       <StickyHeadTable columns={columns} rows={rows} />
+      <TableFilter
+        fields={temporaryFields}
+        getDomain={getVendors}
+        setDomain={setVendors}
+        setError={setError}
+        onRefresh={handleRefresh}
+      />
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
     </div>
   );
