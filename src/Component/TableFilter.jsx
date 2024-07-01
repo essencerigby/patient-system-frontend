@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
  * @component
  * @example
  *  const fields = [
- *   { id: 'id', label: 'ID' },
+ *   { id: 'id', label: 'ID', kyes: 'name' },
  *   { id: 'name', label: 'Name', keys: 'name' },
  *   {
  *     id: 'street', label: 'Street', keys: 'street', fieldPath: '.address.street'
