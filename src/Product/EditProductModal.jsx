@@ -72,6 +72,7 @@ export default function EditProductModal({ fields, type, product, onRefresh }) {
                 Submit
               </button>
             </div>
+            <div style={{ color: 'red', marginLeft: '10px', textAlign: 'left' }}>* required fields</div>
           </div>
         </div>
       )}
