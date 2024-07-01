@@ -69,7 +69,12 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
           required={required}
         />
         {value && (
-          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+          <button
+            type='button'
+            className='clear-button'
+            style={error && { transform: 'translateY(-170%)' }}
+            onClick={() => onClear(id)}
+          >
             X
           </button>
         )}
@@ -124,7 +129,12 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
           />
         </div>
         {value && (
-          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+          <button
+            type='button'
+            className='clear-button'
+            style={error && { transform: 'translateY(-220%)' }}
+            onClick={() => onClear(id)}
+          >
             X
           </button>
         )}
@@ -157,7 +167,12 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
           />
         </div>
         {value && (
-          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+          <button
+            type='button'
+            className='clear-button'
+            style={error && { transform: 'translateY(-150%)' }}
+            onClick={() => onClear(id)}
+          >
             X
           </button>
         )}
@@ -189,7 +204,12 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
           />
         </div>
         {value && (
-          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+          <button
+            type='button'
+            className='clear-button'
+            style={error && { transform: 'translateY(-150%)' }}
+            onClick={() => onClear(id)}
+          >
             X
           </button>
         )}
@@ -213,7 +233,12 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
         />
       </div>
       {value && (
-        <button type='button' className='clear-button' onClick={() => onClear(id)}>
+        <button
+          type='button'
+          className='clear-button'
+          style={error && { transform: 'translateY(-150%)' }}
+          onClick={() => onClear(id)}
+        >
           X
         </button>
       )}
