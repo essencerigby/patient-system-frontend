@@ -48,7 +48,14 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
     return (
       <div className={`input-field checkbox-field ${id}`} id={id}>
         <label htmlFor={id}>
-          <input type='checkbox' id={id} checked={value} onChange={onChange} required={required} />
+          <input
+            type='checkbox'
+            id={id}
+            checked={value}
+            onChange={onChange}
+            required={required}
+            style={{ marginRight: '170px' }}
+          />
           {label}:{renderRequired()}
         </label>
       </div>

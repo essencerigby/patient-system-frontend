@@ -16,7 +16,7 @@ function InputField({ id, label, value, onChange, onClear, validationErrors, req
     return (
       <div className={`input-field checkbox-field ${id}`} id={id}>
         <label htmlFor={id}>
-          <input type='checkbox' id={id} checked={value} onChange={onChange} />
+          <input type='checkbox' id={id} checked={value} onChange={onChange} style={{ marginRight: '100px' }} />
           {label}:{renderRequired()}
         </label>
       </div>
