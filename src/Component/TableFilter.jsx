@@ -208,17 +208,16 @@ export default function TableFilter(props) {
     <div className='search-table'>
       {fieldToFilterBy !== 'active On' && fieldToFilterBy !== 'active Off' && (
       <input
-        className='input-flex'
+        className='search-table-text'
         placeholder={`Search by ${fieldToFilterBy}${'...'}`}
         id='test'
         type='text'
         onChange={(event) => handleWordInputChange(event)}
-        style={{ position: 'relative', width: 200, transform: 'translateX(-11%)' }}
       />
       )}
 
       {numericalFields.includes(fieldToFilterBy) && (
-      <select style={{ position: 'relative', width: 45, transform: 'translateX(-25%)' }} onChange={(event) => { setOperandToFilterBy(event.target.value); }}>
+      <select className='search-table-numerical-dropdown' onChange={(event) => { setOperandToFilterBy(event.target.value); }}>
         {operands.map((operand) => (
           <option key={operand} value={operand}>
             {operand}
@@ -227,7 +226,7 @@ export default function TableFilter(props) {
       </select>
       )}
 
-      <select style={{ transform: 'translateX(-5%)' }} onChange={(event) => { setFieldToFilterBy(event.target.value); }}>
+      <select className='search-table-columns-dropdown' onChange={(event) => { setFieldToFilterBy(event.target.value); }}>
         {fields.map((field) => (
           <option key={field.id} value={field.id}>
             {field.label}
@@ -235,10 +234,10 @@ export default function TableFilter(props) {
         ))}
       </select>
 
-      <button type='button' style={{ transform: 'translateX(10%)' }} className='btn-modal' onClick={() => { filterDomainByField(textSearchValue); }}>
+      <button style={{ marginRight: 10 }} type='button' className='btn-modal' onClick={() => { filterDomainByField(textSearchValue); }}>
         <strong>Search</strong>
       </button>
-      <button type='button' style={{ transform: 'translateX(15%)' }} className='btn-modal' onClick={() => { onRefresh(); }}>
+      <button type='button' className='btn-modal' onClick={() => { onRefresh(); }}>
         <strong>Refresh Table</strong>
       </button>
     </div>
