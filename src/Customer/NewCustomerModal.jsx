@@ -112,6 +112,16 @@ export default function CustomerModal({ onRefresh }) {
     }
   };
 
+  const handleCancel = () => {
+    setCustomer({}); // Reset Customer to default values
+    toggleModal(); // Toggle modal visibility
+    setError(null); // Resets errors to initial values
+    setValidationErrors({
+      nameError: '',
+      emailError: ''
+    });
+  };
+
   if (modal) {
     document.body.classList.add('active-modal');
   } else {
@@ -139,7 +149,7 @@ export default function CustomerModal({ onRefresh }) {
             />
             {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
             <div className='btn-container'>
-              <button type='button' className='close-modal' onClick={toggleModal}>
+              <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
               </button>
               <button type='submit' className='submit-close-modal' onClick={handleSubmit}>

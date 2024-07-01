@@ -108,6 +108,12 @@ export default function AddVendor({ onRefresh }) {
     }
   };
 
+  const handleCancel = () => {
+    setVendor({});
+    setError(null);
+    toggleModal(); // Toggle modal visibility
+  };
+
   if (modal) {
     document.body.classList.add('active-modal');
   } else {
@@ -129,7 +135,7 @@ export default function AddVendor({ onRefresh }) {
             <VendorForm fields={fields} vendor={vendor} onChange={handleChange} />
             {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
             <div className='btn-container'>
-              <button type='button' className='close-modal' onClick={toggleModal}>
+              <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
               </button>
               <button type='button' className='submit-close-modal' onClick={handleSubmit}>
