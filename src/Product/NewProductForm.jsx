@@ -9,10 +9,19 @@ import React, { useState, forwardRef, useEffect } from 'react';
 import { NumericFormat } from 'react-number-format';
 
 function InputField({ id, label, dropdownOptions, multiple, required, type, value, onBlur, onChange, onClear, error }) {
+  const renderRequired = () => {
+    if (required) {
+      return <span style={{ color: 'red' }}> *</span>;
+    }
+    return null;
+  };
+
   if (type === 'dropdown') {
     return (
       <div className={`input-field ${id}}`} id={id}>
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <select
           className={`${error ? 'input-flex-error' : 'input-flex'}`}
           id={id}
@@ -40,7 +49,7 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
       <div className={`input-field checkbox-field ${id}`} id={id}>
         <label htmlFor={id}>
           <input type='checkbox' id={id} checked={value} onChange={onChange} required={required} />
-          {label}
+          {label}:{renderRequired()}
         </label>
       </div>
     );
@@ -49,7 +58,9 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
   if (type === 'textarea') {
     return (
       <div className={`input-field ${id}`} id={id}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <textarea
           className={`${error ? 'input-flex-error' : 'input-flex'}`}
           id={id}
@@ -71,7 +82,9 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
   if (type === 'multiselect' && Array.isArray(dropdownOptions)) {
     return (
       <div className={`input-field ${id}`} id={id}>
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <select
           className='input-multi-select'
           id={id}
@@ -96,7 +109,9 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
   if (id === 'vendorId') {
     return (
       <div className={`input-field ${id}`} id={id}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <div className='input-wrapper'>
           <input
             className={`${error ? 'input-flex-error' : 'input-flex'}`}
@@ -122,7 +137,9 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
   if (type === 'number' && (id === 'cost' || id === 'salePrice')) {
     return (
       <div className={`input-field ${id}`} id={id}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <div className='input-wrapper'>
           <NumericFormat
             className={`${error ? 'input-flex-error' : 'input-flex'}`}
@@ -152,7 +169,9 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
   if (type === 'number' && id === 'markup') {
     return (
       <div className={`input-field ${id}`} id={id}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <div className='input-wrapper'>
           <NumericFormat
             className={`${error ? 'input-flex-error' : 'input-flex'}`}
@@ -181,7 +200,9 @@ function InputField({ id, label, dropdownOptions, multiple, required, type, valu
 
   return (
     <div className={`input-field ${id}`} id={id}>
-      <label htmlFor={id}>{label}:</label>
+      <label htmlFor={id}>
+        {label}:{renderRequired()}
+      </label>
       <div className='input-wrapper'>
         <input
           className={`${error ? 'input-flex-error' : 'input-flex'}`}
@@ -328,7 +349,7 @@ const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
           {
             id: 'vendorId',
             label: 'Vendor ID',
-            required: false
+            required: true
           }
         ]
       : [];
@@ -342,7 +363,8 @@ const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
             label: 'Markup',
             min: 0.0,
             step: 0.01,
-            type: 'number'
+            type: 'number',
+            required: true
           }
         ]
       : '';
@@ -471,6 +493,7 @@ const ProductForm = forwardRef(({ fields, onSubmit, product }, ref) => {
           onClear={handleClear}
           dropdownOptions={field.dropdownOptions || []}
           error={errors[field.id]}
+          required={field.required}
         />
       ))}
       <div className='input-field'>

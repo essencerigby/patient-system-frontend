@@ -2,7 +2,7 @@
 export const productFields = [
   {
     id: 'active',
-    label: 'Active:',
+    label: 'Active',
     required: false,
     type: 'checkbox'
   },
@@ -20,13 +20,13 @@ export const productFields = [
   {
     id: 'ingredientsList',
     label: 'Ingredients',
-    required: false,
+    required: true,
     type: 'textarea'
   },
   {
     id: 'allergenList',
     dropdownOptions: ['Dairy', 'Gluten', 'Nuts', 'Soy'],
-    label: 'Allergens:',
+    label: 'Allergens',
     multiple: true,
     required: false,
     type: 'multiselect'
