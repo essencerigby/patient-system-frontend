@@ -55,11 +55,20 @@ const stateAbbreviations = [
   'WY'
 ];
 
-function InputField({ id, label, value, onChange, onClear }) {
+function InputField({ id, label, value, onChange, onClear, required }) {
+  const renderRequired = () => {
+    if (required) {
+      return <span style={{ color: 'red' }}> *</span>;
+    }
+    return null;
+  };
+
   if (id === 'state') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 1 }}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <select className='input-flex' id={id} value={value} onChange={onChange}>
           <option value=''>Select State</option>
           {stateAbbreviations.map((state) => (
@@ -75,7 +84,9 @@ function InputField({ id, label, value, onChange, onClear }) {
   if (id === 'zipCode') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 2 }}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <input className='input-flex' id={id} type='text' value={value} onChange={onChange} />
         {value && (
           <button type='button' className='clear-button' onClick={() => onClear(id)}>
@@ -88,7 +99,9 @@ function InputField({ id, label, value, onChange, onClear }) {
 
   return (
     <div className={`input-field ${id}`}>
-      <label htmlFor={id}>{label}:</label>
+      <label htmlFor={id}>
+        {label}:{renderRequired()}
+      </label>
       <input
         className='input-flex'
         id={id}
@@ -127,6 +140,7 @@ export default function VendorForm({ fields, vendor, onChange }) {
           value={field.keys.split('.').reduce((o, i) => o[i], vendor)}
           onChange={onChange}
           onClear={handleClear}
+          required={field.required}
         />
       ))}
     </form>

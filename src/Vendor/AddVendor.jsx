@@ -1,3 +1,5 @@
+/* eslint-disable object-curly-newline */
+
 import React, { useState, useEffect } from 'react';
 import '../Component/Modal.css';
 import { createVendor } from '../apiService';
@@ -5,16 +7,16 @@ import VendorForm from './VendorForm';
 
 // Array of fields for the form
 const fields = [
-  { id: 'name', label: 'Name', keys: 'name' },
-  { id: 'street', label: 'Street', keys: 'street' },
+  { id: 'name', label: 'Name', keys: 'name', required: true },
+  { id: 'street', label: 'Street', keys: 'street', required: true },
   { id: 'street2', label: 'Street 2', keys: 'street2' },
-  { id: 'city', label: 'City', keys: 'city' },
-  { id: 'state', label: 'State', keys: 'state' },
-  { id: 'zipCode', label: 'Zip Code', keys: 'zipCode' },
-  { id: 'email', label: 'Email', keys: 'email' },
-  { id: 'contactName', label: 'Contact Name', keys: 'contactName' },
-  { id: 'titleOrRole', label: 'Title or Role', keys: 'titleOrRole' },
-  { id: 'phone', label: 'Phone', keys: 'phone' }
+  { id: 'city', label: 'City', keys: 'city', required: true },
+  { id: 'state', label: 'State', keys: 'state', required: true },
+  { id: 'zipCode', label: 'Zip Code', keys: 'zipCode', required: true },
+  { id: 'email', label: 'Email', keys: 'email', required: true },
+  { id: 'contactName', label: 'Contact Name', keys: 'contactName', required: true },
+  { id: 'titleOrRole', label: 'Title or Role', keys: 'titleOrRole', required: true },
+  { id: 'phone', label: 'Phone', keys: 'phone', required: true }
 ];
 
 export default function AddVendor({ onRefresh }) {
@@ -134,6 +136,7 @@ export default function AddVendor({ onRefresh }) {
                 Submit
               </button>
             </div>
+            <div style={{ color: 'red', marginLeft: '10px', textAlign: 'left' }}>* required fields</div>
           </div>
         </div>
       )}
