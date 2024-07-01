@@ -1,10 +1,12 @@
 /* eslint-disable object-curly-newline */
+/* eslint-disable max-len */
 
 import EditIcon from '@mui/icons-material/Edit';
 import React, { useState, useEffect } from 'react';
 import '../Component/Modal.css';
 import { editVendor, getVendorById } from '../apiService';
 import VendorForm from './VendorForm';
+import { validateVendor } from './ValidateVendor';
 
 const fields = [
   { id: 'name', label: 'Name', keys: 'name', required: true },
@@ -36,7 +38,7 @@ export default function EditVendor({ vendor, onRefresh }) {
     phone: ''
   });
 
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const handleResize = () => {
@@ -52,7 +54,7 @@ export default function EditVendor({ vendor, onRefresh }) {
 
   const toggleModal = () => {
     if (modal) {
-      setError(null);
+      setErrors({});
     }
     setModal(!modal);
   };
@@ -66,6 +68,9 @@ export default function EditVendor({ vendor, onRefresh }) {
   };
 
   const handleSubmit = async () => {
+    const validationErrors = validateVendor(currentVendor);
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
     try {
       const vendorToEdit = {
         id: currentVendor.id,
@@ -85,7 +90,7 @@ export default function EditVendor({ vendor, onRefresh }) {
         }
       };
       await editVendor(vendorToEdit);
-      setError(null);
+      setErrors({});
       toggleModal();
       onRefresh();
       setCurrentVendor({
@@ -102,7 +107,7 @@ export default function EditVendor({ vendor, onRefresh }) {
         phone: ''
       });
     } catch (err) {
-      setError(err.response ? err.response.data : err.message);
+      setErrors({ form: err.response ? err.response.data : err.message });
     }
   };
 
@@ -131,7 +136,7 @@ export default function EditVendor({ vendor, onRefresh }) {
       setCurrentVendor(experimentVendor);
       toggleModal();
     } catch (err) {
-      setError(err.message);
+      setErrors({ form: err.message });
     }
   };
 
@@ -156,8 +161,9 @@ export default function EditVendor({ vendor, onRefresh }) {
             <div className='modal-header'>
               <h2>EDIT VENDOR FORM</h2>
             </div>
-            <VendorForm fields={fields} vendor={currentVendor} onChange={handleChange} />
-            {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
+            <VendorForm fields={fields} vendor={currentVendor} onChange={handleChange} errors={errors} />
+            {errors.form && <div className='error-message'>{errors.form}</div>}
+
             <div className='btn-container'>
               <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
