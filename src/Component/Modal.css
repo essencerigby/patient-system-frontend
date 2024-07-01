@@ -218,10 +218,13 @@ h2 {
   flex-direction: column;
   grid-column: 1/3;
   text-align: left;
+  min-height: 50px;
 }
 
-.error {
-  border: 1px solid red;
+.error-message {
+  color: red;
+  font-size: 0.875em;
+  margin-top: 0.25em;
 }
 
 .input-field .error-message {
@@ -230,21 +233,19 @@ h2 {
   margin-top: 0.25em;
 }
 
-.input-flex {
+.input-flex,
+.input-flex-error {
   width: 100%;
   padding-right: 30px;
   padding: 8px;
   box-sizing: border-box;
   border: 1px solid black;
   border-radius: 4px;
+  position: relative;
 }
 
 .input-flex-error {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-  border: 1px solid red;
-  border-radius: 4px;
+ border-color: red;
 }
 
 .input-multi-select {
@@ -454,7 +455,8 @@ textarea {
   resize: none;
 }
 
-.clear-button {
+.clear-button,
+.clear-button-error {
   position: absolute;
   right: 10px;
   top: 70%;
@@ -470,21 +472,11 @@ textarea {
 }
 
 .clear-button-error {
-  position: absolute;
-  right: 10px;
-  top: 70%;
-  transform: translateY(-130%);
-  background: none;
-  border: none;
-  color: #888;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0;
-  margin: 0;
-  line-height: 1;
+  transform: translateY(-150%);
 }
 
-.clear-button:hover {
+.clear-button:hover,
+.clear-button-error:hover {
   color: #000;
 }
 
