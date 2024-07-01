@@ -224,6 +224,7 @@ export default function Modal({
                 Submit
               </button>
             </div>
+            <div style={{ color: 'red', marginLeft: '10px', textAlign: 'left' }}>* required fields</div>
           </div>
         </div>
       )}
