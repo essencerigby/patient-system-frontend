@@ -5,8 +5,9 @@ import React, { useEffect, useState } from 'react';
 import '../index.css';
 import '../Component/Modal.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
-import { getIngredients, createIngredient } from '../apiService';
+import { getIngredients, createIngredient, getIngredientById, deleteIngredient } from '../apiService';
 import ReusableModal from '../Component/ReusableModal';
+import ReusableDeleteModal from '../Component/ReusableDeleteModal';
 import SuccessModal from '../Component/SuccessModal';
 import { ingredientValidation } from '../Validation';
 import { ingredientFormatting } from '../Formatting';
@@ -32,11 +33,26 @@ import TableFilter from '../Component/TableFilter';
 export default function IngredientPage() {
   const columns = [
     { id: 'id', label: 'ID', minWidth: 50, type: 'none', formOrder: 0 },
-    { id: 'name', label: 'Name', minWidth: 100, type: 'text', formOrder: 2 },
+    { id: 'name', label: 'Name', minWidth: 100, type: 'text', formOrder: 2, required: true },
     { id: 'active', label: 'Active', minWidth: 100, type: 'checkbox', formOrder: 1 },
-    { id: 'purchasingCost', label: 'Purchasing Cost', minWidth: 100, type: 'numericDollar', formOrder: 5 },
-    { id: 'amount', label: 'Unit Amount', minWidth: 100, type: 'numeric', formOrder: 3, gridNum: 1 },
-    { id: 'unitOfMeasure', label: 'Unit of Measure', minWidth: 100, type: 'dropdown', formOrder: 4, gridNum: 2 },
+    {
+      id: 'purchasingCost',
+      label: 'Purchasing Cost',
+      minWidth: 100,
+      type: 'numericDollar',
+      formOrder: 5,
+      required: true
+    },
+    { id: 'amount', label: 'Unit Amount', minWidth: 100, type: 'numeric', formOrder: 3, gridNum: 1, required: true },
+    {
+      id: 'unitOfMeasure',
+      label: 'Measurement',
+      minWidth: 100,
+      type: 'dropdown',
+      formOrder: 4,
+      gridNum: 2,
+      required: true
+    },
     { id: 'allergens', label: 'Allergens', minWidth: 100, type: 'multiselect', formOrder: 6 }
   ];
 
@@ -81,11 +97,18 @@ export default function IngredientPage() {
 
   const displayDash = (value) => (value === '' || value.toLowerCase() === 'n/a' ? '-' : value);
 
-  const toggleSuccessModal = () => {
+  const handleOpenSuccessModal = () => {
     if (successModal) {
       setError(null);
     }
-    setSuccessModal(!successModal);
+    setSuccessModal(true);
+  };
+
+  const handleCloseSuccessModal = () => {
+    if (successModal) {
+      setError(null);
+    }
+    setSuccessModal(false);
   };
 
   const rows = [];
@@ -100,10 +123,15 @@ export default function IngredientPage() {
         formatPrice(ingredient.purchasingCost),
         ingredient.amount,
         ingredient.unitOfMeasure,
-        displayDash(formatList(ingredient.allergens))
-        // PLACEHOLDER FOR DeleteIngredient & toggleSuccessModal
-        // <DeleteIngredientModal ingredient={ingredient} onRefresh={handleRefresh}
-        // toggleSuccessModal={toggleSuccessModal} />
+        displayDash(formatList(ingredient.allergens)),
+        <ReusableDeleteModal
+          id={ingredient.id}
+          domain='ingredient'
+          onRefresh={handleRefresh}
+          toggleSuccessModal={handleOpenSuccessModal}
+          getObjectById={getIngredientById}
+          deleteObject={deleteIngredient}
+        />
       ])
     )
   );
@@ -136,7 +164,9 @@ export default function IngredientPage() {
           style={style}
         />
       </div>
-      {successModal && <SuccessModal message='Ingredient was successfully deleted!' onClose={toggleSuccessModal} />}
+      {successModal && (
+        <SuccessModal message='Ingredient was successfully deleted!' onClose={handleCloseSuccessModal} />
+      )}
       <StickyHeadTable columns={columns} rows={rows} />
       <TableFilter
         fields={temporaryFields}

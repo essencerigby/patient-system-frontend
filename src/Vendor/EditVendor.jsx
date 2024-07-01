@@ -1,3 +1,6 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable max-len */
+
 import EditIcon from '@mui/icons-material/Edit';
 import React, { useState, useEffect } from 'react';
 import '../Component/Modal.css';
@@ -6,16 +9,16 @@ import VendorForm from './VendorForm';
 import { validateVendor } from './ValidateVendor';
 
 const fields = [
-  { id: 'name', label: 'Name', keys: 'name' },
-  { id: 'street', label: 'Street', keys: 'street' },
+  { id: 'name', label: 'Name', keys: 'name', required: true },
+  { id: 'street', label: 'Street', keys: 'street', required: true },
   { id: 'street2', label: 'Street 2', keys: 'street2' },
-  { id: 'city', label: 'City', keys: 'city' },
-  { id: 'state', label: 'State', keys: 'state' },
-  { id: 'zipCode', label: 'Zip Code', keys: 'zipCode' },
-  { id: 'email', label: 'Email', keys: 'email' },
-  { id: 'contactName', label: 'Contact Name', keys: 'contactName' },
-  { id: 'titleOrRole', label: 'Title or Role', keys: 'titleOrRole' },
-  { id: 'phone', label: 'Phone', keys: 'phone' }
+  { id: 'city', label: 'City', keys: 'city', required: true },
+  { id: 'state', label: 'State', keys: 'state', required: true },
+  { id: 'zipCode', label: 'Zip Code', keys: 'zipCode', required: true },
+  { id: 'email', label: 'Email', keys: 'email', required: true },
+  { id: 'contactName', label: 'Contact Name', keys: 'contactName', required: true },
+  { id: 'titleOrRole', label: 'Title or Role', keys: 'titleOrRole', required: true },
+  { id: 'phone', label: 'Phone', keys: 'phone', required: true }
 ];
 
 export default function EditVendor({ vendor, onRefresh }) {
@@ -68,7 +71,6 @@ export default function EditVendor({ vendor, onRefresh }) {
     const validationErrors = validateVendor(currentVendor);
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) return;
-
     try {
       const vendorToEdit = {
         id: currentVendor.id,
@@ -159,13 +161,9 @@ export default function EditVendor({ vendor, onRefresh }) {
             <div className='modal-header'>
               <h2>EDIT VENDOR FORM</h2>
             </div>
-            <VendorForm
-              fields={fields}
-              vendor={currentVendor}
-              onChange={handleChange}
-              errors={errors}
-            />
+            <VendorForm fields={fields} vendor={currentVendor} onChange={handleChange} errors={errors} />
             {errors.form && <div className='error-message'>{errors.form}</div>}
+
             <div className='btn-container'>
               <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
@@ -174,6 +172,7 @@ export default function EditVendor({ vendor, onRefresh }) {
                 Submit
               </button>
             </div>
+            <div style={{ color: 'red', marginLeft: '10px', textAlign: 'left' }}>* required fields</div>
           </div>
         </div>
       )}

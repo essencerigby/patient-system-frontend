@@ -19,8 +19,8 @@ const fields = [
     keys: 'active',
     type: 'checkbox'
   },
-  { id: 'name', label: 'Name', keys: 'name' },
-  { id: 'emailAddress', label: 'Email', keys: 'emailAddress' },
+  { id: 'name', label: 'Name', keys: 'name', required: true },
+  { id: 'emailAddress', label: 'Email', keys: 'emailAddress', required: true },
   { id: 'lifetimeSpent', label: 'Lifetime Spent', keys: 'lifetimeSpent' }
 ];
 export default function EditCustomerModal({ customer, onRefresh }) {
@@ -156,6 +156,17 @@ export default function EditCustomerModal({ customer, onRefresh }) {
     }
   };
 
+  const handleCancel = () => {
+    setCurrentCustomer({}); // Reset Customer to default values
+    toggleModal(); // Toggle modal visibility
+    setError(null); // Resets errors to initial values
+    setValidationErrors({
+      nameError: '',
+      emailError: '',
+      lifetimeSpentError: ''
+    });
+  };
+
   if (modal) {
     document.body.classList.add('active-modal');
   } else {
@@ -185,13 +196,14 @@ export default function EditCustomerModal({ customer, onRefresh }) {
             />
             {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
             <div className='btn-container'>
-              <button type='button' className='close-modal' onClick={toggleModal}>
+              <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
               </button>
               <button type='submit' className='submit-close-modal' onClick={handleSubmit}>
                 Submit
               </button>
             </div>
+            <div style={{ color: 'red', marginLeft: '10px', textAlign: 'left' }}>* required fields</div>
           </div>
         </div>
       )}
