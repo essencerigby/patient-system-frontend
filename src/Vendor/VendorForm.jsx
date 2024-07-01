@@ -55,13 +55,22 @@ const stateAbbreviations = [
   'WY'
 ];
 
-function InputField({ id, label, value, onChange, onClear, error }) {
+function InputField({ id, label, value, onChange, onClear, error, required }) {
   const inputClassName = error ? 'input-flex-error' : 'input-flex';
+
+  const renderRequired = () => {
+    if (required) {
+      return <span style={{ color: 'red' }}> *</span>;
+    }
+    return null;
+  };
 
   if (id === 'state') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 1 }}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <select className={inputClassName} id={id} value={value} onChange={onChange}>
           <option value=''>Select State</option>
           {stateAbbreviations.map((state) => (
@@ -78,10 +87,17 @@ function InputField({ id, label, value, onChange, onClear, error }) {
   if (id === 'zipCode') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 2 }}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <input className={inputClassName} id={id} type='text' value={value} onChange={onChange} />
         {value && (
-          <button type='button' className={error ? 'clear-button-error' : 'clear-button'} onClick={() => onClear(id)} style={error ? { transform: 'translateY(-230%)' } : { transform: 'translateY(-40%)' }}>
+          <button
+            type='button'
+            className={error ? 'clear-button-error' : 'clear-button'}
+            onClick={() => onClear(id)}
+            style={error ? { transform: 'translateY(-230%)' } : { transform: 'translateY(-40%)' }}
+          >
             X
           </button>
         )}
@@ -92,10 +108,17 @@ function InputField({ id, label, value, onChange, onClear, error }) {
   if (id === 'contactName') {
     return (
       <div className={`input-field ${id}`}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <input className={inputClassName} id={id} type='text' value={value} onChange={onChange} />
         {value && (
-          <button type='button' className={error ? 'clear-button-error' : 'clear-button'} onClick={() => onClear(id)} style={error ? { transform: 'translateY(-220%)' } : { transform: 'translateY(-40%)' }}>
+          <button
+            type='button'
+            className={error ? 'clear-button-error' : 'clear-button'}
+            onClick={() => onClear(id)}
+            style={error ? { transform: 'translateY(-220%)' } : { transform: 'translateY(-40%)' }}
+          >
             X
           </button>
         )}
@@ -106,10 +129,17 @@ function InputField({ id, label, value, onChange, onClear, error }) {
   if (id === 'phone') {
     return (
       <div className={`input-field ${id}`}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <input className={inputClassName} id={id} type='text' value={value} onChange={onChange} />
         {value && (
-          <button type='button' className={error ? 'clear-button-error' : 'clear-button'} onClick={() => onClear(id)} style={error ? { transform: 'translateY(-220%)' } : { transform: 'translateY(-40%)' }}>
+          <button
+            type='button'
+            className={error ? 'clear-button-error' : 'clear-button'}
+            onClick={() => onClear(id)}
+            style={error ? { transform: 'translateY(-220%)' } : { transform: 'translateY(-40%)' }}
+          >
             X
           </button>
         )}
@@ -120,7 +150,9 @@ function InputField({ id, label, value, onChange, onClear, error }) {
 
   return (
     <div className={`input-field ${id}`}>
-      <label htmlFor={id}>{label}:</label>
+      <label htmlFor={id}>
+        {label}:{renderRequired()}
+      </label>
       <input
         className={inputClassName}
         id={id}
@@ -161,6 +193,7 @@ export default function VendorForm({ fields, vendor, onChange, errors }) {
           onChange={onChange}
           onClear={handleClear}
           error={errors && errors[field.id]}
+          required={field.required}
         />
       ))}
     </form>

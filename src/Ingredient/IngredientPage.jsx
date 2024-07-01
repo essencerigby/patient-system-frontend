@@ -32,13 +32,27 @@ import { ingredientFormatting } from '../Formatting';
 export default function IngredientPage() {
   const columns = [
     { id: 'id', label: 'ID', minWidth: 50, type: 'none', formOrder: 0 },
-    { id: 'name', label: 'Name', minWidth: 100, type: 'text', formOrder: 2 },
+    { id: 'name', label: 'Name', minWidth: 100, type: 'text', formOrder: 2, required: true },
     { id: 'active', label: 'Active', minWidth: 100, type: 'checkbox', formOrder: 1 },
-    { id: 'purchasingCost', label: 'Purchasing Cost', minWidth: 100, type: 'numericDollar', formOrder: 5 },
-    { id: 'amount', label: 'Unit Amount', minWidth: 100, type: 'numeric', formOrder: 3, gridNum: 1 },
-    { id: 'unitOfMeasure', label: 'Unit of Measure', minWidth: 100, type: 'dropdown', formOrder: 4, gridNum: 2 },
-    { id: 'allergens', label: 'Allergens', minWidth: 100, type: 'multiselect', formOrder: 6 },
-    { id: 'deleteIcon', label: '', minWidth: 30, type: 'none', formOrder: 0 }
+    {
+      id: 'purchasingCost',
+      label: 'Purchasing Cost',
+      minWidth: 100,
+      type: 'numericDollar',
+      formOrder: 5,
+      required: true
+    },
+    { id: 'amount', label: 'Unit Amount', minWidth: 100, type: 'numeric', formOrder: 3, gridNum: 1, required: true },
+    {
+      id: 'unitOfMeasure',
+      label: 'Measurement',
+      minWidth: 100,
+      type: 'dropdown',
+      formOrder: 4,
+      gridNum: 2,
+      required: true
+    },
+    { id: 'allergens', label: 'Allergens', minWidth: 100, type: 'multiselect', formOrder: 6 }
   ];
 
   const [ingredients, setIngredients] = useState([]);
