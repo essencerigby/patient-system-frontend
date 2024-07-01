@@ -1,9 +1,9 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable operator-linebreak */
 import React from 'react';
 
-function InputField({
-  id, label, value, onChange, onClear, validationErrors
-}) {
-  const { nameError, emailError } = validationErrors;
+function InputField({ id, label, value, onChange, onClear, validationErrors }) {
+  const { nameError, emailError, lifetimeSpentError } = validationErrors;
 
   if (id === 'active') {
     return (
@@ -19,27 +19,27 @@ function InputField({
   // Uses conditional rendering using email validation results from NewCustomerModal
   if (id === 'emailAddress') {
     return (
-      <div className={`input-field ${id}`}>
+      <div className={`input-field ${id}`} id={id}>
         <label htmlFor={id}>{label}:</label>
         {emailError.length === 0 && (
-        <input
-          className='input-flex'
-          id={id}
-          type='text'
-          value={value}
-          onChange={onChange}
-          style={{ position: 'relative' }}
-        />
+          <input
+            className='input-flex'
+            id={id}
+            type='text'
+            value={value}
+            onChange={onChange}
+            style={{ position: 'relative' }}
+          />
         )}
         {emailError && (
-        <input
-          className='input-flex-error'
-          id={id}
-          type='text'
-          value={value}
-          onChange={onChange}
-          style={{ position: 'relative' }}
-        />
+          <input
+            className='input-flex-error'
+            id={id}
+            type='text'
+            value={value}
+            onChange={onChange}
+            style={{ position: 'relative' }}
+          />
         )}
         {value && emailError.length === 0 && (
           <button type='button' className='clear-button' onClick={() => onClear(id)}>
@@ -52,6 +52,47 @@ function InputField({
           </button>
         )}
         {emailError && <div className='error-message'>{emailError}</div>}
+      </div>
+    );
+  }
+  // Uses conditional rendering using lifetimeSpent validation results from EditCustomerModal
+  if (id === 'lifetimeSpent') {
+    return (
+      <div className={`input-field ${id}`} id={id}>
+        <label htmlFor={id}>{label}:</label>
+        <div className='input-wrapper'>
+          {lifetimeSpentError.length === 0 && (
+            <input
+              className='input-flex'
+              id={id}
+              type='text'
+              value={value}
+              onChange={onChange}
+              style={{ position: 'relative' }}
+            />
+          )}
+        </div>
+        {lifetimeSpentError && (
+          <input
+            className='input-flex'
+            id={id}
+            type='text'
+            value={value}
+            onChange={onChange}
+            style={{ position: 'relative' }}
+          />
+        )}
+        {value && lifetimeSpentError.length === 0 && (
+          <button type='button' className='clear-button' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
+        {value && lifetimeSpentError && (
+          <button type='button' className='clear-button-error' onClick={() => onClear(id)}>
+            X
+          </button>
+        )}
+        {lifetimeSpentError && <div className='error-message'>{lifetimeSpentError}</div>}
       </div>
     );
   }
@@ -81,28 +122,26 @@ function InputField({
         />
       )}
       {value && nameError.length === 0 && (
-      <button type='button' className='clear-button' onClick={() => onClear(id)}>
-        X
-      </button>
+        <button type='button' className='clear-button' onClick={() => onClear(id)}>
+          X
+        </button>
       )}
       {value && nameError && (
-      <button type='button' className='clear-button-error' onClick={() => onClear(id)}>
-        X
-      </button>
+        <button type='button' className='clear-button-error' onClick={() => onClear(id)}>
+          X
+        </button>
       )}
       {nameError && <div className='error-message'>{nameError}</div>}
     </div>
   );
 }
 
-export default function CustomerForm({
-  fields, onChange, customer, validationErrors
-}) {
+export default function CustomerForm({ fields, onChange, customer, validationErrors }) {
   const handleClear = (fieldKeys) => {
     const event = {
       target: {
         id: fieldKeys,
-        value: ''
+        value: '' // Clear the field by setting value to empty string
       }
     };
     onChange(event);

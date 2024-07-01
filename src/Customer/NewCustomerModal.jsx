@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable object-curly-newline */
 
 import React, { useState } from 'react';
 import '../Component/Modal.css';
@@ -9,7 +10,10 @@ import CustomerForm from './CustomerForm';
 // Array of fields for New Customer Modal.
 const fields = [
   {
-    id: 'active', label: 'Active', keys: 'active', type: 'checkbox'
+    id: 'active',
+    label: 'Active',
+    keys: 'active',
+    type: 'checkbox'
   },
   { id: 'name', label: 'Name', keys: 'name' },
   { id: 'emailAddress', label: 'Email', keys: 'emailAddress' }
@@ -71,9 +75,7 @@ export default function CustomerModal({ onRefresh }) {
 
   // Handles changes to Customer according to values from Modal
   const handleChange = (e) => {
-    const {
-      id, type, checked, value
-    } = e.target;
+    const { id, type, checked, value } = e.target;
     setCustomer((prevValues) => ({
       ...prevValues,
       [id]: type === 'checkbox' ? checked : value
@@ -139,11 +141,7 @@ export default function CustomerModal({ onRefresh }) {
               <button type='button' className='close-modal' onClick={toggleModal}>
                 Cancel
               </button>
-              <button
-                type='submit'
-                className='submit-close-modal'
-                onClick={handleSubmit}
-              >
+              <button type='submit' className='submit-close-modal' onClick={handleSubmit}>
                 Submit
               </button>
             </div>
