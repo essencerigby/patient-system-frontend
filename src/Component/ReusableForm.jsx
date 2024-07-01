@@ -30,14 +30,24 @@ function InputField({
   multiSelectOptions,
   error,
   gridNum,
-  style
+  style,
+  required
 }) {
   const gridStyle = gridNum ? { gridColumn: gridNum } : {};
+
+  const renderRequired = () => {
+    if (required) {
+      return <span style={{ color: 'red' }}> *</span>;
+    }
+    return null;
+  };
 
   if (type === 'text') {
     return (
       <div className={`input-field ${id}`} style={gridStyle}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <input
           className={`${error ? 'input-flex-error' : 'input-flex'}`}
           id={id}
@@ -63,7 +73,9 @@ function InputField({
   if (type === 'textBig') {
     return (
       <div className={`input-field ${id}`} style={gridStyle}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <textarea
           className={`${error ? 'input-flex-error' : 'input-flex'}`}
           id={id}
@@ -82,7 +94,9 @@ function InputField({
   if (type.includes('numeric')) {
     return (
       <div className={`input-field ${id}`} style={gridStyle}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <div className='input-wrapper'>
           <NumericFormat
             className={`${error ? 'input-flex-error' : 'input-flex'}`}
@@ -120,7 +134,7 @@ function InputField({
       <div className={`input-field checkbox-field ${id}`} style={gridStyle}>
         <label htmlFor={id}>
           <input type='checkbox' id={id} checked={value} onChange={onChange} style={{ marginRight: '170px' }} />
-          {label}:
+          {label}:{renderRequired()}
         </label>
       </div>
     );
@@ -128,7 +142,9 @@ function InputField({
   if (type === 'dropdown') {
     return (
       <div className={`input-field ${id}`} style={gridStyle}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <select className={`${error ? 'input-flex-error' : 'input-flex'}`} id={id} value={value} onChange={onChange}>
           <option value=''>Select Type</option>
           {dropDownOptions.map((dropdown) => (
@@ -144,7 +160,9 @@ function InputField({
   if (type === 'multiselect') {
     return (
       <div className={`input-field ${id}`} style={gridStyle}>
-        <label htmlFor={id}>{label}:</label>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
         <select
           className='input-multi-select'
           id={id}
@@ -210,6 +228,7 @@ export default function Form({ fields, object, dropDownOptions, multiSelectOptio
           multiSelectOptions={multiSelectOptions}
           gridNum={field.gridNum}
           style={style}
+          required={field.required}
         />
       ))}
     </form>
