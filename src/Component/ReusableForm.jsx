@@ -131,7 +131,7 @@ function InputField({
   }
   if (type === 'checkbox') {
     return (
-      <div className={`input-field checkbox-field ${id}`} style={gridStyle}>
+      <div className={`input-field checkbox-field ${id}`} style={{ ...gridStyle, minHeight: '30px' }}>
         <label htmlFor={id}>
           <input type='checkbox' id={id} checked={value} onChange={onChange} style={{ marginRight: '170px' }} />
           {label}:{renderRequired()}
