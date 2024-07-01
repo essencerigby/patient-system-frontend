@@ -1,52 +1,140 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function TableSearchByField(props) {
   const [textSearchValue, setSearchValue] = useState('');
   const [checkboxSearchValue, setCheckboxSearchValue] = useState(false);
   const [fieldToFilterBy, setFieldToFilterBy] = useState('id');
+  const [operandToFilterBy, setOperandToFilterBy] = useState('=');
+  const [fieldPaths, setFieldPaths] = useState([]);
+  const [domainToSearch, setDomainToSearch] = useState({});
+
   const {
-    domainToSearch, setDomain, onRefresh, fieldsToSearch, isVendor
+    getDomain, setDomain, onRefresh, fields
   } = props;
+
+  const numericalFields = [
+    'lifetimeSpent',
+    'cost',
+    'markup',
+    'salePrice',
+    'purchasingCost',
+    'unitAmount'
+  ];
+
+  const listFields = [
+    'allergens',
+    'allergenList',
+    'ingredientList'
+  ];
+
+  const checkboxFields = [
+    'active'
+  ];
+
+  const operands = [
+    '=',
+    '>',
+    '<',
+    '>=',
+    '<='
+  ];
+
+  useEffect(() => {
+    const paths = fields
+      .filter((obj) => obj.fieldPath)
+      .map((obj) => ({
+        id: obj.id,
+        fieldPath: obj.fieldPath
+      }));
+    setFieldPaths(paths);
+  }, [fields]);
+
+  const fetchDomain = async () => {
+    try {
+      const domainData = await getDomain();
+      domainData.sort((a, b) => (a.id > b.id ? 1 : -1));
+      setDomainToSearch(domainData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchDomain();
+  });
 
   const handleWordInputChange = (event) => {
     const { value } = event.target;
     setSearchValue(value);
-    onRefresh();
   };
 
   const handleCheckBoxInputChange = (event) => {
     const { checked } = event.target;
     setCheckboxSearchValue(checked);
-    onRefresh();
   };
 
-  const filterDomainByAttribute = (nameValue) => {
+  const filterDomainByField = (value) => {
+    fetchDomain();
+    const fieldPathExists = fieldPaths.some((path) => path.id === fieldToFilterBy);
+    const fieldPathObj = fieldPathExists ? fieldPaths
+      .filter((path) => path.id === fieldToFilterBy)[0] : {};
+    const { fieldPath } = fieldPathObj;
+
     let filteredResults;
-    const wordRegex = new RegExp(`\\b${nameValue}\\b`, 'i');
+    const wordRegex = new RegExp(`\\b${value}\\b`, 'i');
 
-    // filter by ID
-    if (fieldToFilterBy === 'id') {
-      filteredResults = domainToSearch.filter((obj) => wordRegex.test(obj.id));
-    }
+    const dividedFieldPath = fieldPathExists ? fieldPath.split('.') : null;
+    const filteredParts = fieldPathExists ? dividedFieldPath.filter((path) => path !== '') : null;
 
-    // filter By Name
-    if (fieldToFilterBy === 'name') {
-      filteredResults = domainToSearch.filter((obj) => wordRegex.test(obj.name));
-    }
-
-    // filter by Email
-    if (fieldToFilterBy === 'emailAddress') {
-      if (isVendor) {
-        filteredResults = domainToSearch.filter((obj) => wordRegex.test(obj.contact.email));
+    const filterByText = () => {
+      if (fieldPathExists) {
+        filteredResults = domainToSearch
+          .filter((obj) => wordRegex.test(obj[filteredParts[0]][filteredParts[1]]));
       } else {
-        filteredResults = domainToSearch.filter((obj) => wordRegex.test(obj.emailAddress));
+        filteredResults = domainToSearch.filter((obj) => wordRegex.test(obj[fieldToFilterBy]));
       }
-    }
+    };
 
-    // filter by Active
-    if (fieldToFilterBy === 'active') {
+    const filterByNumber = () => {
+      if (operandToFilterBy === '=') {
+        filteredResults = domainToSearch
+          .filter((obj) => Number(obj[fieldToFilterBy]) === Number(textSearchValue));
+      } else if (operandToFilterBy === '>') {
+        filteredResults = domainToSearch
+          .filter((obj) => Number(obj[fieldToFilterBy]) > Number(textSearchValue));
+      } else if (operandToFilterBy === '<') {
+        filteredResults = domainToSearch
+          .filter((obj) => Number(obj[fieldToFilterBy]) < Number(textSearchValue));
+      } else if (operandToFilterBy === '>=') {
+        filteredResults = domainToSearch
+          .filter((obj) => Number(obj[fieldToFilterBy]) >= Number(textSearchValue));
+      } else {
+        filteredResults = domainToSearch
+          .filter((obj) => Number(obj[fieldToFilterBy]) <= Number(textSearchValue));
+      }
+    };
+
+    const filterByCheckbox = () => {
       filteredResults = domainToSearch.filter((obj) => obj.active === checkboxSearchValue);
+    };
+
+    const filterByList = () => {
+      filteredResults = domainToSearch.filter((obj) => {
+        const fieldValues = obj[fieldToFilterBy].map((item) => item.toLowerCase());
+        const lowerCaseValue = value;
+
+        return fieldValues.includes(lowerCaseValue);
+      });
+    };
+
+    if (numericalFields.includes(fieldToFilterBy)) {
+      filterByNumber();
+    } else if (checkboxFields.includes(fieldToFilterBy)) {
+      filterByCheckbox();
+    } else if (listFields.includes(fieldToFilterBy)) {
+      filterByList();
+    } else {
+      filterByText();
     }
 
     setDomain(filteredResults);
@@ -60,7 +148,7 @@ export default function TableSearchByField(props) {
         id='test'
         type='text'
         onChange={(event) => handleWordInputChange(event)}
-        style={{ position: 'relative', width: 200, transform: 'translateX(-5%)' }}
+        style={{ position: 'relative', width: 200, transform: 'translateX(-11%)' }}
       />
       )}
 
@@ -74,15 +162,25 @@ export default function TableSearchByField(props) {
         />
       )}
 
-      <select onChange={(event) => setFieldToFilterBy(event.target.value)}>
-        {fieldsToSearch.map((field) => (
+      {numericalFields.includes(fieldToFilterBy) && (
+      <select style={{ position: 'relative', width: 45, transform: 'translateX(-25%)' }} onChange={(event) => { setOperandToFilterBy(event.target.value); }}>
+        {operands.map((operand) => (
+          <option key={operand} value={operand}>
+            {operand}
+          </option>
+        ))}
+      </select>
+      )}
+
+      <select onChange={(event) => { setFieldToFilterBy(event.target.value); }}>
+        {fields.map((field) => (
           <option key={field.id} value={field.id}>
             {field.label}
           </option>
         ))}
       </select>
 
-      <button type='button' style={{ transform: 'translateX(10%)' }} className='btn-modal' onClick={() => { filterDomainByAttribute(textSearchValue); }}>
+      <button type='button' style={{ transform: 'translateX(10%)' }} className='btn-modal' onClick={() => { filterDomainByField(textSearchValue); }}>
         <strong>Search</strong>
       </button>
       <button type='button' style={{ transform: 'translateX(15%)' }} className='btn-modal' onClick={() => { onRefresh(); }}>
