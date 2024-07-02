@@ -33,6 +33,7 @@ import ProductModal from './ProductModal';
 import DeleteProductModal from './DeleteProductModal';
 import SuccessModal from '../Component/SuccessModal';
 import EditProductModal from './EditProductModal';
+import TableFilter from '../Component/TableFilter';
 
 export default function ProductPage() {
   // Create column names, id's, minimum width
@@ -50,6 +51,22 @@ export default function ProductPage() {
     { id: 'markup', label: 'Markup', minWidth: 80 },
     { id: 'salePrice', label: 'Sale Price', minWidth: 120 },
     { id: 'deleteIcon', label: '', minWidth: 20 }
+  ];
+
+  const temporaryFields = [
+    { id: 'id', label: 'ID', keys: 'id' },
+    { id: 'name', label: 'Name', keys: 'name' },
+    { id: 'description', label: 'Description', keys: 'description' },
+    { id: 'active On', label: 'Active On', keys: 'active' },
+    { id: 'active Off', label: 'Active Off', keys: 'active' },
+    { id: 'classification', label: 'Classification', keys: 'classification' },
+    { id: 'type', label: 'Type', keys: 'type' },
+    { id: 'vendorId', label: 'Vendor ID', keys: 'vendorId' },
+    { id: 'ingredientsList', label: 'Ingredients List', keys: 'ingredientList' },
+    { id: 'allergenList', label: 'Allergen List', keys: 'allergenList' },
+    { id: 'cost', label: 'Cost', keys: 'cost' },
+    { id: 'markup', label: 'Markup', keys: 'markup' },
+    { id: 'salePrice', label: 'Sale Price', keys: 'salePrice' }
   ];
 
   const [products, setProducts] = useState([]);
@@ -144,6 +161,13 @@ export default function ProductPage() {
       </div>
       {successModal && <SuccessModal message='Product was successfully deleted!' onClose={toggleSuccessModal} />}
       <StickyHeadTable columns={columns} rows={rows} />
+      <TableFilter
+        fields={temporaryFields}
+        getDomain={getProducts}
+        setDomain={setProducts}
+        setError={setError}
+        onRefresh={handleRefresh}
+      />
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
     </div>
   );

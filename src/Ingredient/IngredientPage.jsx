@@ -11,6 +11,7 @@ import ReusableDeleteModal from '../Component/ReusableDeleteModal';
 import SuccessModal from '../Component/SuccessModal';
 import { ingredientValidation } from '../Validation';
 import { ingredientFormatting } from '../Formatting';
+import TableFilter from '../Component/TableFilter';
 
 /**
  *  * IngredientPage Component
@@ -53,6 +54,17 @@ export default function IngredientPage() {
       required: true
     },
     { id: 'allergens', label: 'Allergens', minWidth: 100, type: 'multiselect', formOrder: 6 }
+  ];
+
+  const temporaryFields = [
+    { id: 'id', label: 'ID' },
+    { id: 'active On', label: 'Active On', keys: 'active' },
+    { id: 'active Off', label: 'Active Off', keys: 'active' },
+    { id: 'name', label: 'Name', keys: 'name' },
+    { id: 'purchasingCost', label: 'Purchasing Cost', key: 'purchasingCost' },
+    { id: 'amount', label: 'Unit Amount', keys: 'amount' },
+    { id: 'unitOfMeasurement', label: 'Unit of Measurement', keys: 'unitOfMeasurement' },
+    { id: 'allergens', label: 'Allergens', keys: 'allergens' }
   ];
 
   const [ingredients, setIngredients] = useState([]);
@@ -156,6 +168,14 @@ export default function IngredientPage() {
         <SuccessModal message='Ingredient was successfully deleted!' onClose={handleCloseSuccessModal} />
       )}
       <StickyHeadTable columns={columns} rows={rows} />
+      <TableFilter
+        fields={temporaryFields}
+        domainToSearch={ingredients}
+        getDomain={getIngredients}
+        setDomain={setIngredients}
+        setError={setError}
+        onRefresh={handleRefresh}
+      />
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
     </div>
   );

@@ -32,6 +32,7 @@ import NewCustomerModal from './NewCustomerModal';
 import { getCustomers } from '../apiService';
 import DeleteCustomer from './DeleteCustomer';
 import SuccessModal from '../Component/SuccessModal';
+import TableFilter from '../Component/TableFilter';
 
 export default function CustomerPage() {
   const columns = [
@@ -82,7 +83,7 @@ export default function CustomerPage() {
 
   const rows = [];
 
-  // Create rows from the product array
+  // Create rows from the customer array
   customers.map((customer) =>
     rows.push(
       createRow(
@@ -106,6 +107,16 @@ export default function CustomerPage() {
     rows.push(createRow(columns, Array(columns.length).fill('')));
   }
 
+  const fields = [
+    { id: 'id', label: 'ID' },
+    { id: 'active On', label: 'Active On' },
+    { id: 'active Off', label: 'Active Off' },
+    { id: 'name', label: 'Customer Name' },
+    { id: 'emailAddress', label: 'Email' },
+    { id: 'lifetimeSpent', label: 'Lifetime Spent' },
+    { id: 'customerSince', label: 'Customer Since' }
+  ];
+
   return (
     <>
       <div className='pages-table'>
@@ -114,6 +125,13 @@ export default function CustomerPage() {
           <NewCustomerModal onRefresh={handleRefresh} />
         </div>
         <StickyHeadTable columns={columns} rows={rows} />
+        <TableFilter
+          fields={fields}
+          getDomain={getCustomers}
+          setDomain={setCustomers}
+          setError={setError}
+          onRefresh={handleRefresh}
+        />
         {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
       </div>
       {successModal && <SuccessModal message='Customer was successfully deleted!' onClose={handleSuccessModal} />}

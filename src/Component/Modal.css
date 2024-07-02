@@ -475,6 +475,34 @@ textarea {
   transform: translateY(-150%);
 }
 
+.search-table {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.search-table-text {
+  border: 1px solid black;
+  width: 200px;
+  height: 35px;
+  margin-right: 10px;
+}
+
+.search-table-numerical-dropdown {
+  border: 1px solid black;
+  margin-right: 10px;
+  width: 45px;
+  height: 35px;
+}
+
+.search-table-columns-dropdown {
+  border: 1px solid black;
+  width: 200px;
+  height: 35px;
+  margin-right: 10px;
+}
+
 .clear-button:hover,
 .clear-button-error:hover {
   color: #000;
