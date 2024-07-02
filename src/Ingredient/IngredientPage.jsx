@@ -53,7 +53,8 @@ export default function IngredientPage() {
       gridNum: 2,
       required: true
     },
-    { id: 'allergens', label: 'Allergens', minWidth: 100, type: 'multiselect', formOrder: 6 }
+    { id: 'allergens', label: 'Allergens', minWidth: 100, type: 'multiselect', formOrder: 6 },
+    { id: 'deleteIcon', label: '', minWidth: 40, type: 'none', formOrder: 0 }
   ];
 
   const temporaryFields = [
@@ -118,8 +119,8 @@ export default function IngredientPage() {
     rows.push(
       createRow(columns, [
         ingredient.id,
-        <input type='checkbox' checked={ingredient.active} onChange={() => {}} disabled id={ingredient.id} />,
         ingredient.name,
+        <input type='checkbox' checked={ingredient.active} onChange={() => {}} disabled id={ingredient.id} />,
         formatPrice(ingredient.purchasingCost),
         ingredient.amount,
         ingredient.unitOfMeasure,
