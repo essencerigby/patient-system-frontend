@@ -39,7 +39,6 @@ import React, { useState, useEffect } from 'react';
  */
 export default function TableFilter(props) {
   const [textSearchValue, setSearchValue] = useState('');
-  /*  const [checkboxSearchValue, setCheckboxSearchValue] = useState(false); */
   const [fieldToFilterBy, setFieldToFilterBy] = useState('id');
   const [operandToFilterBy, setOperandToFilterBy] = useState('=');
   const [fieldPaths, setFieldPaths] = useState([]);
