@@ -118,8 +118,8 @@ export default function IngredientPage() {
     rows.push(
       createRow(columns, [
         ingredient.id,
-        <input type='checkbox' checked={ingredient.active} onChange={() => {}} disabled id={ingredient.id} />,
         ingredient.name,
+        <input type='checkbox' checked={ingredient.active} onChange={() => {}} disabled id={ingredient.id} />,
         formatPrice(ingredient.purchasingCost),
         ingredient.amount,
         ingredient.unitOfMeasure,
