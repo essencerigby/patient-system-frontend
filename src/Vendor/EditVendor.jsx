@@ -10,8 +10,8 @@ import { validateVendor } from './ValidateVendor';
 
 const fields = [
   { id: 'name', label: 'Name', keys: 'name', required: true },
-  { id: 'street', label: 'Street', keys: 'street', required: true },
-  { id: 'street2', label: 'Street 2', keys: 'street2' },
+  { id: 'street', label: 'Street Address', keys: 'street', required: true },
+  { id: 'street2', label: 'Apt, Suite, etc. ', keys: 'street2' },
   { id: 'city', label: 'City', keys: 'city', required: true },
   { id: 'state', label: 'State', keys: 'state', required: true },
   { id: 'zipCode', label: 'Zip Code', keys: 'zipCode', required: true },
