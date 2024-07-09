@@ -1,20 +1,24 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable max-len */
+
 import EditIcon from '@mui/icons-material/Edit';
 import React, { useState, useEffect } from 'react';
 import '../Component/Modal.css';
 import { editVendor, getVendorById } from '../apiService';
 import VendorForm from './VendorForm';
+import { validateVendor } from './ValidateVendor';
 
 const fields = [
-  { id: 'name', label: 'Name', keys: 'name' },
-  { id: 'street', label: 'Street', keys: 'street' },
-  { id: 'street2', label: 'Street 2', keys: 'street2' },
-  { id: 'city', label: 'City', keys: 'city' },
-  { id: 'state', label: 'State', keys: 'state' },
-  { id: 'zipCode', label: 'Zip Code', keys: 'zipCode' },
-  { id: 'email', label: 'Email', keys: 'email' },
-  { id: 'contactName', label: 'Contact Name', keys: 'contactName' },
-  { id: 'titleOrRole', label: 'Title or Role', keys: 'titleOrRole' },
-  { id: 'phone', label: 'Phone', keys: 'phone' }
+  { id: 'name', label: 'Name', keys: 'name', required: true },
+  { id: 'street', label: 'Street Address', keys: 'street', required: true },
+  { id: 'street2', label: 'Apt, Suite, etc. ', keys: 'street2' },
+  { id: 'city', label: 'City', keys: 'city', required: true },
+  { id: 'state', label: 'State', keys: 'state', required: true },
+  { id: 'zipCode', label: 'Zip Code', keys: 'zipCode', required: true },
+  { id: 'email', label: 'Email', keys: 'email', required: true },
+  { id: 'contactName', label: 'Contact Name', keys: 'contactName', required: true },
+  { id: 'titleOrRole', label: 'Title or Role', keys: 'titleOrRole', required: true },
+  { id: 'phone', label: 'Phone', keys: 'phone', required: true }
 ];
 
 export default function EditVendor({ vendor, onRefresh }) {
@@ -34,7 +38,7 @@ export default function EditVendor({ vendor, onRefresh }) {
     phone: ''
   });
 
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,7 +54,7 @@ export default function EditVendor({ vendor, onRefresh }) {
 
   const toggleModal = () => {
     if (modal) {
-      setError(null);
+      setErrors({});
     }
     setModal(!modal);
   };
@@ -64,6 +68,9 @@ export default function EditVendor({ vendor, onRefresh }) {
   };
 
   const handleSubmit = async () => {
+    const validationErrors = validateVendor(currentVendor);
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
     try {
       const vendorToEdit = {
         id: currentVendor.id,
@@ -83,7 +90,7 @@ export default function EditVendor({ vendor, onRefresh }) {
         }
       };
       await editVendor(vendorToEdit);
-      setError(null);
+      setErrors({});
       toggleModal();
       onRefresh();
       setCurrentVendor({
@@ -100,7 +107,7 @@ export default function EditVendor({ vendor, onRefresh }) {
         phone: ''
       });
     } catch (err) {
-      setError(err.response ? err.response.data : err.message);
+      setErrors({ form: err.response ? err.response.data : err.message });
     }
   };
 
@@ -129,7 +136,7 @@ export default function EditVendor({ vendor, onRefresh }) {
       setCurrentVendor(experimentVendor);
       toggleModal();
     } catch (err) {
-      setError(err.message);
+      setErrors({ form: err.message });
     }
   };
 
@@ -154,8 +161,9 @@ export default function EditVendor({ vendor, onRefresh }) {
             <div className='modal-header'>
               <h2>EDIT VENDOR FORM</h2>
             </div>
-            <VendorForm fields={fields} vendor={currentVendor} onChange={handleChange} />
-            {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
+            <VendorForm fields={fields} vendor={currentVendor} onChange={handleChange} errors={errors} />
+            {errors.form && <div className='error-message'>{errors.form}</div>}
+
             <div className='btn-container'>
               <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
@@ -164,6 +172,7 @@ export default function EditVendor({ vendor, onRefresh }) {
                 Submit
               </button>
             </div>
+            <div style={{ color: 'red', marginLeft: '10px', textAlign: 'left' }}>* required fields</div>
           </div>
         </div>
       )}

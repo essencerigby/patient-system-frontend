@@ -1,25 +1,29 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import '../Component/Modal.css';
 import { createVendor } from '../apiService';
+import { validateVendor } from './ValidateVendor';
 import VendorForm from './VendorForm';
 
 // Array of fields for the form
 const fields = [
-  { id: 'name', label: 'Name', keys: 'name' },
-  { id: 'street', label: 'Street', keys: 'street' },
-  { id: 'street2', label: 'Street 2', keys: 'street2' },
-  { id: 'city', label: 'City', keys: 'city' },
-  { id: 'state', label: 'State', keys: 'state' },
-  { id: 'zipCode', label: 'Zip Code', keys: 'zipCode' },
-  { id: 'email', label: 'Email', keys: 'email' },
-  { id: 'contactName', label: 'Contact Name', keys: 'contactName' },
-  { id: 'titleOrRole', label: 'Title or Role', keys: 'titleOrRole' },
-  { id: 'phone', label: 'Phone', keys: 'phone' }
+  { id: 'name', label: 'Name', keys: 'name', required: true },
+  { id: 'street', label: 'Street Address', keys: 'street', required: true },
+  { id: 'street2', label: 'Apt, Suite, etc. ', keys: 'street2' },
+  { id: 'city', label: 'City', keys: 'city', required: true },
+  { id: 'state', label: 'State', keys: 'state', required: true },
+  { id: 'zipCode', label: 'Zip Code', keys: 'zipCode', required: true },
+  { id: 'email', label: 'Email', keys: 'email', required: true },
+  { id: 'contactName', label: 'Contact Name', keys: 'contactName', required: true },
+  { id: 'titleOrRole', label: 'Title or Role', keys: 'titleOrRole', required: true },
+  { id: 'phone', label: 'Phone', keys: 'phone', required: true }
 ];
 
 export default function AddVendor({ onRefresh }) {
   const [modal, setModal] = useState(false);
   const [modalWidth, setModalWidth] = useState(Math.min(window.innerWidth * 0.8, 600));
+  const [errors, setErrors] = useState({});
   const [vendor, setVendor] = useState({
     id: '',
     name: '',
@@ -33,8 +37,6 @@ export default function AddVendor({ onRefresh }) {
     titleOrRole: '',
     phone: ''
   });
-
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,7 +52,7 @@ export default function AddVendor({ onRefresh }) {
 
   const toggleModal = () => {
     if (modal) {
-      setError(null); // Reset error when closing the modal
+      setErrors({}); // Reset error when closing the modal
     }
     setModal(!modal); // Toggle modal visibility
   };
@@ -66,6 +68,9 @@ export default function AddVendor({ onRefresh }) {
 
   // This function handles the submission of the vendor form.
   const handleSubmit = async () => {
+    const validationErrors = validateVendor(vendor);
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
     try {
       const vendorToCreate = {
         id: vendor.id,
@@ -85,7 +90,7 @@ export default function AddVendor({ onRefresh }) {
         }
       };
       await createVendor(vendorToCreate);
-      setError(null); // Reset error on successful submission
+      setErrors({}); // Reset error on successful submission
       toggleModal(); // Close the modal after successful submission
       onRefresh(); // Refresh the vendor list after successful submission
       setVendor({
@@ -102,8 +107,14 @@ export default function AddVendor({ onRefresh }) {
         phone: ''
       }); // Resetting the vendor state to its initial empty values after successful submission
     } catch (err) {
-      setError(err.response ? err.response.data : err.message); // Set error if submission fails
+      setErrors({ form: err.response ? err.response.data : err.message }); // Set error if submission fails
     }
+  };
+
+  const handleCancel = () => {
+    setVendor({});
+    setErrors({});
+    toggleModal(); // Toggle modal visibility
   };
 
   if (modal) {
@@ -124,16 +135,18 @@ export default function AddVendor({ onRefresh }) {
             <div className='modal-header'>
               <h2>NEW VENDOR FORM</h2>
             </div>
-            <VendorForm fields={fields} vendor={vendor} onChange={handleChange} />
-            {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
+            <VendorForm fields={fields} vendor={vendor} onChange={handleChange} errors={errors} />
+            {errors.form && <div className='error-message'>{errors.form}</div>}
+
             <div className='btn-container'>
-              <button type='button' className='close-modal' onClick={toggleModal}>
+              <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
               </button>
               <button type='button' className='submit-close-modal' onClick={handleSubmit}>
                 Submit
               </button>
             </div>
+            <div style={{ color: 'red', marginLeft: '10px', textAlign: 'left' }}>* required fields</div>
           </div>
         </div>
       )}

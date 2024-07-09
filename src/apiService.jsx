@@ -103,12 +103,26 @@ export const getCustomers = async () => {
   }
 };
 
+export const createCustomer = async (customerToCreate) => {
+  const response = await axios.post(customersApiUrl, customerToCreate);
+  return response.data;
+};
+
 export const getCustomerById = async (customerId) => {
   try {
     const response = await axios.get(`${customersApiUrl}/${customerId}`);
     return response.data;
   } catch (error) {
     throw Error('Could not fetch customer', error);
+  }
+};
+
+export const editCustomer = async (customerToEdit) => {
+  try {
+    const response = await axios.put(`${customersApiUrl}/${customerToEdit.id}`, customerToEdit);
+    return response.data;
+  } catch (error) {
+    throw Error('Error updating vendor', error);
   }
 };
 
@@ -145,6 +159,11 @@ export const getIngredientById = async (id) => {
   } catch (error) {
     throw Error('Could not fetch ingredient', error);
   }
+};
+
+export const createIngredient = async (ingredientToCreate) => {
+  const response = await axios.post(ingredientsApiUrl, ingredientToCreate);
+  return response.data;
 };
 
 export const editIngredient = async (ingredientToEdit) => {
