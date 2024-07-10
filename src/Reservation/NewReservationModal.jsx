@@ -5,32 +5,32 @@
 import React, { useState } from 'react';
 import '../Component/Modal.css';
 import { createReservation } from '../apiService';
-import CustomerForm from './ReservationForm';
+import ReservationForm from './ReservationForm';
 
-// Array of fields for New Customer Modal.
+// Array of fields for New Reservation Modal.
 const fields = [
+  { id: 'emailAddress', label: 'Email', keys: 'emailAddress', required: true },
   {
-    id: 'active',
-    label: 'Active',
-    keys: 'active',
-    type: 'checkbox',
-    required: false
+    id: 'checkInDate',
+    label: 'Check-in Date',
+    keys: 'checkInDate',
+    type: 'date'
   },
-  { id: 'name', label: 'Name', keys: 'name', required: true },
-  { id: 'emailAddress', label: 'Email', keys: 'emailAddress', required: true }
+  { id: 'numberOfNights', label: 'Number of Nights', keys: 'numberOfNights' }
 ];
 
 export default function ReservationModal({ onRefresh }) {
   const [modal, setModal] = useState(false);
   const [customer, setCustomer] = useState({
-    active: false,
-    name: '',
+    checkInDate: '',
+    numberOfNights: '',
     emailAddress: ''
   });
   const [error, setError] = useState();
   const [validationErrors, setValidationErrors] = useState({
-    nameError: '',
-    emailError: ''
+    checkInDatError: '',
+    emailError: '',
+    numberOfNightsError: ''
   });
 
   // Toggles Modal visibility
@@ -48,19 +48,20 @@ export default function ReservationModal({ onRefresh }) {
   };
 
   // Validates that text fields to ensure they have value and are in the right format.
-  const isFormValid = (customerToValidate) => {
+  const isFormValid = (reservationToValidate) => {
     const errors = {
-      nameError: 'Name must be 50 characters or less.',
-      emailError: 'Must be a valid email.'
+      numberOfNightsError: 'Must be a number greater than 0.',
+      emailError: 'Must be a valid email.',
+      checkInDateError: 'Must be a valid date.'
     };
 
-    if (!customerToValidate.name || customerToValidate.name.length >= 50) {
+    if (!reservationToValidate.name || reservationToValidate.name.length >= 50) {
       errors.nameError = 'Name must be 50 characters or less.';
     } else {
       errors.nameError = '';
     }
 
-    if (!validateEmail(customerToValidate.emailAddress)) {
+    if (!validateEmail(reservationToValidate.emailAddress)) {
       errors.emailError = 'Email must be in x@x.x format.';
     } else {
       errors.emailError = '';
@@ -140,7 +141,7 @@ export default function ReservationModal({ onRefresh }) {
             <div className='modal-header'>
               <h2>NEW RESERVATION FORM</h2>
             </div>
-            <CustomerForm
+            <ReservationForm
               fields={fields}
               customer={customer}
               onChange={handleChange}

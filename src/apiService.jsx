@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const vendorsApiUrl = 'http://localhost:8085/vendors';
 const productsApiUrl = 'http://localhost:8085/products';
-const customersApiUrl = 'http://localhost:8085/customers';
+const reservationsApiUrl = 'http://localhost:8085/reservations';
 const ingredientsApiUrl = 'http://localhost:8085/ingredients';
 
 // Retrieving vendor instance(s) from the backend
@@ -96,7 +96,7 @@ export const deleteProduct = async (productToDelete) => {
  */
 export const getAll = async () => {
   try {
-    const response = await axios.get(customersApiUrl);
+    const response = await axios.get(reservationsApiUrl);
     return response.data;
   } catch (error) {
     throw Error('Error fetching customers', error);
@@ -104,13 +104,13 @@ export const getAll = async () => {
 };
 
 export const createReservation = async (reservationToCreate) => {
-  const response = await axios.post(customersApiUrl, reservationToCreate);
+  const response = await axios.post(reservationsApiUrl, reservationToCreate);
   return response.data;
 };
 
-export const getById = async (customerId) => {
+export const getById = async (reservationId) => {
   try {
-    const response = await axios.get(`${customersApiUrl}/${customerId}`);
+    const response = await axios.get(`${reservationsApiUrl}/${reservationId}`);
     return response.data;
   } catch (error) {
     throw Error('Could not fetch customer', error);
@@ -119,7 +119,7 @@ export const getById = async (customerId) => {
 
 export const updateReservation = async (reservationToEdit) => {
   try {
-    const response = await axios.put(`${customersApiUrl}/${reservationToEdit.id}`, reservationToEdit);
+    const response = await axios.put(`${reservationsApiUrl}/${reservationToEdit.id}`, reservationToEdit);
     return response.data;
   } catch (error) {
     throw Error('Error updating vendor', error);
@@ -128,7 +128,7 @@ export const updateReservation = async (reservationToEdit) => {
 
 export const deleteReservation = async (reservationId) => {
   try {
-    const response = await axios.delete(`${customersApiUrl}/${reservationId}`);
+    const response = await axios.delete(`${reservationsApiUrl}/${reservationId}`);
     return response.data;
   } catch (error) {
     throw new Error('Error deleting customer', error);

@@ -37,11 +37,9 @@ import TableFilter from '../Component/TableFilter';
 export default function ReservationPage() {
   const columns = [
     { id: 'id', label: 'ID', minWidth: 40 },
-    { id: 'active', label: 'Active', minWidth: 40 },
-    { id: 'name', label: 'Customer Name', minWidth: 100 },
-    { id: 'email', label: 'Email', minWidth: 100 },
-    { id: 'lifetimeSpent', label: 'Lifetime Spent', minWidth: 100 },
-    { id: 'customerSince', label: 'Customer Since', minWidth: 100 },
+    { id: 'guestEmail', label: 'Guest Email', minWidth: 100 },
+    { id: 'checkInDate', label: 'Check-in Date', minWidth: 40 },
+    { id: 'numberOfNights', label: 'Number Of Nights', minWidth: 40 },
     { id: 'deleteIcon', minWidth: 20 }
   ];
 
@@ -49,9 +47,6 @@ export default function ReservationPage() {
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-
-  // Formats lifetimeSpent as a currency string with two decimal places
-  const formatLifetimeSpent = (lifetimeSpent) => `$${Number(lifetimeSpent).toFixed(2)}`;
 
   // Get all customers from the database and store it in customers array
   useEffect(() => {
@@ -90,11 +85,9 @@ export default function ReservationPage() {
         columns,
         [
           <UpdateReservationModal customer={customer} onRefresh={handleRefresh} />,
-          <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
-          customer.name,
-          customer.emailAddress,
-          formatLifetimeSpent(customer.lifetimeSpent || '0.00'),
-          customer.customerSince,
+          customer.guestEmail,
+          customer.checkInDate,
+          customer.numberOfNights,
           <DeleteReservation customer={customer} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
         ],
         customer.id
@@ -108,13 +101,16 @@ export default function ReservationPage() {
   }
 
   const fields = [
-    { id: 'id', label: 'ID' },
-    { id: 'active On', label: 'Active On' },
-    { id: 'active Off', label: 'Active Off' },
-    { id: 'name', label: 'Customer Name' },
-    { id: 'emailAddress', label: 'Email' },
-    { id: 'lifetimeSpent', label: 'Lifetime Spent' },
-    { id: 'customerSince', label: 'Customer Since' }
+    {
+      id: 'guestEmail', label: 'Email', keys: 'guestEmail', required: true
+    },
+    {
+      id: 'checkInDate',
+      label: 'Check-in Date',
+      keys: 'checkInDate',
+      type: 'date'
+    },
+    { id: 'numberOfNights', label: 'Number of Nights', keys: 'numberOfNights' }
   ];
 
   return (
@@ -134,7 +130,7 @@ export default function ReservationPage() {
         />
         {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
       </div>
-      {successModal && <SuccessModal message='Customer was successfully deleted!' onClose={handleSuccessModal} />}
+      {successModal && <SuccessModal message='Reservation was successfully deleted!' onClose={handleSuccessModal} />}
     </>
   );
 }

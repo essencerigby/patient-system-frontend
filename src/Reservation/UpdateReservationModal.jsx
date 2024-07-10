@@ -9,33 +9,33 @@ import EditIcon from '@mui/icons-material/Edit';
 import React, { useState } from 'react';
 import '../Component/Modal.css';
 import { updateReservation, getById } from '../apiService';
-import CustomerForm from './ReservationForm';
+import ReservationForm from './ReservationForm';
 
-// Array of fields for New Customer Modal.
+// Array of fields for New Reservation Modal.
 const fields = [
   { id: 'emailAddress', label: 'Email', keys: 'emailAddress', required: true },
   {
-    id: 'checkin',
+    id: 'checkInDate',
     label: 'Check-in Date',
-    keys: 'checkin',
+    keys: 'checkInDate',
     type: 'date'
   },
-  { id: 'numOfNights', label: 'Number of Nights', keys: 'numOfNights' }
+  { id: 'numberOfNights', label: 'Number of Nights', keys: 'numberOfNights' }
 ];
 export default function UpdateReservationModal({ customer, onRefresh }) {
   const [modal, setModal] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState({
     id: '',
-    checkin: '',
+    checkInDate: '',
     emailAddress: '',
-    numOfNights: '0'
+    numberOfNights: '0'
   });
 
   const [error, setError] = useState(null);
   const [validationErrors, setValidationErrors] = useState({
-    checkinError: '',
+    checkInDateError: '',
     emailError: '',
-    numOfNightsError: ''
+    numberOfNightsError: ''
   });
 
   // Validates that provided email address is in x@x.x format.
@@ -47,16 +47,10 @@ export default function UpdateReservationModal({ customer, onRefresh }) {
   // Validates that text fields to ensure they have value and are in the right format.
   const isFormValid = (reservationToValidate) => {
     const errors = {
-      checkinError: 'Name must be a valid date.',
+      checkInDateError: 'Must be a valid date.',
       emailError: 'Must be a valid email.',
-      numOfNightsError: 'Must be a valid number, greater than 0.'
+      numberOfNightsError: 'Must be a valid number, greater than 0.'
     };
-
-    if (!reservationToValidate.name || reservationToValidate.name.length >= 50) {
-      errors.nameError = 'Name must be 50 characters or less.';
-    } else {
-      errors.nameError = '';
-    }
 
     if (!validateEmail(reservationToValidate.emailAddress)) {
       errors.emailError = 'Email must be in x@x.x format.';
@@ -65,22 +59,22 @@ export default function UpdateReservationModal({ customer, onRefresh }) {
     }
 
     const datePattern = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{4})$/;
-    if (!datePattern.test(reservationToValidate.numOfNights)) {
-      errors.numOfNightsError = 'Must be numbers in the following format: X.XX';
+    if (!datePattern.test(reservationToValidate.checkInDate)) {
+      errors.checkInDateError = 'Date must be in the following format: mm/dd/yyyy';
     } else {
-      errors.numOfNightsError = '';
+      errors.checkInDateError = '';
     }
 
-    if (reservationToValidate.numOfNights < 0.0) {
-      errors.numOfNightsError = 'Number of Nights must be a non-negative value.';
+    if (reservationToValidate.numberOfNights < 0) {
+      errors.numberOfNightsError = 'Number of Nights must be a non-negative value greater than 0.';
     } else {
-      errors.numOfNightsError = '';
+      errors.numberOfNightsError = '';
     }
 
     setValidationErrors({
-      nameError: errors.nameError,
+      checkInDateError: errors.checkInDateError,
       emailError: errors.emailError,
-      numOfNightsError: errors.numOfNightsError
+      numberOfNightsError: errors.numberOfNightsError
     }); // sets validation errors for text fields
 
     return errors;
@@ -106,15 +100,15 @@ export default function UpdateReservationModal({ customer, onRefresh }) {
   // Edit a customer and performs a put request with updated customer.
   const handleSubmit = async () => {
     const errors = isFormValid(currentCustomer);
-    if (errors.emailError.length !== 0 || errors.checkinError.length !== 0 || errors.numOfNightsError.length !== 0) {
+    if (errors.emailError.length !== 0 || errors.checkInDateError.length !== 0 || errors.numberOfNightsError.length !== 0) {
       return;
     }
     try {
       const reservationToEdit = {
         id: currentCustomer.id,
         emailAddress: currentCustomer.emailAddress,
-        checkin: currentCustomer.checkin,
-        numOfNights: currentCustomer.numOfNights === '' ? '0' : currentCustomer.numOfNights
+        checkInDate: currentCustomer.checkInDate,
+        numberOfNights: currentCustomer.numberOfNights === '' ? '0' : currentCustomer.numberOfNights
       };
       await updateReservation(reservationToEdit);
       setError(null);
@@ -124,9 +118,9 @@ export default function UpdateReservationModal({ customer, onRefresh }) {
       // Reset Customer to default values
       setCurrentCustomer({
         id: '',
-        checkinError: '',
+        checkInDateError: '',
         emailError: '',
-        numOfNightsError: '0'
+        numberOfNightsError: '0'
       });
     } catch (err) {
       setError(err.response ? err.response.data : err.message); // Set error message on fail
@@ -135,12 +129,11 @@ export default function UpdateReservationModal({ customer, onRefresh }) {
   const handleEditCustomer = async (id) => {
     try {
       const reservationById = await getById(id);
-      const formattednumOfNights = parseFloat(reservationById.numOfNights || '0.00').toFixed(2);
       const experimentReservation = {
         id: reservationById.id,
         emailAddress: reservationById.emailAddress,
-        checkin: reservationById.checkin,
-        numOfNights: formattednumOfNights
+        checkInDate: reservationById.checkInDate,
+        numberOfNights: reservationById.numberOfNights
       };
       setCurrentCustomer(experimentReservation);
 
@@ -156,8 +149,8 @@ export default function UpdateReservationModal({ customer, onRefresh }) {
     setError(null); // Resets errors to initial values
     setValidationErrors({
       emailError: '',
-      checkinError: '',
-      numOfNightsError: ''
+      checkInDateError: '',
+      numberOfNightsError: ''
     });
   };
 
@@ -178,10 +171,10 @@ export default function UpdateReservationModal({ customer, onRefresh }) {
           <div className='overlay' onClick={toggleModal} />
           <div className='modal-content'>
             <div className='modal-header'>
-              <h2>EDIT CUSTOMER FORM</h2>
+              <h2>UPDATE RESERVATION FORM</h2>
             </div>
 
-            <CustomerForm
+            <ReservationForm
               fields={fields}
               customer={currentCustomer}
               onChange={handleChange}
