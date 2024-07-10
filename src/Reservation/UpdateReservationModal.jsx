@@ -8,36 +8,34 @@
 import EditIcon from '@mui/icons-material/Edit';
 import React, { useState } from 'react';
 import '../Component/Modal.css';
-import { editCustomer, getCustomerById } from '../apiService';
-import CustomerForm from './CustomerForm';
+import { updateReservation, getById } from '../apiService';
+import CustomerForm from './ReservationForm';
 
 // Array of fields for New Customer Modal.
 const fields = [
-  {
-    id: 'active',
-    label: 'Active',
-    keys: 'active',
-    type: 'checkbox'
-  },
-  { id: 'name', label: 'Name', keys: 'name', required: true },
   { id: 'emailAddress', label: 'Email', keys: 'emailAddress', required: true },
-  { id: 'lifetimeSpent', label: 'Lifetime Spent', keys: 'lifetimeSpent' }
+  {
+    id: 'checkin',
+    label: 'Check-in Date',
+    keys: 'checkin',
+    type: 'date'
+  },
+  { id: 'numOfNights', label: 'Number of Nights', keys: 'numOfNights' }
 ];
-export default function EditCustomerModal({ customer, onRefresh }) {
+export default function UpdateReservationModal({ customer, onRefresh }) {
   const [modal, setModal] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState({
     id: '',
-    active: false,
-    name: '',
+    checkin: '',
     emailAddress: '',
-    lifetimeSpent: '0.00'
+    numOfNights: '0'
   });
 
   const [error, setError] = useState(null);
   const [validationErrors, setValidationErrors] = useState({
-    nameError: '',
+    checkinError: '',
     emailError: '',
-    lifetimeSpentError: ''
+    numOfNightsError: ''
   });
 
   // Validates that provided email address is in x@x.x format.
@@ -47,42 +45,42 @@ export default function EditCustomerModal({ customer, onRefresh }) {
   };
 
   // Validates that text fields to ensure they have value and are in the right format.
-  const isFormValid = (customerToValidate) => {
+  const isFormValid = (reservationToValidate) => {
     const errors = {
-      nameError: 'Name must be 50 characters or less.',
+      checkinError: 'Name must be a valid date.',
       emailError: 'Must be a valid email.',
-      lifetimeSpentError: 'Must be a valid amount, greater than 0.'
+      numOfNightsError: 'Must be a valid number, greater than 0.'
     };
 
-    if (!customerToValidate.name || customerToValidate.name.length >= 50) {
+    if (!reservationToValidate.name || reservationToValidate.name.length >= 50) {
       errors.nameError = 'Name must be 50 characters or less.';
     } else {
       errors.nameError = '';
     }
 
-    if (!validateEmail(customerToValidate.emailAddress)) {
+    if (!validateEmail(reservationToValidate.emailAddress)) {
       errors.emailError = 'Email must be in x@x.x format.';
     } else {
       errors.emailError = '';
     }
 
-    const amountPattern = /^\d{0,4}\.\d{2}$/;
-    if (!amountPattern.test(customerToValidate.lifetimeSpent)) {
-      errors.lifetimeSpentError = 'Must be numbers in the following format: X.XX';
+    const datePattern = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{4})$/;
+    if (!datePattern.test(reservationToValidate.numOfNights)) {
+      errors.numOfNightsError = 'Must be numbers in the following format: X.XX';
     } else {
-      errors.lifetimeSpentError = '';
+      errors.numOfNightsError = '';
     }
 
-    if (customerToValidate.lifetimeSpent < 0.0) {
-      errors.lifetimeSpentError = 'Lifetime Spent must be a non-negative value.';
+    if (reservationToValidate.numOfNights < 0.0) {
+      errors.numOfNightsError = 'Number of Nights must be a non-negative value.';
     } else {
-      errors.lifetimeSpentError = '';
+      errors.numOfNightsError = '';
     }
 
     setValidationErrors({
       nameError: errors.nameError,
       emailError: errors.emailError,
-      lifetimeSpentError: errors.lifetimeSpentError
+      numOfNightsError: errors.numOfNightsError
     }); // sets validation errors for text fields
 
     return errors;
@@ -108,18 +106,17 @@ export default function EditCustomerModal({ customer, onRefresh }) {
   // Edit a customer and performs a put request with updated customer.
   const handleSubmit = async () => {
     const errors = isFormValid(currentCustomer);
-    if (errors.emailError.length !== 0 || errors.nameError.length !== 0 || errors.lifetimeSpentError.length !== 0) {
+    if (errors.emailError.length !== 0 || errors.checkinError.length !== 0 || errors.numOfNightsError.length !== 0) {
       return;
     }
     try {
-      const customerToEdit = {
+      const reservationToEdit = {
         id: currentCustomer.id,
-        active: currentCustomer.active,
-        name: currentCustomer.name,
         emailAddress: currentCustomer.emailAddress,
-        lifetimeSpent: currentCustomer.lifetimeSpent === '' ? '0.00' : currentCustomer.lifetimeSpent
+        checkin: currentCustomer.checkin,
+        numOfNights: currentCustomer.numOfNights === '' ? '0' : currentCustomer.numOfNights
       };
-      await editCustomer(customerToEdit);
+      await updateReservation(reservationToEdit);
       setError(null);
       toggleModal();
       onRefresh();
@@ -127,10 +124,9 @@ export default function EditCustomerModal({ customer, onRefresh }) {
       // Reset Customer to default values
       setCurrentCustomer({
         id: '',
-        active: false,
-        name: '',
-        emailAddress: '',
-        lifetimeSpent: '0.00'
+        checkinError: '',
+        emailError: '',
+        numOfNightsError: '0'
       });
     } catch (err) {
       setError(err.response ? err.response.data : err.message); // Set error message on fail
@@ -138,17 +134,15 @@ export default function EditCustomerModal({ customer, onRefresh }) {
   };
   const handleEditCustomer = async (id) => {
     try {
-      const customerById = await getCustomerById(id);
-      const formattedLifetimeSpent = parseFloat(customerById.lifetimeSpent || '0.00').toFixed(2);
-      const experimentCustomer = {
-        id: customerById.id,
-        active: customerById.active,
-        name: customerById.name,
-        emailAddress: customerById.emailAddress,
-        lifetimeSpent: formattedLifetimeSpent,
-        customerSince: customerById.customerSince
+      const reservationById = await getById(id);
+      const formattednumOfNights = parseFloat(reservationById.numOfNights || '0.00').toFixed(2);
+      const experimentReservation = {
+        id: reservationById.id,
+        emailAddress: reservationById.emailAddress,
+        checkin: reservationById.checkin,
+        numOfNights: formattednumOfNights
       };
-      setCurrentCustomer(experimentCustomer);
+      setCurrentCustomer(experimentReservation);
 
       toggleModal();
     } catch (err) {
@@ -161,9 +155,9 @@ export default function EditCustomerModal({ customer, onRefresh }) {
     toggleModal(); // Toggle modal visibility
     setError(null); // Resets errors to initial values
     setValidationErrors({
-      nameError: '',
       emailError: '',
-      lifetimeSpentError: ''
+      checkinError: '',
+      numOfNightsError: ''
     });
   };
 

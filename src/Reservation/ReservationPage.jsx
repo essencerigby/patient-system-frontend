@@ -27,14 +27,14 @@
 
 import React, { useEffect, useState } from 'react';
 import StickyHeadTable, { createRow } from '../Component/Table';
-import EditCustomerModal from './EditCustomerModal';
-import NewCustomerModal from './NewCustomerModal';
-import { getCustomers } from '../apiService';
-import DeleteCustomer from './DeleteCustomer';
+import UpdateReservationModal from './UpdateReservationModal';
+import NewReservationModal from './NewReservationModal';
+import { getAll } from '../apiService';
+import DeleteReservation from './DeleteReservation';
 import SuccessModal from '../Component/SuccessModal';
 import TableFilter from '../Component/TableFilter';
 
-export default function CustomerPage() {
+export default function ReservationPage() {
   const columns = [
     { id: 'id', label: 'ID', minWidth: 40 },
     { id: 'active', label: 'Active', minWidth: 40 },
@@ -57,7 +57,7 @@ export default function CustomerPage() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const data = await getCustomers();
+        const data = await getAll();
         data.sort((a, b) => (a.id > b.id ? 1 : -1));
         setCustomers(data);
       } catch (err) {
@@ -89,13 +89,13 @@ export default function CustomerPage() {
       createRow(
         columns,
         [
-          <EditCustomerModal customer={customer} onRefresh={handleRefresh} />,
+          <UpdateReservationModal customer={customer} onRefresh={handleRefresh} />,
           <input type='checkbox' checked={customer.active} onChange={() => {}} disabled />,
           customer.name,
           customer.emailAddress,
           formatLifetimeSpent(customer.lifetimeSpent || '0.00'),
           customer.customerSince,
-          <DeleteCustomer customer={customer} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
+          <DeleteReservation customer={customer} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
         ],
         customer.id
       )
@@ -121,13 +121,13 @@ export default function CustomerPage() {
     <>
       <div className='pages-table'>
         <div className='header-modal-container'>
-          <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Customers</h1>
-          <NewCustomerModal onRefresh={handleRefresh} />
+          <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Reservations</h1>
+          <NewReservationModal onRefresh={handleRefresh} />
         </div>
         <StickyHeadTable columns={columns} rows={rows} />
         <TableFilter
           fields={fields}
-          getDomain={getCustomers}
+          getDomain={getAll}
           setDomain={setCustomers}
           setError={setError}
           onRefresh={handleRefresh}

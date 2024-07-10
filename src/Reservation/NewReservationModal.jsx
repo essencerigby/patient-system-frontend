@@ -4,8 +4,8 @@
 
 import React, { useState } from 'react';
 import '../Component/Modal.css';
-import { createCustomer } from '../apiService';
-import CustomerForm from './CustomerForm';
+import { createReservation } from '../apiService';
+import CustomerForm from './ReservationForm';
 
 // Array of fields for New Customer Modal.
 const fields = [
@@ -20,7 +20,7 @@ const fields = [
   { id: 'emailAddress', label: 'Email', keys: 'emailAddress', required: true }
 ];
 
-export default function CustomerModal({ onRefresh }) {
+export default function ReservationModal({ onRefresh }) {
   const [modal, setModal] = useState(false);
   const [customer, setCustomer] = useState({
     active: false,
@@ -90,13 +90,13 @@ export default function CustomerModal({ onRefresh }) {
       return;
     }
     try {
-      const customerToCreate = {
+      const reservationToCreate = {
         active: customer.active,
         name: customer.name,
         emailAddress: customer.emailAddress,
         lifetimeSpent: 0
       };
-      await createCustomer(customerToCreate);
+      await createReservation(reservationToCreate);
       setError(null); // Reset error on success
       toggleModal(); // Disable modal on success
       onRefresh(); // Refresh customer list on success
@@ -131,14 +131,14 @@ export default function CustomerModal({ onRefresh }) {
   return (
     <>
       <button type='button' onClick={toggleModal} className='btn-modal'>
-        <strong>Add New Customer +</strong>
+        <strong>Create</strong>
       </button>
       {modal && (
         <div className='modal'>
           <div className='overlay' onClick={toggleModal} />
           <div className='modal-content'>
             <div className='modal-header'>
-              <h2>NEW CUSTOMER FORM</h2>
+              <h2>NEW RESERVATION FORM</h2>
             </div>
             <CustomerForm
               fields={fields}

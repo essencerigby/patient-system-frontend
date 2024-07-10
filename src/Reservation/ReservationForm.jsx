@@ -149,7 +149,7 @@ function InputField({ id, label, value, onChange, onClear, validationErrors, req
   );
 }
 
-export default function CustomerForm({ fields, onChange, customer, validationErrors }) {
+export default function ReservationForm({ fields, onChange, customer, validationErrors }) {
   const handleClear = (fieldKeys) => {
     const event = {
       target: {

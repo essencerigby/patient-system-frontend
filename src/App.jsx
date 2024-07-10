@@ -2,11 +2,11 @@
 /* eslint-disable import/extensions */
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ProductPage from './Product/ProductPage';
-import VendorPage from './Vendor/VendorPage';
+// import ProductPage from './Product/ProductPage';
+// import VendorPage from './Vendor/VendorPage';
 import ResponsiveAppBar from './Component/Header';
-import CustomerPage from './Customer/CustomerPage';
-import IngredientPage from './Ingredient/IngredientPage';
+import ReservationPage from './Reservation/ReservationPage';
+// import IngredientPage from './Ingredient/IngredientPage';
 
 /**
  * App component serves as the main entry point for the application.
@@ -22,10 +22,10 @@ function App() {
       <Router>
         <ResponsiveAppBar />
         <Routes>
-          <Route path='/vendors' element={<VendorPage />} />
-          <Route path='/customers' element={<CustomerPage />} />
-          <Route path='/products' element={<ProductPage />} />
-          <Route path='/ingredients' element={<IngredientPage />} />
+          {/* <Route path='/vendors' element={<VendorPage />} /> */}
+          <Route path='/reservations' element={<ReservationPage />} />
+          {/* <Route path='/products' element={<ProductPage />} /> */}
+          {/* <Route path='/ingredients' element={<IngredientPage />} /> */}
           {/* <Route path='/promotions' element={<Promotions />} /> */}
         </Routes>
       </Router>

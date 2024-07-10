@@ -94,7 +94,7 @@ export const deleteProduct = async (productToDelete) => {
  * of an error during the fetch operation, it throws an error with a descriptive message.
  *
  */
-export const getCustomers = async () => {
+export const getAll = async () => {
   try {
     const response = await axios.get(customersApiUrl);
     return response.data;
@@ -103,12 +103,12 @@ export const getCustomers = async () => {
   }
 };
 
-export const createCustomer = async (customerToCreate) => {
-  const response = await axios.post(customersApiUrl, customerToCreate);
+export const createReservation = async (reservationToCreate) => {
+  const response = await axios.post(customersApiUrl, reservationToCreate);
   return response.data;
 };
 
-export const getCustomerById = async (customerId) => {
+export const getById = async (customerId) => {
   try {
     const response = await axios.get(`${customersApiUrl}/${customerId}`);
     return response.data;
@@ -117,18 +117,18 @@ export const getCustomerById = async (customerId) => {
   }
 };
 
-export const editCustomer = async (customerToEdit) => {
+export const updateReservation = async (reservationToEdit) => {
   try {
-    const response = await axios.put(`${customersApiUrl}/${customerToEdit.id}`, customerToEdit);
+    const response = await axios.put(`${customersApiUrl}/${reservationToEdit.id}`, reservationToEdit);
     return response.data;
   } catch (error) {
     throw Error('Error updating vendor', error);
   }
 };
 
-export const deleteCustomerById = async (customerId) => {
+export const deleteReservation = async (reservationId) => {
   try {
-    const response = await axios.delete(`${customersApiUrl}/${customerId}`);
+    const response = await axios.delete(`${customersApiUrl}/${reservationId}`);
     return response.data;
   } catch (error) {
     throw new Error('Error deleting customer', error);
