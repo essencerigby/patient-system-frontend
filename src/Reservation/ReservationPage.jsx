@@ -97,7 +97,7 @@ export default function ReservationPage() {
         [
           <UpdateReservationModal reservation={reservation} onRefresh={handleRefresh} />,
           reservation.guestEmail,
-          reservation.checkInDate,
+          formatDate(reservation.checkInDate),
           reservation.numberOfNights,
           <DeleteReservation reservation={reservation} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
         ],
@@ -118,8 +118,7 @@ export default function ReservationPage() {
     {
       id: 'checkInDate',
       label: 'Check-in Date',
-      keys: 'checkInDate',
-      type: 'date'
+      keys: 'checkInDate'
     },
     { id: 'numberOfNights', label: 'Number of Nights', keys: 'numberOfNights' }
   ];

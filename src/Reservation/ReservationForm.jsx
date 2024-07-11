@@ -65,7 +65,7 @@ function InputField({
             <input
               className='input-flex'
               id={id}
-              type='date'
+              type='text'
               value={value}
               onChange={onChange}
               style={{ position: 'relative' }}
@@ -76,7 +76,7 @@ function InputField({
           <input
             className='input-flex'
             id={id}
-            type='date'
+            type='text'
             value={value}
             onChange={onChange}
             style={{ position: 'relative' }}

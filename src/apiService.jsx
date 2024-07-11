@@ -99,13 +99,17 @@ export const getAllReservations = async () => {
     const response = await axios.get(reservationsApiUrl);
     return response.data;
   } catch (error) {
-    throw Error('Error fetching customers', error);
+    throw Error('Error fetching customers', error.message);
   }
 };
 
-export const createReservation = async (reservationToCreate) => {
-  const response = await axios.post(reservationsApiUrl, reservationToCreate);
-  return response.data;
+export const createReservation = async (reservation) => {
+  try {
+    const response = await axios.post(`${reservationsApiUrl}`, reservation);
+    return response.data;
+  } catch (error) {
+    throw Error('Error creating reservation', error);
+  }
 };
 
 export const getReservationById = async (reservationId) => {
@@ -113,7 +117,7 @@ export const getReservationById = async (reservationId) => {
     const response = await axios.get(`${reservationsApiUrl}/${reservationId}`);
     return response.data;
   } catch (error) {
-    throw Error('Could not fetch customer', error);
+    throw Error('Could not fetch reservation', error);
   }
 };
 
@@ -122,7 +126,7 @@ export const updateReservation = async (reservationToEdit) => {
     const response = await axios.put(`${reservationsApiUrl}/${reservationToEdit.id}`, reservationToEdit);
     return response.data;
   } catch (error) {
-    throw Error('Error updating vendor', error);
+    throw Error('Error updating reservation', error);
   }
 };
 
@@ -131,7 +135,7 @@ export const deleteReservation = async (reservationId) => {
     const response = await axios.delete(`${reservationsApiUrl}/${reservationId}`);
     return response.data;
   } catch (error) {
-    throw new Error('Error deleting customer', error);
+    throw new Error('Error deleting reservation', error);
   }
 };
 
