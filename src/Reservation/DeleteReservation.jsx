@@ -1,11 +1,9 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton } from '@mui/material';
 import React, { useState } from 'react';
 import '../Component/Modal.css';
 import { deleteReservation, getReservationById } from '../apiService';
 
-export default function DeleteReservation({ customer, onRefresh, toggleSuccessModal }) {
-  const [currentCustomer, setCurrentCustomer] = useState({});
+export default function DeleteReservation({ reservation, onRefresh, toggleSuccessModal }) {
+  const [currentReservation, setCurrentReservation] = useState({});
   const [modal, setModal] = useState(false);
   const [error, setError] = useState(null);
 
@@ -19,14 +17,14 @@ export default function DeleteReservation({ customer, onRefresh, toggleSuccessMo
 
   // Function to handle the cancel action and close the modal
   const handleCancel = () => {
-    setCurrentCustomer({});
+    setCurrentReservation({});
     toggleModal();
   };
 
-  // Function to handle the customer deletion
-  const handleDeleteCustomer = async () => {
+  // Function to handle the reservation deletion
+  const handleDeleteReservation = async () => {
     try {
-      await deleteReservation(currentCustomer.id);
+      await deleteReservation(currentReservation.id);
       toggleModal();
       onRefresh();
       toggleSuccessModal();
@@ -35,11 +33,11 @@ export default function DeleteReservation({ customer, onRefresh, toggleSuccessMo
     }
   };
 
-  // Function to fetch the customer details by its id and show the modal
-  const handleGetCustomer = async (id) => {
+  // Function to fetch the reservation details by its id and show the modal
+  const handleGetReservation = async (id) => {
     try {
       const reservationById = await getReservationById(id);
-      setCurrentCustomer(reservationById);
+      setCurrentReservation(reservationById);
       toggleModal();
     } catch (err) {
       setError(err.message);
@@ -49,9 +47,8 @@ export default function DeleteReservation({ customer, onRefresh, toggleSuccessMo
   return (
     <>
       <div className='delete-container'>
-        <IconButton className='delete-icon' fontSize='small' onClick={() => handleGetCustomer(customer.id)}>
-          <DeleteIcon />
-        </IconButton>
+        <button className='delete-icon' type='button' fontSize='small' onClick={() => handleGetReservation(reservation.id)}>Delete
+        </button>
       </div>
 
       {modal && (
@@ -59,13 +56,13 @@ export default function DeleteReservation({ customer, onRefresh, toggleSuccessMo
           <div className='overlay' />
           <div className='delete-modal-content'>
             <div className='delete-modal-header'>
-              <h2>Are you sure you want to delete this customer? </h2>
+              <h2>Are you sure you want to delete this reservation? </h2>
             </div>
             <div className='delete-btn-container'>
               <button type='button' className='close-modal' onClick={handleCancel}>
                 Cancel
               </button>
-              <button type='button' className='delete-submit-close-modal' onClick={handleDeleteCustomer}>
+              <button type='button' className='delete-submit-close-modal' onClick={handleDeleteReservation}>
                 Delete
               </button>
             </div>
