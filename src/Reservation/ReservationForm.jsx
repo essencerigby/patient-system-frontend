@@ -3,7 +3,7 @@
 import React from 'react';
 
 function InputField({ id, label, value, onChange, onClear, validationErrors, required }) {
-  const { nameError, emailError, lifetimeSpentError } = validationErrors;
+  const { numberOfNightsError = '', guestEmailError = '', checkInDateError = '' } = validationErrors;
 
   const renderRequired = () => {
     if (required) {
@@ -12,25 +12,14 @@ function InputField({ id, label, value, onChange, onClear, validationErrors, req
     return null;
   };
 
-  if (id === 'active') {
-    return (
-      <div className={`input-field checkbox-field ${id}`} id={id}>
-        <label htmlFor={id}>
-          <input type='checkbox' id={id} checked={value} onChange={onChange} style={{ marginRight: '100px' }} />
-          {label}:{renderRequired()}
-        </label>
-      </div>
-    );
-  }
-
-  // Uses conditional rendering using email validation results from NewCustomerModal
-  if (id === 'emailAddress') {
+  // Uses conditional rendering using email validation results from NewReservationModal
+  if (id === 'guestEmail') {
     return (
       <div className={`input-field ${id}`} id={id}>
         <label htmlFor={id}>
           {label}:{renderRequired()}
         </label>
-        {emailError.length === 0 && (
+        {guestEmailError.length === 0 && (
           <input
             className='input-flex'
             id={id}
@@ -40,7 +29,7 @@ function InputField({ id, label, value, onChange, onClear, validationErrors, req
             style={{ position: 'relative' }}
           />
         )}
-        {emailError && (
+        {guestEmailError && (
           <input
             className='input-flex-error'
             id={id}
@@ -50,71 +39,71 @@ function InputField({ id, label, value, onChange, onClear, validationErrors, req
             style={{ position: 'relative' }}
           />
         )}
-        {value && emailError.length === 0 && (
+        {value && guestEmailError.length === 0 && (
           <button type='button' className='clear-button' onClick={() => onClear(id)}>
             X
           </button>
         )}
-        {value && emailError && (
+        {value && guestEmailError && (
           <button type='button' className='clear-button-error' onClick={() => onClear(id)}>
             X
           </button>
         )}
-        {emailError && <div className='error-message'>{emailError}</div>}
+        {guestEmailError && <div className='error-message'>{guestEmailError}</div>}
       </div>
     );
   }
-  // Uses conditional rendering using lifetimeSpent validation results from EditCustomerModal
-  if (id === 'lifetimeSpent') {
+  // Uses conditional rendering using checkInDate validation results from EditReservationModal
+  if (id === 'checkInDate') {
     return (
       <div className={`input-field ${id}`} id={id}>
         <label htmlFor={id}>
           {label}:{renderRequired()}
         </label>
         <div className='input-wrapper'>
-          {lifetimeSpentError.length === 0 && (
+          {checkInDateError.length === 0 && (
             <input
               className='input-flex'
               id={id}
-              type='text'
+              type='date'
               value={value}
               onChange={onChange}
               style={{ position: 'relative' }}
             />
           )}
         </div>
-        {lifetimeSpentError && (
+        {checkInDateError && (
           <input
             className='input-flex'
             id={id}
-            type='text'
+            type='date'
             value={value}
             onChange={onChange}
             style={{ position: 'relative' }}
           />
         )}
-        {value && lifetimeSpentError.length === 0 && (
+        {value && checkInDateError.length === 0 && (
           <button type='button' className='clear-button' onClick={() => onClear(id)}>
             X
           </button>
         )}
-        {value && lifetimeSpentError && (
+        {value && checkInDateError && (
           <button type='button' className='clear-button-error' onClick={() => onClear(id)}>
             X
           </button>
         )}
-        {lifetimeSpentError && <div className='error-message'>{lifetimeSpentError}</div>}
+        {checkInDateError && <div className='error-message'>{checkInDateError}</div>}
       </div>
     );
   }
 
-  // Uses conditional rendering using name validation results from NewCustomerModal
+  // Uses conditional rendering using name validation results from NewReservationModal
   return (
     <div className={`input-field ${id}`}>
       <label htmlFor={id}>
         {label}:{renderRequired()}
       </label>
-      {nameError.length === 0 && (
+      {numberOfNightsError.length === 0 && (
         <input
           className='input-flex'
           id={id}
@@ -124,7 +113,7 @@ function InputField({ id, label, value, onChange, onClear, validationErrors, req
           style={{ position: 'relative' }}
         />
       )}
-      {nameError && (
+      {numberOfNightsError && (
         <input
           className='input-flex-error'
           id={id}
@@ -134,22 +123,22 @@ function InputField({ id, label, value, onChange, onClear, validationErrors, req
           style={{ position: 'relative' }}
         />
       )}
-      {value && nameError.length === 0 && (
+      {value && numberOfNightsError.length === 0 && (
         <button type='button' className='clear-button' onClick={() => onClear(id)}>
           X
         </button>
       )}
-      {value && nameError && (
+      {value && numberOfNightsError && (
         <button type='button' className='clear-button-error' onClick={() => onClear(id)}>
           X
         </button>
       )}
-      {nameError && <div className='error-message'>{nameError}</div>}
+      {numberOfNightsError && <div className='error-message'>{numberOfNightsError}</div>}
     </div>
   );
 }
 
-export default function ReservationForm({ fields, onChange, customer, validationErrors }) {
+export default function ReservationForm({ fields, onChange, reservation, validationErrors }) {
   const handleClear = (fieldKeys) => {
     const event = {
       target: {
@@ -167,7 +156,7 @@ export default function ReservationForm({ fields, onChange, customer, validation
           key={field.id}
           id={field.id}
           label={field.label}
-          value={field.keys.split('.').reduce((o, i) => o[i], customer)}
+          value={field.keys.split('.').reduce((o, i) => o[i], reservation)}
           onChange={onChange}
           onClear={handleClear}
           validationErrors={validationErrors}

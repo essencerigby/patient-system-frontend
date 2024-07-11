@@ -2,7 +2,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import React, { useState } from 'react';
 import '../Component/Modal.css';
-import { deleteReservation, getById } from '../apiService';
+import { deleteReservation, getReservationById } from '../apiService';
 
 export default function DeleteReservation({ customer, onRefresh, toggleSuccessModal }) {
   const [currentCustomer, setCurrentCustomer] = useState({});
@@ -38,7 +38,7 @@ export default function DeleteReservation({ customer, onRefresh, toggleSuccessMo
   // Function to fetch the customer details by its id and show the modal
   const handleGetCustomer = async (id) => {
     try {
-      const reservationById = await getById(id);
+      const reservationById = await getReservationById(id);
       setCurrentCustomer(reservationById);
       toggleModal();
     } catch (err) {

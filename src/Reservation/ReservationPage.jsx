@@ -1,24 +1,25 @@
 /**
- * Customer Page Component
+ * reservation Page Component
  *
- * This component displays a table of customers retrieved from the backend/database.
- * It utilizes the Table component for the table structure.The component fetches customer data
- * using an asynchronous call to getCustomers and handles potential errors.
+ * This component displays a table of reservations retrieved from the backend/database.
+ * It utilizes the Table component for the table structure.The component fetches reservation data
+ * using an asynchronous call to getreservations and handles potential errors.
  *
  * Functionality:
  * - Defines columns for the table, specifying the column ID, label, and minimum width.
- * - Manages state for customers data and error handling.
- * - Fetches customer data when the component mounts using useEffect, and updates state accordingly.
- * - Dynamically creates rows for the table from the fetched customers data.
- * - Displays the table with customers data
+ * - Manages state for reservations data and error handling.
+ * - Fetches reservation data when the component mounts using useEffect, and updates
+ state accordingly.
+ * - Dynamically creates rows for the table from the fetched reservations data.
+ * - Displays the table with reservations data
  * - Handles errors by displaying an error message if any.
  *
  * Structure:
- * - The main component CustomerPage encapsulates the entire functionality.
+ * - The main component reservationPage encapsulates the entire functionality.
  * - The return statement includes a header and the table wrapped in a div for styling.
  * - Error messages are displayed in red color if there is an error during data fetching.
  *
- * @returns {JSX.Element} A React component that displays a customer page.
+ * @returns {JSX.Element} A React component that displays a reservation page.
  */
 
 /* eslint-disable implicit-arrow-linebreak */
@@ -29,7 +30,7 @@ import React, { useEffect, useState } from 'react';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import UpdateReservationModal from './UpdateReservationModal';
 import NewReservationModal from './NewReservationModal';
-import { getAll } from '../apiService';
+import { getAllReservations } from '../apiService';
 import DeleteReservation from './DeleteReservation';
 import SuccessModal from '../Component/SuccessModal';
 import TableFilter from '../Component/TableFilter';
@@ -43,28 +44,30 @@ export default function ReservationPage() {
     { id: 'deleteIcon', minWidth: 20 }
   ];
 
-  const [customers, setCustomers] = useState([]);
+  const [reservations, setReservations] = useState([]);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
-  // Get all customers from the database and store it in customers array
+  // Get all reservations from the database and store it in reservations array
   useEffect(() => {
-    const fetchCustomers = async () => {
+    console.log('Fetching reservations...');
+    const fetchReservations = async () => {
       try {
-        const data = await getAll();
+        const data = await getAllReservations();
         data.sort((a, b) => (a.id > b.id ? 1 : -1));
-        setCustomers(data);
+        setReservations(data);
       } catch (err) {
         setError(err);
       }
     };
 
-    fetchCustomers();
+    fetchReservations();
   }, [refresh]);
 
   // Trigger a refresh when needed.
   const handleRefresh = () => {
+    console.log('Refresh triggered');
     setRefresh((prev) => !prev);
   };
 
@@ -78,19 +81,19 @@ export default function ReservationPage() {
 
   const rows = [];
 
-  // Create rows from the customer array
-  customers.map((customer) =>
+  // Create rows from the reservation array
+  reservations.map((reservation) =>
     rows.push(
       createRow(
         columns,
         [
-          <UpdateReservationModal customer={customer} onRefresh={handleRefresh} />,
-          customer.guestEmail,
-          customer.checkInDate,
-          customer.numberOfNights,
-          <DeleteReservation customer={customer} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
+          <UpdateReservationModal reservation={reservation} onRefresh={handleRefresh} />,
+          reservation.guestEmail,
+          reservation.checkInDate,
+          reservation.numberOfNights,
+          <DeleteReservation reservation={reservation} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
         ],
-        customer.id
+        reservation.id
       )
     )
   );
@@ -120,11 +123,11 @@ export default function ReservationPage() {
           <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Reservations</h1>
           <NewReservationModal onRefresh={handleRefresh} />
         </div>
-        <StickyHeadTable columns={columns} rows={rows} />
+        <StickyHeadTable id='reservations' columns={columns} rows={rows} />
         <TableFilter
           fields={fields}
-          getDomain={getAll}
-          setDomain={setCustomers}
+          getDomain={getAllReservations}
+          setDomain={setReservations}
           setError={setError}
           onRefresh={handleRefresh}
         />

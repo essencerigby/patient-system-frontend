@@ -94,7 +94,7 @@ export const deleteProduct = async (productToDelete) => {
  * of an error during the fetch operation, it throws an error with a descriptive message.
  *
  */
-export const getAll = async () => {
+export const getAllReservations = async () => {
   try {
     const response = await axios.get(reservationsApiUrl);
     return response.data;
@@ -108,7 +108,7 @@ export const createReservation = async (reservationToCreate) => {
   return response.data;
 };
 
-export const getById = async (reservationId) => {
+export const getReservationById = async (reservationId) => {
   try {
     const response = await axios.get(`${reservationsApiUrl}/${reservationId}`);
     return response.data;
