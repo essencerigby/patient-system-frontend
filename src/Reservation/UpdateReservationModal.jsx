@@ -16,17 +16,18 @@ const fields = [
     id: 'checkInDate',
     label: 'Check-in Date',
     keys: 'checkInDate',
-    type: 'date'
+    type: 'text'
   },
   { id: 'numberOfNights', label: 'Number of Nights', keys: 'numberOfNights' }
 ];
+
 export default function UpdateReservationModal({ reservation, onRefresh }) {
   const [modal, setModal] = useState(false);
   const [currentReservation, setCurrentReservation] = useState({
     id: '',
     guestEmail: '',
     checkInDate: '',
-    numberOfNights: '0'
+    numberOfNights: ''
   });
 
   const [error, setError] = useState(null);
@@ -40,6 +41,17 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  };
+
+  // Validates that Number of Nights is only 2 digits  max, and greater than 0.
+  const validateNumberOfNights = (numOfNights) => {
+    const numOfNightsRegex = /^[1-9][0-9]?$|^10$/;
+    return numOfNightsRegex.test(numOfNights);
+  };
+
+  const validateCheckInDate = (checkinDate) => {
+    const checkInDateRegex = /^(0[1-9]|1[0-2])-([0-2][0-9]|3[01])-(\d{4})$/;
+    return checkInDateRegex.test(checkinDate);
   };
 
   // Validates that text fields to ensure they have value and are in the right format.
@@ -56,15 +68,14 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
       errors.guestEmailError = '';
     }
 
-    const datePattern = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{4})$/;
-    if (!datePattern.test(reservationToValidate.checkInDate)) {
-      errors.checkInDateError = 'Date must be in the following format: mm/dd/yyyy';
+    if (!validateCheckInDate(reservationToValidate.checkInDate)) {
+      errors.checkInDateError = 'Check-in Date must be in mm-dd-yyyy';
     } else {
       errors.checkInDateError = '';
     }
 
-    if (reservationToValidate.numberOfNights < 0) {
-      errors.numberOfNightsError = 'Number of Nights must be a non-negative value greater than 0.';
+    if (!validateNumberOfNights(reservationToValidate.numberOfNights)) {
+      errors.numberOfNightsError = 'Number of nights must be between 1-99.';
     } else {
       errors.numberOfNightsError = '';
     }
@@ -118,7 +129,7 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
         id: '',
         checkInDateError: '',
         guestEmailError: '',
-        numberOfNightsError: '0'
+        numberOfNightsError: ''
       });
     } catch (err) {
       setError(err.response ? err.response.data : err.message); // Set error message on fail
