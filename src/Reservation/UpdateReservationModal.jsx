@@ -4,8 +4,6 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-
-import EditIcon from '@mui/icons-material/Edit';
 import React, { useState } from 'react';
 import '../Component/Modal.css';
 import { updateReservation, getReservationById } from '../apiService';
@@ -163,7 +161,7 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
   return (
     <>
       <div className='edit-container'>
-        <EditIcon className='edit-icon' fontSize='small' onClick={() => handleEditReservation(reservation.id)} />
+        <button className='edit-icon' type='button' fontSize='small' onClick={() => handleEditReservation(reservation.id)}>Edit</button>
         <div className='id-number'>{reservation.id}</div>
       </div>
       {modal && (

@@ -29,7 +29,7 @@
 import React, { useEffect, useState } from 'react';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import UpdateReservationModal from './UpdateReservationModal';
-import NewReservationModal from './NewReservationModal';
+import NewReservationModal from './CreateReservationModal';
 import { getAllReservations } from '../apiService';
 import DeleteReservation from './DeleteReservation';
 import SuccessModal from '../Component/SuccessModal';
@@ -49,14 +49,23 @@ export default function ReservationPage() {
   const [refresh, setRefresh] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
+  function formatDate(dateString) {
+    const dateParts = dateString.split('-'); // Split the date by the hyphen
+    const formattedDate = `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`; // Rearrange the parts
+    return formattedDate;
+  }
+
   // Get all reservations from the database and store it in reservations array
   useEffect(() => {
-    console.log('Fetching reservations...');
     const fetchReservations = async () => {
       try {
         const data = await getAllReservations();
         data.sort((a, b) => (a.id > b.id ? 1 : -1));
-        setReservations(data);
+        const formattedData = data.map((reservation) => ({
+          ...reservation,
+          checkInDate: formatDate(reservation.checkInDate)
+        }));
+        setReservations(formattedData);
       } catch (err) {
         setError(err);
       }
@@ -67,7 +76,6 @@ export default function ReservationPage() {
 
   // Trigger a refresh when needed.
   const handleRefresh = () => {
-    console.log('Refresh triggered');
     setRefresh((prev) => !prev);
   };
 

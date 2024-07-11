@@ -26,7 +26,7 @@ const fields = [
   }
 ];
 
-export default function ReservationModal({ onRefresh }) {
+export default function UpdateReservationModal({ onRefresh }) {
   const [modal, setModal] = useState(false);
   const [reservation, setReservation] = useState({
     guestEmail: '',
@@ -54,6 +54,7 @@ export default function ReservationModal({ onRefresh }) {
     return emailRegex.test(email);
   };
 
+  // Validates that Number of Nights is only 2 digits  max, and greater than 0.
   const validateNumberOfNights = (numOfNights) => {
     const numOfNightsRegex = /^[1-9][0-9]?$|^10$/;
     return numOfNightsRegex.test(numOfNights);

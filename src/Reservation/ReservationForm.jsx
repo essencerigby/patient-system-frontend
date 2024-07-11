@@ -1,8 +1,8 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable operator-linebreak */
 import React from 'react';
 
-function InputField({ id, label, value, onChange, onClear, validationErrors, required }) {
+function InputField({
+  id, label, value, onChange, onClear, validationErrors, required
+}) {
   const { numberOfNightsError = '', guestEmailError = '', checkInDateError = '' } = validationErrors;
 
   const renderRequired = () => {
@@ -138,7 +138,9 @@ function InputField({ id, label, value, onChange, onClear, validationErrors, req
   );
 }
 
-export default function ReservationForm({ fields, onChange, reservation, validationErrors }) {
+export default function ReservationForm({
+  fields, onChange, reservation, validationErrors
+}) {
   const handleClear = (fieldKeys) => {
     const event = {
       target: {
