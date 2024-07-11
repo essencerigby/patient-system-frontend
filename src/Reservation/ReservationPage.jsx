@@ -51,7 +51,7 @@ export default function ReservationPage() {
 
   function formatDate(dateString) {
     const dateParts = dateString.split('-'); // Split the date by the hyphen
-    const formattedDate = `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`; // Rearrange the parts
+    const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Rearrange the parts
     return formattedDate;
   }
 
