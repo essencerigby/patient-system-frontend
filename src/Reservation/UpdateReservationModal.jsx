@@ -1,9 +1,3 @@
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable max-len */
-/* eslint-disable function-paren-newline */
-/* eslint-disable object-curly-newline */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import '../Component/Modal.css';
 import { updateReservation, getReservationById } from '../apiService';
@@ -11,14 +5,18 @@ import ReservationForm from './ReservationForm';
 
 // Array of fields for New Reservation Modal.
 const fields = [
-  { id: 'guestEmail', label: 'Email', keys: 'guestEmail', required: true },
+  {
+    id: 'guestEmail', label: 'Email', keys: 'guestEmail', required: true
+  },
   {
     id: 'checkInDate',
     label: 'Check-in Date',
     keys: 'checkInDate',
-    type: 'text'
+    required: true
   },
-  { id: 'numberOfNights', label: 'Number of Nights', keys: 'numberOfNights' }
+  {
+    id: 'numberOfNights', label: 'Number of Nights', keys: 'numberOfNights', required: true
+  }
 ];
 
 export default function UpdateReservationModal({ reservation, onRefresh }) {
@@ -59,7 +57,7 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
     const errors = {
       checkInDateError: 'Must be a valid date.',
       guestEmailError: 'Must be a valid email.',
-      numberOfNightsError: 'Must be a valid number, greater than 0.'
+      numberOfNightsError: 'Must be a valid number greater than 0.'
     };
 
     if (!validateEmail(reservationToValidate.guestEmail)) {
@@ -69,7 +67,7 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
     }
 
     if (!validateCheckInDate(reservationToValidate.checkInDate)) {
-      errors.checkInDateError = 'Check-in Date must be in mm-dd-yyyy';
+      errors.checkInDateError = 'Check-in date must be in mm-dd-yyyy';
     } else {
       errors.checkInDateError = '';
     }
@@ -81,8 +79,8 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
     }
 
     setValidationErrors({
-      checkInDateError: errors.checkInDateError,
       guestEmailError: errors.guestEmailError,
+      checkInDateError: errors.checkInDateError,
       numberOfNightsError: errors.numberOfNightsError
     }); // sets validation errors for text fields
 
@@ -99,7 +97,9 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
 
   // Handles changes to a Reservation according to values from Modal
   const handleChange = (e) => {
-    const { id, type, checked, value } = e.target;
+    const {
+      id, type, checked, value
+    } = e.target;
     setCurrentReservation((prevValues) => ({
       ...prevValues,
       [id]: type === 'checkbox' ? checked : value
@@ -109,7 +109,11 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
   // Edit a Reservation and performs a put request with updated Reservation.
   const handleSubmit = async () => {
     const errors = isFormValid(currentReservation);
-    if (errors.guestEmailError.length !== 0 || errors.checkInDateError.length !== 0 || errors.numberOfNightsError.length !== 0) {
+    if (
+      errors.guestEmailError.length !== 0
+      || errors.checkInDateError.length !== 0
+      || errors.numberOfNightsError.length !== 0
+    ) {
       return;
     }
     try {
@@ -163,6 +167,12 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
     });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Esc') {
+      toggleModal();
+    }
+  };
+
   if (modal) {
     document.body.classList.add('active-modal');
   } else {
@@ -177,7 +187,7 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
       </div>
       {modal && (
         <div className='modal'>
-          <div className='overlay' onClick={toggleModal} />
+          <div className='overlay' aria-label='overlay' role='button' onClick={toggleModal} onKeyDown={handleKeyDown} tabIndex={0} />
           <div className='modal-content'>
             <div className='modal-header'>
               <h2>UPDATE RESERVATION FORM</h2>

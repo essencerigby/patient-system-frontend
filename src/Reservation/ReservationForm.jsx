@@ -60,21 +60,19 @@ function InputField({
         <label htmlFor={id}>
           {label}:{renderRequired()}
         </label>
-        <div className='input-wrapper'>
-          {checkInDateError.length === 0 && (
-            <input
-              className='input-flex'
-              id={id}
-              type='text'
-              value={value}
-              onChange={onChange}
-              style={{ position: 'relative' }}
-            />
-          )}
-        </div>
+        {checkInDateError.length === 0 && (
+        <input
+          className='input-flex'
+          id={id}
+          type='text'
+          value={value}
+          onChange={onChange}
+          style={{ position: 'relative' }}
+        />
+        )}
         {checkInDateError && (
           <input
-            className='input-flex'
+            className='input-flex-error'
             id={id}
             type='text'
             value={value}
@@ -97,7 +95,7 @@ function InputField({
     );
   }
 
-  // Uses conditional rendering using name validation results from NewReservationModal
+  // Uses conditional rendering using number of nights validation results from NewReservationModal
   return (
     <div className={`input-field ${id}`}>
       <label htmlFor={id}>

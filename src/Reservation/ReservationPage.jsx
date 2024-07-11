@@ -21,11 +21,6 @@
  *
  * @returns {JSX.Element} A React component that displays a reservation page.
  */
-
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable max-len */
-/* eslint-disable function-paren-newline */
-
 import React, { useEffect, useState } from 'react';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import UpdateReservationModal from './UpdateReservationModal';
@@ -90,7 +85,7 @@ export default function ReservationPage() {
   const rows = [];
 
   // Create rows from the reservation array
-  reservations.map((reservation) =>
+  reservations.map((reservation) => {
     rows.push(
       createRow(
         columns,
@@ -99,13 +94,17 @@ export default function ReservationPage() {
           reservation.guestEmail,
           formatDate(reservation.checkInDate),
           reservation.numberOfNights,
-          <DeleteReservation reservation={reservation} onRefresh={handleRefresh} toggleSuccessModal={handleSuccessModal} />
+          <DeleteReservation
+            reservation={reservation}
+            onRefresh={handleRefresh}
+            toggleSuccessModal={handleSuccessModal}
+          />
         ],
         reservation.id
       )
-    )
-  );
-
+    );
+    return rows;
+  });
   // If there are less than 6 rows, create empty rows to fill out table
   while (rows.length < 6) {
     rows.push(createRow(columns, Array(columns.length).fill('')));

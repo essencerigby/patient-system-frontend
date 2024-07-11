@@ -25,11 +25,6 @@ const fields = [
   }
 ];
 
-// const formatDate = (dateString) => {
-//   const dateParts = dateString.split('-');
-//   return `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`;
-// };
-
 export default function UpdateReservationModal({ onRefresh }) {
   const [modal, setModal] = useState(false);
   const [reservations, setReservations] = useState({
@@ -37,7 +32,7 @@ export default function UpdateReservationModal({ onRefresh }) {
     checkInDate: '',
     numberOfNights: ''
   });
-  const [error, setError] = useState();
+  const [error, setError] = useState(null);
   const [validationErrors, setValidationErrors] = useState({
     guestEmailError: '',
     checkInDateError: '',
@@ -97,8 +92,9 @@ export default function UpdateReservationModal({ onRefresh }) {
     }
 
     setValidationErrors({
-      numberOfNightsError: errors.numberOfNightsError,
-      guestEmailError: errors.guestEmailError
+      guestEmailError: errors.guestEmailError,
+      checkInDateError: errors.checkInDate,
+      numberOfNightsError: errors.numberOfNightsError
     }); // sets validation errors for text fields
 
     return errors;
@@ -123,8 +119,8 @@ export default function UpdateReservationModal({ onRefresh }) {
     const errors = isFormValid(reservations);
     if (
       errors.guestEmailError.length !== 0
-      || errors.numberOfNightsError.length !== 0
       || errors.checkInDateError.length !== 0
+      || errors.numberOfNightsError.length !== 0
     ) {
       return;
     }
