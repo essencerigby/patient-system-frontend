@@ -87,11 +87,11 @@ export const deleteProduct = async (productToDelete) => {
 };
 
 /**
- * Fetches customer data from the backend.
- *
- * This asynchronous function makes a GET request to the provided API URL to retrieve
- * customer data. If the request is successful, it returns the customer data. In case
- * of an error during the fetch operation, it throws an error with a descriptive message.
+ * Fetches reservation data from the backend.
+ * This asynchronous function makes a GET request to the provided API URL to
+ retrieve reservation data.
+ If the request is successful, it returns the reservation data.
+ In case of an error during the fetch operation, it throws an error with a descriptive message.
  *
  */
 export const getAllReservations = async () => {
@@ -103,6 +103,11 @@ export const getAllReservations = async () => {
   }
 };
 
+/**
+ * This function is responsible for creating a new reservation by sending a POST
+ request to the specified API endpoint (reservationsApiUrl) with the reservation
+ data provided as an argument.
+ */
 export const createReservation = async (reservation) => {
   try {
     const response = await axios.post(`${reservationsApiUrl}`, reservation);
@@ -112,6 +117,11 @@ export const createReservation = async (reservation) => {
   }
 };
 
+/**
+ * This function is responsible for acessing an exisisting reservation by sending
+ a GET request to the specified API endpoint (reservationsApiUrl) with the
+ reservation Id provided as an argument.
+ */
 export const getReservationById = async (reservationId) => {
   try {
     const response = await axios.get(`${reservationsApiUrl}/${reservationId}`);
@@ -121,6 +131,12 @@ export const getReservationById = async (reservationId) => {
   }
 };
 
+/**
+ * This function is responsible for updating an exsisting reservation by sending
+ a PUT request to the specified API endpoint (reservationsApiUrl) with the
+ exsisting reservation data provided as an argument.
+ Uses the Id to specify which reservation to update
+ */
 export const updateReservation = async (reservationToEdit) => {
   try {
     const response = await axios.put(`${reservationsApiUrl}/${reservationToEdit.id}`, reservationToEdit);
@@ -130,6 +146,11 @@ export const updateReservation = async (reservationToEdit) => {
   }
 };
 
+/**
+ * This function is responsible for deleting an exsisting reservation by sending
+ a DELETE request to the specified API endpoint (reservationsApiUrl) with the
+ reservation Id provided as an argument.
+ */
 export const deleteReservation = async (reservationId) => {
   try {
     const response = await axios.delete(`${reservationsApiUrl}/${reservationId}`);

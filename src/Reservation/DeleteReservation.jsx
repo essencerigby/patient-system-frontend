@@ -7,7 +7,9 @@ export default function DeleteReservation({ reservation, onRefresh, toggleSucces
   const [modal, setModal] = useState(false);
   const [error, setError] = useState(null);
 
-  // Function to toggle the modal's visibility
+  /**
+  *  Function to toggle the modal's visibility
+  */
   const toggleModal = () => {
     if (modal) {
       setError(null);
@@ -15,13 +17,17 @@ export default function DeleteReservation({ reservation, onRefresh, toggleSucces
     setModal(!modal);
   };
 
-  // Function to handle the cancel action and close the modal
+  /**
+ * Function to handle the cancel action and close the modal
+ */
   const handleCancel = () => {
     setCurrentReservation({});
     toggleModal();
   };
 
-  // Function to handle the reservation deletion
+  /**
+ * Function to handle the reservation deletion
+ */
   const handleDeleteReservation = async () => {
     try {
       await deleteReservation(currentReservation.id);
@@ -33,7 +39,9 @@ export default function DeleteReservation({ reservation, onRefresh, toggleSucces
     }
   };
 
-  // Function to fetch the reservation details by its id and show the modal
+  /**
+   * Function to fetch the reservation details by its id and show the modal
+   */
   const handleGetReservation = async (id) => {
     try {
       const reservationById = await getReservationById(id);

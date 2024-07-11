@@ -5,6 +5,10 @@ function InputField({
 }) {
   const { numberOfNightsError = '', guestEmailError = '', checkInDateError = '' } = validationErrors;
 
+  /**
+   * Function to display required symbol
+   * @returns A red asterik if field is required, if not nothing is shown
+   */
   const renderRequired = () => {
     if (required) {
       return <span style={{ color: 'red' }}> *</span>;
@@ -12,7 +16,10 @@ function InputField({
     return null;
   };
 
-  // Uses conditional rendering using email validation results from NewReservationModal
+  /**
+   * Uses conditional rendering using email validation results from CreateReservationModal
+   * @returns red textbox and error message if correct format is not used
+   */
   if (id === 'guestEmail') {
     return (
       <div className={`input-field ${id}`} id={id}>
@@ -53,7 +60,10 @@ function InputField({
       </div>
     );
   }
-  // Uses conditional rendering using checkInDate validation results from EditReservationModal
+  /**
+   * Uses conditional rendering using checkInDate validation results from CreateReservationModal
+   * @returns red textbox and error message if correct format is not used
+  */
   if (id === 'checkInDate') {
     return (
       <div className={`input-field ${id}`} id={id}>
@@ -95,7 +105,10 @@ function InputField({
     );
   }
 
-  // Uses conditional rendering using number of nights validation results from NewReservationModal
+  /**
+   * Uses conditional rendering using number of nights validation results from NewReservationModal
+   * @returns red textbox and error message if correct format is not used
+  */
   return (
     <div className={`input-field ${id}`}>
       <label htmlFor={id}>
@@ -139,11 +152,14 @@ function InputField({
 export default function ReservationForm({
   fields, onChange, reservation, validationErrors
 }) {
+  /**
+   * When initiated, the field is cleared and the user will have an empty textbox.
+   */
   const handleClear = (fieldKeys) => {
     const event = {
       target: {
         id: fieldKeys,
-        value: '' // Clear the field by setting value to empty string
+        value: ''
       }
     };
     onChange(event);

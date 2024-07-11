@@ -3,7 +3,6 @@ import '../Component/Modal.css';
 import { createReservation } from '../apiService';
 import ReservationForm from './ReservationForm';
 
-// Array of fields for New Reservation Modal.
 const fields = [
   {
     id: 'guestEmail',
@@ -38,34 +37,47 @@ export default function UpdateReservationModal({ onRefresh }) {
     checkInDateError: '',
     numberOfNightsError: ''
   });
-
-  // Toggles Modal visibility
+  /**
+ * Toggles modal visibility
+ */
   const toggleModal = () => {
     if (modal) {
-      setError(null); // Reset error when closing the modal
+      setError(null);
     }
-    setModal(!modal); // Toggle modal visibility
+    setModal(!modal);
   };
 
-  // Validates that provided email address is in x@x.x format.
+  /**
+   * Validates that provided email address is in x@x.x format.
+   * @returns {boolean} indicates whether or not a pattern exists in a searched string.
+   */
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  // Validates that Number of Nights is only 2 digits  max, and greater than 0.
+  /**
+   * Validates that Number of Nights is only 2 digits  max, and greater than 0.
+   * @returns {boolean} indicates whether or not a pattern exists in a searched string.
+   */
   const validateNumberOfNights = (numOfNights) => {
     const numOfNightsRegex = /^[1-9][0-9]?$|^10$/;
     return numOfNightsRegex.test(numOfNights);
   };
 
-  // Validates that the date is in mm-dd-yyyy format following the standard US Calendar.
+  /**
+   * Validates that Number of Nights is only 2 digits  max, and greater than 0.
+   * @returns {boolean} indicates whether or not a pattern exists in a searched string.
+   */
   const validateCheckInDate = (checkinDate) => {
     const checkInDateRegex = /^(0[1-9]|1[0-2])-([0-2][0-9]|3[01])-(\d{4})$/;
     return checkInDateRegex.test(checkinDate);
   };
 
-  // Validates that text fields to ensure they have value and are in the right format.
+  /**
+   *  Validates the text fields to ensure they have value and are in the right format.
+   *  @returns errors if there is any
+  */
   const isFormValid = (reservationToValidate) => {
     const errors = {
       numberOfNightsError: 'Must be a number greater than 0.',
@@ -95,12 +107,14 @@ export default function UpdateReservationModal({ onRefresh }) {
       guestEmailError: errors.guestEmailError,
       checkInDateError: errors.checkInDate,
       numberOfNightsError: errors.numberOfNightsError
-    }); // sets validation errors for text fields
+    });
 
     return errors;
   };
 
-  // Handles changes to reservation according to values from Modal
+  /**
+   * Handles changes to reservation according to values from Modal
+   */
   const handleChange = (e) => {
     const {
       id,
@@ -114,7 +128,12 @@ export default function UpdateReservationModal({ onRefresh }) {
     }));
   };
 
-  // Creates a new reservation and performs a post request with new reservation.
+  /**
+   * Creates a new reservation and performs a post request with new reservation.
+   * Errors are reset, modal is disabled,
+   reservation table is reset to show new reservation on success
+   * On success modal fields are reset.
+   */
   const handleSubmit = async () => {
     const errors = isFormValid(reservations);
     if (
@@ -131,25 +150,28 @@ export default function UpdateReservationModal({ onRefresh }) {
         numberOfNights: reservations.numberOfNights
       };
       await createReservation(reservation);
-      setError(null); // Reset error on success
-      toggleModal(); // Disable modal on success
-      onRefresh(); // Refresh reservation list on success
+      setError(null);
+      toggleModal();
+      onRefresh();
 
-      // Reset reservation to default values
       setReservations({
         checkInDate: '',
         numberOfNights: '',
         guestEmail: ''
       });
     } catch (err) {
-      setError(err.response ? err.response.data : err.message); // Set error message on fail
+      setError(err.response ? err.response.data : err.message);
     }
   };
 
+  /**
+   * When initiated reservation data isreset to default values.
+   Modal is disabled and errors are reset to initial values
+   */
   const handleCancel = () => {
-    setReservations({}); // Reset reservation to default values
-    toggleModal(); // Toggle modal visibility
-    setError(null); // Resets errors to initial values
+    setReservations({});
+    toggleModal();
+    setError(null);
     setValidationErrors({
       numberOfNightsError: '',
       guestEmailError: '',
@@ -157,6 +179,9 @@ export default function UpdateReservationModal({ onRefresh }) {
     });
   };
 
+  /**
+   * When initiated modal is visibility is enabled/disabled
+   */
   const handleKeyDown = (e) => {
     if (e.key === 'Esc') {
       toggleModal();

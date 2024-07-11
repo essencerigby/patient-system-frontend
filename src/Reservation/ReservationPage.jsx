@@ -44,13 +44,18 @@ export default function ReservationPage() {
   const [refresh, setRefresh] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
+  /**
+   * Format date to match mm-dd-yyyy format
+   */
   function formatDate(dateString) {
-    const dateParts = dateString.split('-'); // Split the date by the hyphen
-    const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Rearrange the parts
+    const dateParts = dateString.split('-');
+    const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
     return formattedDate;
   }
 
-  // Get all reservations from the database and store it in reservations array
+  /**
+   * Get all reservations from the database and store it in reservations array
+   */
   useEffect(() => {
     const fetchReservations = async () => {
       try {
@@ -69,12 +74,16 @@ export default function ReservationPage() {
     fetchReservations();
   }, [refresh]);
 
-  // Trigger a refresh when needed.
+  /**
+   * Trigger a refresh when needed.
+   */
   const handleRefresh = () => {
     setRefresh((prev) => !prev);
   };
 
-  // Toggle the visibility of the success modal
+  /**
+   * Toggle the visibility of the success modal
+   */
   const handleSuccessModal = () => {
     if (successModal) {
       setError(null);
@@ -84,7 +93,9 @@ export default function ReservationPage() {
 
   const rows = [];
 
-  // Create rows from the reservation array
+  /**
+   * Create rows from the reservation array
+   */
   reservations.map((reservation) => {
     rows.push(
       createRow(
@@ -105,7 +116,9 @@ export default function ReservationPage() {
     );
     return rows;
   });
-  // If there are less than 6 rows, create empty rows to fill out table
+  /**
+   * If there are less than 6 rows, create empty rows to fill out table
+   */
   while (rows.length < 6) {
     rows.push(createRow(columns, Array(columns.length).fill('')));
   }

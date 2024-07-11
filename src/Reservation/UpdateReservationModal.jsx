@@ -3,10 +3,15 @@ import '../Component/Modal.css';
 import { updateReservation, getReservationById } from '../apiService';
 import ReservationForm from './ReservationForm';
 
-// Array of fields for New Reservation Modal.
+/**
+ * Array of fields for NewReservationModal.
+ */
 const fields = [
   {
-    id: 'guestEmail', label: 'Email', keys: 'guestEmail', required: true
+    id: 'guestEmail',
+    label: 'Email',
+    keys: 'guestEmail',
+    required: true
   },
   {
     id: 'checkInDate',
@@ -15,7 +20,10 @@ const fields = [
     required: true
   },
   {
-    id: 'numberOfNights', label: 'Number of Nights', keys: 'numberOfNights', required: true
+    id: 'numberOfNights',
+    label: 'Number of Nights',
+    keys: 'numberOfNights',
+    required: true
   }
 ];
 
@@ -35,24 +43,37 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
     numberOfNightsError: ''
   });
 
-  // Validates that provided email address is in x@x.x format.
+  /**
+   * Validates that provided email address is in x@x.x format.
+   * @returns {boolean} indicates whether or not a pattern exists in a searched string.
+   */
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  // Validates that Number of Nights is only 2 digits  max, and greater than 0.
+  /**
+   * Validates that Number of Nights is only 2 digits  max, and greater than 0.
+   * @returns {boolean} indicates whether or not a pattern exists in a searched string.
+   */
   const validateNumberOfNights = (numOfNights) => {
     const numOfNightsRegex = /^[1-9][0-9]?$|^10$/;
     return numOfNightsRegex.test(numOfNights);
   };
 
+  /**
+   * Validates that Number of Nights is only 2 digits  max, and greater than 0.
+   * @returns {boolean} indicates whether or not a pattern exists in a searched string.
+   */
   const validateCheckInDate = (checkinDate) => {
     const checkInDateRegex = /^(0[1-9]|1[0-2])-([0-2][0-9]|3[01])-(\d{4})$/;
     return checkInDateRegex.test(checkinDate);
   };
 
-  // Validates that text fields to ensure they have value and are in the right format.
+  /**
+   *  Validates the text fields to ensure they have value and are in the right format.
+   *  @returns errors if there is any
+  */
   const isFormValid = (reservationToValidate) => {
     const errors = {
       checkInDateError: 'Must be a valid date.',
@@ -82,12 +103,14 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
       guestEmailError: errors.guestEmailError,
       checkInDateError: errors.checkInDateError,
       numberOfNightsError: errors.numberOfNightsError
-    }); // sets validation errors for text fields
+    });
 
     return errors;
   };
 
-  // Toggles Modal visibility
+  /**
+ * Toggles modal visibility
+ */
   const toggleModal = () => {
     if (modal) {
       setError(null); // Reset error when closing the modal
@@ -95,7 +118,9 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
     setModal(!modal); // Toggle modal visibility
   };
 
-  // Handles changes to a Reservation according to values from Modal
+  /**
+   * Handles changes to reservation according to values from Modal
+   */
   const handleChange = (e) => {
     const {
       id, type, checked, value
@@ -106,7 +131,12 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
     }));
   };
 
-  // Edit a Reservation and performs a put request with updated Reservation.
+  /**
+   * Edit a Reservation and performs a put request with updated Reservation.
+   * Errors are reset, modal is disabled,
+   reservation table is reset to show new reservation on success
+   * On success modal fields are reset.
+   */
   const handleSubmit = async () => {
     const errors = isFormValid(currentReservation);
     if (
@@ -128,7 +158,6 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
       toggleModal();
       onRefresh();
 
-      // Reset Reservation to default values
       setCurrentReservation({
         id: '',
         checkInDateError: '',
@@ -136,9 +165,13 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
         numberOfNightsError: ''
       });
     } catch (err) {
-      setError(err.response ? err.response.data : err.message); // Set error message on fail
+      setError(err.response ? err.response.data : err.message);
     }
   };
+
+  /**
+   * When initiated fields are propopulated with the data respective to the id
+   */
   const handleEditReservation = async (id) => {
     try {
       const reservationById = await getReservationById(id);
@@ -156,10 +189,14 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
     }
   };
 
+  /**
+   * When initiated reservation data is reset to default values.
+   Modal is disabled and errors are reset to initial values
+   */
   const handleCancel = () => {
-    setCurrentReservation({}); // Reset Reservation to default values
-    toggleModal(); // Toggle modal visibility
-    setError(null); // Resets errors to initial values
+    setCurrentReservation({});
+    toggleModal();
+    setError(null);
     setValidationErrors({
       guestEmailError: '',
       checkInDateError: '',
@@ -167,6 +204,9 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
     });
   };
 
+  /**
+   * When initiated modal is visibility is enabled/disabled
+   */
   const handleKeyDown = (e) => {
     if (e.key === 'Esc') {
       toggleModal();
@@ -182,12 +222,26 @@ export default function UpdateReservationModal({ reservation, onRefresh }) {
   return (
     <>
       <div className='edit-container'>
-        <button className='edit-icon' type='button' fontSize='small' onClick={() => handleEditReservation(reservation.id)}>Edit</button>
+        <button
+          className='edit-icon'
+          type='button'
+          fontSize='small'
+          onClick={() => handleEditReservation(reservation.id)}
+        >
+          Edit
+        </button>
         <div className='id-number'>{reservation.id}</div>
       </div>
       {modal && (
         <div className='modal'>
-          <div className='overlay' aria-label='overlay' role='button' onClick={toggleModal} onKeyDown={handleKeyDown} tabIndex={0} />
+          <div
+            className='overlay'
+            aria-label='overlay'
+            role='button'
+            onClick={toggleModal}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+          />
           <div className='modal-content'>
             <div className='modal-header'>
               <h2>UPDATE RESERVATION FORM</h2>
