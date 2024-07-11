@@ -15,7 +15,6 @@ const fields = [
     id: 'checkInDate',
     label: 'Check-in Date',
     keys: 'checkInDate',
-    type: 'date',
     required: true
   },
   {
@@ -26,9 +25,14 @@ const fields = [
   }
 ];
 
+// const formatDate = (dateString) => {
+//   const dateParts = dateString.split('-');
+//   return `${dateParts[1]}-${dateParts[2]}-${dateParts[0]}`;
+// };
+
 export default function UpdateReservationModal({ onRefresh }) {
   const [modal, setModal] = useState(false);
-  const [reservation, setReservation] = useState({
+  const [reservations, setReservations] = useState({
     guestEmail: '',
     checkInDate: '',
     numberOfNights: ''
@@ -60,6 +64,12 @@ export default function UpdateReservationModal({ onRefresh }) {
     return numOfNightsRegex.test(numOfNights);
   };
 
+  // Validates that the date is in mm-dd-yyyy format following the standard US Calendar.
+  const validateCheckInDate = (checkinDate) => {
+    const checkInDateRegex = /^(0[1-9]|1[0-2])-([0-2][0-9]|3[01])-(\d{4})$/;
+    return checkInDateRegex.test(checkinDate);
+  };
+
   // Validates that text fields to ensure they have value and are in the right format.
   const isFormValid = (reservationToValidate) => {
     const errors = {
@@ -80,6 +90,12 @@ export default function UpdateReservationModal({ onRefresh }) {
       errors.guestEmailError = '';
     }
 
+    if (!validateCheckInDate(reservationToValidate.checkInDate)) {
+      errors.checkInDateError = 'Check-in Date must be in mm-dd-yyyy';
+    } else {
+      errors.checkInDateError = '';
+    }
+
     setValidationErrors({
       numberOfNightsError: errors.numberOfNightsError,
       guestEmailError: errors.guestEmailError
@@ -96,7 +112,7 @@ export default function UpdateReservationModal({ onRefresh }) {
       checked,
       value
     } = e.target;
-    setReservation((prevValues) => ({
+    setReservations((prevValues) => ({
       ...prevValues,
       [id]: type === 'checkbox' ? checked : value
     }));
@@ -104,7 +120,7 @@ export default function UpdateReservationModal({ onRefresh }) {
 
   // Creates a new reservation and performs a post request with new reservation.
   const handleSubmit = async () => {
-    const errors = isFormValid(reservation);
+    const errors = isFormValid(reservations);
     if (
       errors.guestEmailError.length !== 0
       || errors.numberOfNightsError.length !== 0
@@ -113,18 +129,18 @@ export default function UpdateReservationModal({ onRefresh }) {
       return;
     }
     try {
-      const reservationToCreate = {
-        guestEmail: reservation.guestEmail,
-        checkInDate: reservation.checkInDate,
-        numberOfNights: reservation.numberOfNights
+      const reservation = {
+        guestEmail: reservations.guestEmail,
+        checkInDate: reservations.checkInDate,
+        numberOfNights: reservations.numberOfNights
       };
-      await createReservation(reservationToCreate);
+      await createReservation(reservation);
       setError(null); // Reset error on success
       toggleModal(); // Disable modal on success
       onRefresh(); // Refresh reservation list on success
 
       // Reset reservation to default values
-      setReservation({
+      setReservations({
         checkInDate: '',
         numberOfNights: '',
         guestEmail: ''
@@ -135,7 +151,7 @@ export default function UpdateReservationModal({ onRefresh }) {
   };
 
   const handleCancel = () => {
-    setReservation({}); // Reset reservation to default values
+    setReservations({}); // Reset reservation to default values
     toggleModal(); // Toggle modal visibility
     setError(null); // Resets errors to initial values
     setValidationErrors({
@@ -171,7 +187,7 @@ export default function UpdateReservationModal({ onRefresh }) {
             </div>
             <ReservationForm
               fields={fields}
-              reservation={reservation}
+              reservation={reservations}
               onChange={handleChange}
               error={error}
               validationErrors={validationErrors}
