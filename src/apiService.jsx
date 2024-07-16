@@ -1,52 +1,52 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import axios from 'axios';
 
-const vendorsApiUrl = 'http://localhost:8085/vendors';
+const patientsApiUrl = 'http://localhost:8085/patients';
 const productsApiUrl = 'http://localhost:8085/products';
 const reservationsApiUrl = 'http://localhost:8085/reservations';
 const ingredientsApiUrl = 'http://localhost:8085/ingredients';
 
-// Retrieving vendor instance(s) from the backend
-export const getVendors = async () => {
+// Retrieving patient instance(s) from the backend
+export const getPatients = async () => {
   try {
-    const response = await axios.get(vendorsApiUrl);
+    const response = await axios.get(patientsApiUrlApiUrl);
     return response.data;
   } catch (error) {
-    throw Error('Error fetching vendors', error);
+    throw Error('Error fetching patients', error);
   }
 };
 
-export const getVendorById = async (id) => {
+export const getPatientById = async (id) => {
   try {
-    const response = await axios.get(`${vendorsApiUrl}/${id}`);
+    const response = await axios.get(`${patientsApiUrl}/${id}`);
     return response.data;
   } catch (error) {
-    throw Error('Error fetching vendor', error);
+    throw Error('Error fetching patient', error);
   }
 };
 
-// This function is responsible for creating a new vendor by sending a POST request
-// to the specified API endpoint (vendorsApiUrl) with the vendor data provided as an argument.
-export const createVendor = async (vendorToCreate) => {
-  const response = await axios.post(vendorsApiUrl, vendorToCreate);
+// This function is responsible for creating a new patient by sending a POST request
+// to the specified API endpoint (patientsApiUrl) with the patient data provided as an argument.
+export const createpatient = async (patientToCreate) => {
+  const response = await axios.post(patientsApiUrl, patientToCreate);
   return response.data;
 };
 
-export const editVendor = async (vendorToEdit) => {
+export const editpatient = async (patientToEdit) => {
   try {
-    const response = await axios.put(`${vendorsApiUrl}/${vendorToEdit.id}`, vendorToEdit);
+    const response = await axios.put(`${patientsApiUrl}/${patientToEdit.id}`, patientToEdit);
     return response.data;
   } catch (error) {
-    throw Error('Error updating vendor', error);
+    throw Error('Error updating patient', error);
   }
 };
 
-export const deleteVendorById = async (vendorId) => {
+export const deletepatientById = async (patientId) => {
   try {
-    const response = await axios.delete(`${vendorsApiUrl}/${vendorId}`);
+    const response = await axios.delete(`${patientsApiUrl}/${patientId}`);
     return response.data;
   } catch (error) {
-    throw Error('Error deleting vendor', error);
+    throw Error('Error deleting patient', error);
   }
 };
 
@@ -73,7 +73,7 @@ export const editProduct = async (productToEdit) => {
     const response = await axios.put(`${productsApiUrl}/${productToEdit.id}`, productToEdit);
     return response.data;
   } catch (error) {
-    throw Error('Error updating vendor', error);
+    throw Error('Error updating patient', error);
   }
 };
 
@@ -196,7 +196,7 @@ export const editIngredient = async (ingredientToEdit) => {
     const response = await axios.put(`${ingredientsApiUrl}/${ingredientToEdit.id}`, ingredientToEdit);
     return response.data;
   } catch (error) {
-    throw Error('Error updating vendor', error);
+    throw Error('Error updating patient', error);
   }
 };
 
