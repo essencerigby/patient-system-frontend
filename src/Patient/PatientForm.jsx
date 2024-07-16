@@ -84,7 +84,7 @@ function InputField({ id, label, value, onChange, onClear, error, required }) {
     );
   }
 
-  if (id === 'zipCode') {
+  if (id === 'zip') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 2 }}>
         <label htmlFor={id}>
@@ -171,7 +171,7 @@ function InputField({ id, label, value, onChange, onClear, error, required }) {
   );
 }
 
-export default function VendorForm({ fields, vendor, onChange, errors }) {
+export default function PatientForm({ fields, vendor, onChange, errors }) {
   const handleClear = (fieldKeys) => {
     const event = {
       target: {

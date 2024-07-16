@@ -27,21 +27,21 @@ export const getPatientById = async (id) => {
 
 // This function is responsible for creating a new patient by sending a POST request
 // to the specified API endpoint (patientsApiUrl) with the patient data provided as an argument.
-export const createpatient = async (patientToCreate) => {
+export const createPatient = async (patientToCreate) => {
   const response = await axios.post(patientsApiUrl, patientToCreate);
   return response.data;
 };
 
-export const editpatient = async (patientToEdit) => {
+export const updatePatient = async (patientToUpdate) => {
   try {
-    const response = await axios.put(`${patientsApiUrl}/${patientToEdit.id}`, patientToEdit);
+    const response = await axios.put(`${patientsApiUrl}/${patientToUpdate.id}`, patientToUpdate);
     return response.data;
   } catch (error) {
     throw Error('Error updating patient', error);
   }
 };
 
-export const deletepatientById = async (patientId) => {
+export const deletePatientById = async (patientId) => {
   try {
     const response = await axios.delete(`${patientsApiUrl}/${patientId}`);
     return response.data;

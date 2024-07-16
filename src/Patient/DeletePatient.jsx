@@ -1,21 +1,17 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable no-alert */
 import React, { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
-import { deleteVendorById } from '../apiService';
+import { deletePatientById } from '../apiService';
 import '../Component/Modal.css';
 
-export default function DeleteVendor({ vendorId, onDeleteSuccess }) {
+export default function DeletePatient({ patientId, onDeleteSuccess }) {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  /* handle the vendor deletion, toggles the modal, and activates success modal */
+  /* handle the patient deletion, toggles the modal, and activates success modal */
   const handleDelete = async () => {
     try {
-      await deleteVendorById(vendorId);
+      await deletePatientById(patientId);
       setError(null);
       onDeleteSuccess();
       setShowModal(false);
@@ -39,7 +35,7 @@ export default function DeleteVendor({ vendorId, onDeleteSuccess }) {
           <div className='overlay' onClick={handleCloseModal} />
           <div className='delete-modal-content'>
             <div className='delete-modal-header'>
-              <h2>Are you sure you want to delete this vendor?</h2>
+              <h2>Are you sure you want to delete this patient?</h2>
             </div>
             <div className='delete-btn-container'>
               <button type='button' className='close-modal' onClick={handleCloseModal}>
