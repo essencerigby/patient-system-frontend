@@ -1,5 +1,5 @@
 /* Patient validations for each field and the error messages */
-export function validatePatient(patient) {
+export default function ValidatePatient(patient) {
   const errors = {};
 
   if (!patient.firstName || patient.firstName.length >= 30) {
@@ -12,7 +12,7 @@ export function validatePatient(patient) {
     errors.email = 'Please enter email in x@x.x format';
   }
   if (!patient.ssn || !/^\d{3}-\d{2}-\d{4}$/.test(patient.ssn)) {
-    errors.ssn ='Please enter ssn in DDD-DD-DDDD format'
+    errors.ssn = 'Please enter ssn in DDD-DD-DDDD format';
   }
   if (!patient.street) {
     errors.street = 'Street field is empty';

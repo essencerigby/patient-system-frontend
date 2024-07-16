@@ -20,6 +20,11 @@ export default function DeletePatient({ patientId, onDeleteSuccess }) {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Esc') {
+      setShowModal(false);
+    }
+  };
   // open and close delete and success modals
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -32,7 +37,14 @@ export default function DeletePatient({ patientId, onDeleteSuccess }) {
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
       {showModal && (
         <div className='modal'>
-          <div className='overlay' onClick={handleCloseModal} />
+          <div
+            className='overlay'
+            aria-label='overlay'
+            role='button'
+            onClick={handleCloseModal}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+          />
           <div className='delete-modal-content'>
             <div className='delete-modal-header'>
               <h2>Are you sure you want to delete this patient?</h2>

@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router, Route, Navigate,
   Routes
 } from 'react-router-dom';
-import ReservationPage from './Reservation/ReservationPage';
+import PatientsPage from './Patient/PatientsPage';
 
 /**
  * App component serves as the main entry point for the application.
@@ -20,7 +20,7 @@ function App() {
     <div className='App'>
       <Router>
         <Routes>
-          <Route path='/patients' element={<ReservationPage />} />
+          <Route path='/patients' element={<PatientsPage />} />
           <Route path='/' element={<Navigate to='/patients' />} />
         </Routes>
       </Router>

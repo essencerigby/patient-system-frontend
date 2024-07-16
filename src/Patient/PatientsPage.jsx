@@ -26,21 +26,21 @@ import '../index.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import { getPatients } from '../apiService';
 import CreatePatient from './CreatePatient';
-import UpdatePatient from './UpdatePatient'
-import DeletePatient from './DeletePatient'
+import UpdatePatient from './UpdatePatient';
+import DeletePatient from './DeletePatient';
 import SuccessModal from '../Component/SuccessModal';
 import TableFilter from '../Component/TableFilter';
 
-export default function patientPage() {
+export default function PatientPage() {
   // Create column names, id's, minimum width
   const columns = [
     { id: 'firstName', label: 'First Name', minWidth: 100 },
     { id: 'lastName', label: 'Last Name', minWidth: 100 },
     { id: 'age', label: 'Age', minWidth: 50 },
-    { id: 'gender', label: 'Gender', minWidth: 50 },
+    { id: 'gender', label: 'Gender', minWidth: 50 }
   ];
 
-  const [patient, setPatient] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -49,10 +49,10 @@ export default function patientPage() {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const data = await getPatient();
+        const data = await getPatients();
         // Sort patients by ID in ascending order
         data.sort((a, b) => (a.id > b.id ? 1 : -1));
-        setPatient(data);
+        setPatients(data);
       } catch (err) {
         setError(err);
       }
@@ -91,7 +91,7 @@ export default function patientPage() {
           patient.lastName,
           patient.age,
           patient.gender,
-          <Deletepatient patientId={patient.id} onDeleteSuccess={handleDeleteSuccess} />
+          <DeletePatient patientId={patient.id} onDeleteSuccess={handleDeleteSuccess} />
         ],
         patient.id
       )
@@ -106,8 +106,8 @@ export default function patientPage() {
   const temporaryFields = [
     { id: 'id', label: 'ID' },
     { id: 'name', label: 'Name', keys: 'name' },
-    { id: 'age', label: 'Age', keys: 'age'},
-    { id: 'gender', label: 'Gender', keys: 'gender'},
+    { id: 'age', label: 'Age', keys: 'age' },
+    { id: 'gender', label: 'Gender', keys: 'gender' }
   ];
 
   return (

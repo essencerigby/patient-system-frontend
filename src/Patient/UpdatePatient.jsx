@@ -3,22 +3,87 @@ import React, { useState, useEffect } from 'react';
 import '../Component/Modal.css';
 import { updatePatient, getPatientById } from '../apiService';
 import PatientForm from './PatientForm';
-import { validatePatient } from './ValidatePatient';
+import ValidatePatient from './ValidatePatient';
 
 const fields = [
-  { id: 'firstName', label: 'First Name', keys: 'firstName', required: true },
-  { id: 'lastName', label: 'Last Name', keys: 'lastName', required: true },
-  { id: 'ssn', label: 'SSN', keys: 'ssn', required: true },
-  { id: 'email', label: 'Email', keys: 'email', required: true },
-  { id: 'street', label: 'Street Address', keys: 'street', required: true },
-  { id: 'city', label: 'City', keys: 'city', required: true },
-  { id: 'state', label: 'State', keys: 'state', required: true },
-  { id: 'zip', label: 'Zip Code', keys: 'zip', required: true },
-  { id: 'age', label: 'Age', keys: 'age', required: true },
-  { id: 'height', label: 'Height', keys: 'height', required: false },
-  { id: 'weight', label: 'Weight', keys: 'weight', required: false },
-  { id: 'gender', label: 'gender', keys: 'gender', required: true },
-  { id: 'insurance', label: 'Insurance', keys: 'insurance', required: true }
+  {
+    id: 'firstName',
+    label: 'First Name',
+    keys: 'firstName',
+    required: true
+  },
+  {
+    id: 'lastName',
+    label: 'Last Name',
+    keys: 'lastName',
+    required: true
+  },
+  {
+    id: 'ssn',
+    label: 'SSN',
+    keys: 'ssn',
+    required: true
+  },
+  {
+    id: 'email',
+    label: 'Email',
+    keys: 'email',
+    required: true
+  },
+  {
+    id: 'street',
+    label: 'Street Address',
+    keys: 'street',
+    required: true
+  },
+  {
+    id: 'city',
+    label: 'City',
+    keys: 'city',
+    required: true
+  },
+  {
+    id: 'state',
+    label: 'State',
+    keys: 'state',
+    required: true
+  },
+  {
+    id: 'zip',
+    label: 'Zip Code',
+    keys: 'zip',
+    required: true
+  },
+  {
+    id: 'age',
+    label: 'Age',
+    keys: 'age',
+    required: true
+  },
+  {
+    id: 'height',
+    label: 'Height',
+    keys: 'height',
+    required: false
+  },
+  {
+    id: 'weight',
+    label: 'Weight',
+    keys: 'weight',
+    required: false
+  },
+  {
+    id: 'gender',
+    label: 'gender',
+    keys: 'gender',
+    required: true
+  },
+  {
+    id: 'insurance',
+    label: 'Insurance',
+    keys: 'insurance',
+    required: true
+  }
 ];
 
 export default function UpdatePatient({ patient, onRefresh }) {
@@ -71,7 +136,7 @@ export default function UpdatePatient({ patient, onRefresh }) {
   };
 
   const handleSubmit = async () => {
-    const validationErrors = validatePatient(currentPatient);
+    const validationErrors = ValidatePatient(currentPatient);
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) return;
     try {
@@ -169,7 +234,12 @@ export default function UpdatePatient({ patient, onRefresh }) {
             <div className='modal-header'>
               <h2>UPDATE PATIENT FORM</h2>
             </div>
-            <PatientForm fields={fields} patient={currentPatient} onChange={handleChange} errors={errors} />
+            <PatientForm
+              fields={fields}
+              patient={currentPatient}
+              onChange={handleChange}
+              errors={errors}
+            />
             {errors.form && <div className='error-message'>{errors.form}</div>}
 
             <div className='btn-container'>

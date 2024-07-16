@@ -9,7 +9,7 @@ const ingredientsApiUrl = 'http://localhost:8085/ingredients';
 // Retrieving patient instance(s) from the backend
 export const getPatients = async () => {
   try {
-    const response = await axios.get(patientsApiUrlApiUrl);
+    const response = await axios.get(patientsApiUrl);
     return response.data;
   } catch (error) {
     throw Error('Error fetching patients', error);

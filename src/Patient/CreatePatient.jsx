@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import '../Component/Modal.css';
 import { createPatient } from '../apiService';
-import { validatePatient } from './ValidatePatient';
-import VendorForm from './PatientForm';
+import ValidatePatient from './ValidatePatient';
+import PatientForm from './PatientForm';
 
 // Array of fields for the form
 const fields = [
@@ -74,7 +74,7 @@ export default function CreatePatient({ onRefresh }) {
 
   // This function handles the submission of the vendor form.
   const handleSubmit = async () => {
-    const validationErrors = validatePatient(patient);
+    const validationErrors = ValidatePatient(patient);
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) return;
     try {
@@ -141,9 +141,9 @@ export default function CreatePatient({ onRefresh }) {
           <div className='overlay' />
           <div className='modal-content' style={{ maxWidth: modalWidth }}>
             <div className='modal-header'>
-              <h2>NEW Patient FORM</h2>
+              <h2>NEW PATIENT FORM</h2>
             </div>
-            <VendorForm fields={fields} vendor={vendor} onChange={handleChange} errors={errors} />
+            <PatientForm fields={fields} patient={patient} onChange={handleChange} errors={errors} />
             {errors.form && <div className='error-message'>{errors.form}</div>}
 
             <div className='btn-container'>

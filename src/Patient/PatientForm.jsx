@@ -171,7 +171,7 @@ function InputField({ id, label, value, onChange, onClear, error, required }) {
   );
 }
 
-export default function PatientForm({ fields, vendor, onChange, errors }) {
+export default function PatientForm({ fields, patient, onChange, errors }) {
   const handleClear = (fieldKeys) => {
     const event = {
       target: {
@@ -189,7 +189,7 @@ export default function PatientForm({ fields, vendor, onChange, errors }) {
           key={field.id}
           id={field.id}
           label={field.label}
-          value={field.keys.split('.').reduce((o, i) => o[i], vendor)}
+          value={field.keys.split('.').reduce((o, i) => o[i], patient)}
           onChange={onChange}
           onClear={handleClear}
           error={errors && errors[field.id]}
