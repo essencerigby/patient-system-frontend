@@ -34,10 +34,12 @@ import TableFilter from '../Component/TableFilter';
 export default function PatientPage() {
   // Create column names, id's, minimum width
   const columns = [
+    { id: 'editIcon', label: '', minWidth: 30 },
     { id: 'firstName', label: 'First Name', minWidth: 100 },
     { id: 'lastName', label: 'Last Name', minWidth: 100 },
     { id: 'age', label: 'Age', minWidth: 50 },
-    { id: 'gender', label: 'Gender', minWidth: 50 }
+    { id: 'gender', label: 'Gender', minWidth: 50 },
+    { id: 'deleteIcon', label: '', minWidth: 30 }
   ];
 
   const [patients, setPatients] = useState([]);
@@ -86,22 +88,17 @@ export default function PatientPage() {
       createRow(
         columns,
         [
-          <UpdatePatient patient={patient} onRefresh={handleRefresh} />,
+          <UpdatePatient id='editIcon' patient={patient} onRefresh={handleRefresh} />,
           patient.firstName,
           patient.lastName,
           patient.age,
           patient.gender,
-          <DeletePatient patientId={patient.id} onDeleteSuccess={handleDeleteSuccess} />
+          <DeletePatient id='deleteIcon' patientId={patient.id} onDeleteSuccess={handleDeleteSuccess} />
         ],
         patient.id
       )
     )
   );
-
-  // If there are less than 6 rows, create empty rows to fill out table
-  while (rows.length < 6) {
-    rows.push(createRow(columns, Array(columns.length).fill('')));
-  }
 
   const temporaryFields = [
     { id: 'id', label: 'ID' },

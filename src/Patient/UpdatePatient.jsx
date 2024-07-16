@@ -221,11 +221,11 @@ export default function UpdatePatient({ patient, onRefresh }) {
     }
   };
 
+  // Change this so the table shows only the neccessary fields
   return (
     <>
       <div className='edit-container'>
         <EditIcon className='edit-icon' fontSize='small' onClick={() => handleUpdatePatient(patient.id)} />
-        <div className='id-number'>{patient.id}</div>
       </div>
       {modal && (
         <div className='modal'>
