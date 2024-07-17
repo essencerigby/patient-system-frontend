@@ -15,11 +15,11 @@ const fields = [
   { id: 'street', label: 'Street Address', keys: 'street', required: true },
   { id: 'city', label: 'City', keys: 'city', required: true },
   { id: 'state', label: 'State', keys: 'state', required: true },
-  { id: 'zip', label: 'Zip Code', keys: 'zip', required: true },
+  { id: 'zip', label: 'Zip', keys: 'zip', required: true },
   { id: 'age', label: 'Age', keys: 'age', required: true },
   { id: 'height', label: 'Height', keys: 'height', required: false },
   { id: 'weight', label: 'Weight', keys: 'weight', required: false },
-  { id: 'gender', label: 'gender', keys: 'gender', required: true },
+  { id: 'gender', label: 'Gender', keys: 'gender', required: true },
   { id: 'insurance', label: 'Insurance', keys: 'insurance', required: true }
 ];
 

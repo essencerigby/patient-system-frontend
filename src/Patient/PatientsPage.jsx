@@ -22,6 +22,8 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import '../index.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
 import { getPatients } from '../apiService';
@@ -39,13 +41,15 @@ export default function PatientPage() {
     { id: 'lastName', label: 'Last Name', minWidth: 100 },
     { id: 'age', label: 'Age', minWidth: 50 },
     { id: 'gender', label: 'Gender', minWidth: 50 },
-    { id: 'deleteIcon', label: '', minWidth: 30 }
+    { id: 'deleteIcon', label: '', minWidth: 30 },
+    { id: 'viewDetails', label: '', minWidth: 30 }
   ];
 
   const [patients, setPatients] = useState([]);
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const history = useHistory();
 
   // Get all patients from the database and store it in patients array
   useEffect(() => {
@@ -93,7 +97,11 @@ export default function PatientPage() {
           patient.lastName,
           patient.age,
           patient.gender,
-          <DeletePatient id='deleteIcon' patientId={patient.id} onDeleteSuccess={handleDeleteSuccess} />
+          <DeletePatient id='deleteIcon' patientId={patient.id} onDeleteSuccess={handleDeleteSuccess} />,
+          <ListAltOutlinedIcon
+            style={{ cursor: 'pointer' }}
+            onClick={() => history.push(`/patients/${patient.id}`)}
+          />
         ],
         patient.id
       )

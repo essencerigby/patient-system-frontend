@@ -55,6 +55,8 @@ const stateAbbreviations = [
   'WY'
 ];
 
+const genderOptions = ['Male', 'Female', 'Other'];
+
 function InputField({ id, label, value, onChange, onClear, error, required }) {
   const inputClassName = error ? 'input-flex-error' : 'input-flex';
 
@@ -84,6 +86,23 @@ function InputField({ id, label, value, onChange, onClear, error, required }) {
     );
   }
 
+  if (id === 'gender') {
+    return (
+      <div className={`input-field ${id}`}>
+        <label htmlFor={id}>
+          {label}:{renderRequired()}
+        </label>
+        <select className={inputClassName} id={id} value={value} onChange={onChange}>
+          <option value=''>Select Gender</option>
+          {genderOptions.map((gender) => (
+            <option key={gender} value={gender}>{gender}</option>
+          ))}
+        </select>
+        {error && <div className='error-message'>{error}</div>}
+      </div>
+    );
+  }
+
   if (id === 'zip') {
     return (
       <div className={`input-field ${id}`} style={{ gridColumn: 2 }}>
@@ -105,27 +124,7 @@ function InputField({ id, label, value, onChange, onClear, error, required }) {
       </div>
     );
   }
-  if (id === 'contactName') {
-    return (
-      <div className={`input-field ${id}`}>
-        <label htmlFor={id}>
-          {label}:{renderRequired()}
-        </label>
-        <input className={inputClassName} id={id} type='text' value={value} onChange={onChange} />
-        {value && (
-          <button
-            type='button'
-            className={error ? 'clear-button-error' : 'clear-button'}
-            onClick={() => onClear(id)}
-            style={error ? { transform: 'translateY(-220%)' } : { transform: 'translateY(-40%)' }}
-          >
-            X
-          </button>
-        )}
-        {error && <div className='error-message'>{error}</div>}
-      </div>
-    );
-  }
+
   if (id === 'phone') {
     return (
       <div className={`input-field ${id}`}>
