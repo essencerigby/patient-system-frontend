@@ -74,7 +74,7 @@ const fields = [
   },
   {
     id: 'gender',
-    label: 'gender',
+    label: 'Gender',
     keys: 'gender',
     required: true
   },
