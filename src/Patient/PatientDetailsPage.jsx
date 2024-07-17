@@ -1,8 +1,11 @@
 /* eslint-disable linebreak-style */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getPatientById } from '../apiService';
 import '../index.css';
+import Box from '@mui/material/Box';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import { getPatientById } from '../apiService';
 
 export default function PatientDetails() {
   const { id } = useParams();
@@ -31,24 +34,81 @@ export default function PatientDetails() {
   }
 
   return (
-    <div className='patient-details'>
+    <Box
+      component='form'
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' }
+      }}
+      noValidate
+      autoComplete='off'
+    >
       <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Patient Details</h1>
       <div className='patient-info'>
-        <p><strong>ID:</strong> {patient.id}</p>
-        <p><strong>First Name:</strong> {patient.firstName}</p>
-        <p><strong>Last Name:</strong> {patient.lastName}</p>
-        <p><strong>SSN:</strong> {patient.ssn}</p>
-        <p><strong>Email:</strong> {patient.email}</p>
-        <p><strong>Street:</strong> {patient.street}</p>
-        <p><strong>City:</strong> {patient.city}</p>
-        <p><strong>State:</strong> {patient.state}</p>
-        <p><strong>Zip:</strong> {patient.zip}</p>
-        <p><strong>Age:</strong> {patient.age}</p>
-        <p><strong>Height:</strong> {patient.height}</p>
-        <p><strong>Weight:</strong> {patient.weight}</p>
-        <p><strong>Gender:</strong> {patient.gender}</p>
-        <p><strong>Insurance:</strong> {patient.insurance}</p>
+        <TextField
+          id='outlined-disabled'
+          label='Patient ID'
+          value={patient.id}
+        />
+        <TextField
+          id='outlined-disabled'
+          label='Patient First Name'
+          value={patient.firstName}
+        />
+        <TextField
+          id='outlined-disabled'
+          label='Patient Last Name'
+          value={patient.lastName}
+        />
+        <TextField
+          id='outlined-disabled'
+          label='Patient SSN'
+          value={patient.ssn}
+        />
+        <TextField
+          id='outlined-disabled'
+          label='Patient Email'
+          value={patient.email}
+        />
+        <TextField
+          id='outlined-disabled'
+          label='Patient Address'
+          value={`${patient.street}, ${patient.city}, ${patient.state} ${patient.zip}`}
+        />
+        <TextField
+          id='outlined-disabled'
+          label='Patient Age'
+          value={patient.age}
+          InputProps={{
+            endAdornment: <InputAdornment position='end'>years</InputAdornment>
+          }}
+        />
+        <TextField
+          id='outlined-disabled'
+          label='Patient Height'
+          value={patient.height}
+          InputProps={{
+            endAdornment: <InputAdornment position='end'>in</InputAdornment>
+          }}
+        />
+        <TextField
+          id='outlined-disabled'
+          label='Patient Weight'
+          value={patient.weight}
+          InputProps={{
+            endAdornment: <InputAdornment position='end'>lbs</InputAdornment>
+          }}
+        />
+        <TextField
+          id='outlined-disabled'
+          label='Patient Gender'
+          value={patient.gender}
+        />
+        <TextField
+          id='outlined-disabled'
+          label='Patient Insurance'
+          value={patient.insurance}
+        />
       </div>
-    </div>
+    </Box>
   );
 }
