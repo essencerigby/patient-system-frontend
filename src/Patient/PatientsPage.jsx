@@ -22,7 +22,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import '../index.css';
 import StickyHeadTable, { createRow } from '../Component/Table';
@@ -49,7 +49,7 @@ export default function PatientPage() {
   const [error, setError] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // Get all patients from the database and store it in patients array
   useEffect(() => {
@@ -100,7 +100,7 @@ export default function PatientPage() {
           <DeletePatient id='deleteIcon' patientId={patient.id} onDeleteSuccess={handleDeleteSuccess} />,
           <ListAltOutlinedIcon
             style={{ cursor: 'pointer' }}
-            onClick={() => history.push(`/patients/${patient.id}`)}
+            onClick={() => navigate(`/patients/${patient.id}`)}
           />
         ],
         patient.id

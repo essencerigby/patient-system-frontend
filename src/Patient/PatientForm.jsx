@@ -57,7 +57,7 @@ const stateAbbreviations = [
 
 const genderOptions = ['Male', 'Female', 'Other'];
 
-function InputField({ id, label, value, onChange, onClear, error, required }) {
+function InputField({ id, label, value, placeholder, onChange, onClear, error, required }) {
   const inputClassName = error ? 'input-flex-error' : 'input-flex';
 
   const renderRequired = () => {
@@ -109,35 +109,13 @@ function InputField({ id, label, value, onChange, onClear, error, required }) {
         <label htmlFor={id}>
           {label}:{renderRequired()}
         </label>
-        <input className={inputClassName} id={id} type='text' value={value} onChange={onChange} />
+        <input className={inputClassName} id={id} type='text' placeholder={placeholder} value={value} onChange={onChange} />
         {value && (
           <button
             type='button'
             className={error ? 'clear-button-error' : 'clear-button'}
             onClick={() => onClear(id)}
             style={error ? { transform: 'translateY(-230%)' } : { transform: 'translateY(-40%)' }}
-          >
-            X
-          </button>
-        )}
-        {error && <div className='error-message'>{error}</div>}
-      </div>
-    );
-  }
-
-  if (id === 'phone') {
-    return (
-      <div className={`input-field ${id}`}>
-        <label htmlFor={id}>
-          {label}:{renderRequired()}
-        </label>
-        <input className={inputClassName} id={id} type='text' value={value} onChange={onChange} />
-        {value && (
-          <button
-            type='button'
-            className={error ? 'clear-button-error' : 'clear-button'}
-            onClick={() => onClear(id)}
-            style={error ? { transform: 'translateY(-220%)' } : { transform: 'translateY(-40%)' }}
           >
             X
           </button>
@@ -156,6 +134,7 @@ function InputField({ id, label, value, onChange, onClear, error, required }) {
         className={inputClassName}
         id={id}
         type='text'
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
         style={{ position: 'relative' }}

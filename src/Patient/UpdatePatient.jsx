@@ -50,7 +50,7 @@ const fields = [
   },
   {
     id: 'zip',
-    label: 'Zip Code',
+    label: 'Zip',
     keys: 'zip',
     required: true
   },
