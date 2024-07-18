@@ -37,74 +37,93 @@ export default function PatientDetails() {
     <Box
       component='form'
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' }
+        '& .MuiTextField-root': { m: 3, width: '45ch' }
       }}
-      noValidate
-      autoComplete='off'
     >
-      <h1 style={{ fontFamily: 'Roboto, sans-serif' }}>Patient Details</h1>
       <div className='patient-info'>
+        <h1 style={{ fontFamily: 'Roboto, sans-serif', textAlign: 'start' }}>Patient Details</h1>
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only'
           label='Patient ID'
           value={patient.id}
+          InputProps={{
+            readOnly: true
+          }}
         />
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only'
           label='Patient First Name'
           value={patient.firstName}
+          InputProps={{
+            readOnly: true
+          }}
         />
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only'
           label='Patient Last Name'
           value={patient.lastName}
+          InputProps={{
+            readOnly: true
+          }}
         />
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only'
           label='Patient SSN'
           value={patient.ssn}
+          InputProps={{
+            readOnly: true
+          }}
         />
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only'
           label='Patient Email'
           value={patient.email}
+          InputProps={{
+            readOnly: true
+          }}
         />
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only'
           label='Patient Address'
           value={`${patient.street}, ${patient.city}, ${patient.state} ${patient.zip}`}
+          InputProps={{
+            readOnly: true
+          }}
         />
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only'
           label='Patient Age'
           value={patient.age}
           InputProps={{
+            readOnly: true,
             endAdornment: <InputAdornment position='end'>years</InputAdornment>
           }}
         />
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only'
           label='Patient Height'
           value={patient.height}
           InputProps={{
+            readOnly: true,
             endAdornment: <InputAdornment position='end'>in</InputAdornment>
           }}
         />
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only-input'
           label='Patient Weight'
           value={patient.weight}
           InputProps={{
+            readOnly: true,
             endAdornment: <InputAdornment position='end'>lbs</InputAdornment>
           }}
         />
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only'
           label='Patient Gender'
           value={patient.gender}
         />
         <TextField
-          id='outlined-disabled'
+          id='outlined-read-only'
           label='Patient Insurance'
           value={patient.insurance}
         />

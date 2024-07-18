@@ -1,5 +1,5 @@
 import EditIcon from '@mui/icons-material/Edit';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../Component/Modal.css';
 import { updatePatient, getPatientById } from '../apiService';
 import PatientForm from './PatientForm';
@@ -88,7 +88,6 @@ const fields = [
 
 export default function UpdatePatient({ patient, onRefresh }) {
   const [modal, setModal] = useState(false);
-  const [modalWidth, setModalWidth] = useState(Math.min(window.innerWidth * 0.8, 600));
   const [currentPatient, setCurrentPatient] = useState({
     id: '',
     firstName: '',
@@ -107,18 +106,6 @@ export default function UpdatePatient({ patient, onRefresh }) {
   });
 
   const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    const handleResize = () => {
-      setModalWidth(Math.min(window.innerWidth * 0.8, 600));
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   const toggleModal = () => {
     if (modal) {
@@ -230,7 +217,7 @@ export default function UpdatePatient({ patient, onRefresh }) {
       {modal && (
         <div className='modal'>
           <div className='overlay' />
-          <div className='modal-content' style={{ maxWidth: modalWidth }}>
+          <div className='modal-content'>
             <div className='modal-header'>
               <h2>UPDATE PATIENT FORM</h2>
             </div>
