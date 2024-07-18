@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../index.css';
 import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -12,6 +12,7 @@ export default function PatientDetails() {
   const { id } = useParams();
   const [patient, setPatient] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -129,7 +130,7 @@ export default function PatientDetails() {
           value={patient.insurance}
         />
       </div>
-      <CottageIcon />
+      <CottageIcon onClick={() => navigate('/patients')} />
     </Box>
   );
 }
