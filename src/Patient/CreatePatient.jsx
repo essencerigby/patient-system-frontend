@@ -17,8 +17,8 @@ const fields = [
   { id: 'state', label: 'State', keys: 'state', required: true },
   { id: 'zip', label: 'Zip', keys: 'zip', required: true },
   { id: 'age', label: 'Age', keys: 'age', required: true },
-  { id: 'height', label: 'Height', keys: 'height', required: false },
-  { id: 'weight', label: 'Weight', keys: 'weight', required: false },
+  { id: 'height', label: 'Height (in.)', keys: 'height', required: false },
+  { id: 'weight', label: 'Weight (lbs.)', keys: 'weight', required: false },
   { id: 'gender', label: 'Gender', keys: 'gender', required: true },
   { id: 'insurance', label: 'Insurance', keys: 'insurance', required: true }
 ];

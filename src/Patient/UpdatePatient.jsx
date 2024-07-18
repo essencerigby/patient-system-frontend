@@ -62,13 +62,13 @@ const fields = [
   },
   {
     id: 'height',
-    label: 'Height',
+    label: 'Height (in.)',
     keys: 'height',
     required: false
   },
   {
     id: 'weight',
-    label: 'Weight',
+    label: 'Weight (lbs.)',
     keys: 'weight',
     required: false
   },
