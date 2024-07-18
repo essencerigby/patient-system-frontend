@@ -54,7 +54,7 @@ export default function ValidatePatient(patient) {
     errors.zip = 'Zip code field is empty';
   }
 
-  if (!patient.age || !patient.age.trim()) {
+  if (!patient.age || !patient.age.toString().trim() === '') {
     errors.age = 'Age field is empty';
   } else if (!/^(120|1[01][0-9]|[1-9]?[0-9])$/.test(patient.age)) {
     errors.age = 'Age must be between 0 and 120 years';
