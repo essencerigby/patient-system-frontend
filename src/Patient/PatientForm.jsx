@@ -10,6 +10,7 @@ const stateAbbreviations = [
   'CA',
   'CO',
   'CT',
+  'DC',
   'DE',
   'FL',
   'GA',

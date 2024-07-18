@@ -38,7 +38,7 @@ export default function PatientDetails() {
     <Box
       component='form'
       sx={{
-        '& .MuiTextField-root': { m: 3, width: '45ch' }
+        '& .MuiTextField-root': { m: 3, width: '50ch' }
       }}
     >
       <div className='patient-info'>
