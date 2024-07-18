@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../index.css';
@@ -119,16 +118,8 @@ export default function PatientDetails() {
             endAdornment: <InputAdornment position='end'>lbs</InputAdornment>
           }}
         />
-        <TextField
-          id='outlined-read-only'
-          label='Patient Gender'
-          value={patient.gender}
-        />
-        <TextField
-          id='outlined-read-only'
-          label='Patient Insurance'
-          value={patient.insurance}
-        />
+        <TextField id='outlined-read-only' label='Patient Gender' value={patient.gender} />
+        <TextField id='outlined-read-only' label='Patient Insurance' value={patient.insurance} />
       </div>
       <CottageIcon onClick={() => navigate('/patients')} />
     </Box>

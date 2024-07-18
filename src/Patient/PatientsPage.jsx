@@ -1,4 +1,3 @@
-/* eslint-disable function-paren-newline */
 /**
  * patientPage Component
  *
@@ -86,27 +85,24 @@ export default function PatientPage() {
   const rows = [];
 
   // Create rows from the patient array
-  patients.map((patient) =>
-    // eslint-disable-next-line implicit-arrow-linebreak
-    rows.push(
-      createRow(
-        columns,
-        [
-          <UpdatePatient id='editIcon' patient={patient} onRefresh={handleRefresh} />,
-          patient.firstName,
-          patient.lastName,
-          patient.age,
-          patient.gender,
-          <DeletePatient id='deleteIcon' patientId={patient.id} onDeleteSuccess={handleDeleteSuccess} />,
-          <ListAltOutlinedIcon
-            style={{ cursor: 'pointer' }}
-            onClick={() => navigate(`/patients/${patient.id}`)}
-          />
-        ],
-        patient.id
-      )
+  patients.map((patient) => rows.push(
+    createRow(
+      columns,
+      [
+        <UpdatePatient id='editIcon' patient={patient} onRefresh={handleRefresh} />,
+        patient.firstName,
+        patient.lastName,
+        patient.age,
+        patient.gender,
+        <DeletePatient id='deleteIcon' patientId={patient.id} onDeleteSuccess={handleDeleteSuccess} />,
+        <ListAltOutlinedIcon
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate(`/patients/${patient.id}`)}
+        />
+      ],
+      patient.id
     )
-  );
+  ));
 
   const temporaryFields = [
     { id: 'id', label: 'ID' },

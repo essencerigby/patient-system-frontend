@@ -1,6 +1,4 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable max-len */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../Component/Modal.css';
 import { createPatient } from '../apiService';
 import ValidatePatient from './ValidatePatient';
@@ -8,24 +6,49 @@ import PatientForm from './PatientForm';
 
 // Array of fields for the form
 const fields = [
-  { id: 'firstName', label: 'First Name', keys: 'firstName', required: true },
-  { id: 'lastName', label: 'Last Name', keys: 'lastName', required: true },
-  { id: 'ssn', label: 'SSN', keys: 'ssn', required: true },
-  { id: 'email', label: 'Email', keys: 'email', required: true },
-  { id: 'street', label: 'Street Address', keys: 'street', required: true },
-  { id: 'city', label: 'City', keys: 'city', required: true },
-  { id: 'state', label: 'State', keys: 'state', required: true },
-  { id: 'zip', label: 'Zip', keys: 'zip', required: true },
-  { id: 'age', label: 'Age', keys: 'age', required: true },
-  { id: 'height', label: 'Height (in.)', keys: 'height', required: false },
-  { id: 'weight', label: 'Weight (lbs.)', keys: 'weight', required: false },
-  { id: 'gender', label: 'Gender', keys: 'gender', required: true },
-  { id: 'insurance', label: 'Insurance', keys: 'insurance', required: true }
+  {
+    id: 'firstName', label: 'First Name', keys: 'firstName', required: true
+  },
+  {
+    id: 'lastName', label: 'Last Name', keys: 'lastName', required: true
+  },
+  {
+    id: 'ssn', label: 'SSN', keys: 'ssn', required: true
+  },
+  {
+    id: 'email', label: 'Email', keys: 'email', required: true
+  },
+  {
+    id: 'street', label: 'Street Address', keys: 'street', required: true
+  },
+  {
+    id: 'city', label: 'City', keys: 'city', required: true
+  },
+  {
+    id: 'state', label: 'State', keys: 'state', required: true
+  },
+  {
+    id: 'zip', label: 'Zip', keys: 'zip', required: true
+  },
+  {
+    id: 'age', label: 'Age', keys: 'age', required: true
+  },
+  {
+    id: 'height', label: 'Height (in.)', keys: 'height', required: false
+  },
+  {
+    id: 'weight', label: 'Weight (lbs.)', keys: 'weight', required: false
+  },
+  {
+    id: 'gender', label: 'Gender', keys: 'gender', required: true
+  },
+  {
+    id: 'insurance', label: 'Insurance', keys: 'insurance', required: true
+  }
 ];
 
 export default function CreatePatient({ onRefresh }) {
   const [modal, setModal] = useState(false);
-  const [modalWidth, setModalWidth] = useState(Math.min(window.innerWidth * 0.8, 600));
   const [errors, setErrors] = useState({});
   const [patient, setPatient] = useState({
     id: '',
@@ -43,18 +66,6 @@ export default function CreatePatient({ onRefresh }) {
     gender: '',
     insurance: ''
   });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setModalWidth(Math.min(window.innerWidth * 0.8, 600));
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   const toggleModal = () => {
     if (modal) {
@@ -115,10 +126,13 @@ export default function CreatePatient({ onRefresh }) {
         insurance: ''
       }); // Resetting the vendor state to its initial empty values after successful submission
     } catch (err) {
-      setErrors({ form: err.response ? err.response.data : err.message }); // Set error if submission fails
+      setErrors({
+        form: err.response ? err.response.data : err.message
+      }); // Set error if submission fails
     }
   };
 
+  // When initiated, modal closes.
   const handleCancel = () => {
     setPatient({});
     setErrors({});
@@ -139,11 +153,16 @@ export default function CreatePatient({ onRefresh }) {
       {modal && (
         <div className='modal'>
           <div className='overlay' />
-          <div className='modal-content' style={{ maxWidth: modalWidth }}>
+          <div className='modal-content'>
             <div className='modal-header'>
               <h2>NEW PATIENT FORM</h2>
             </div>
-            <PatientForm fields={fields} patient={patient} onChange={handleChange} errors={errors} />
+            <PatientForm
+              fields={fields}
+              patient={patient}
+              onChange={handleChange}
+              errors={errors}
+            />
             {errors.form && <div className='error-message'>{errors.form}</div>}
 
             <div className='btn-container'>

@@ -1,5 +1,3 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-shadow */
 import React from 'react';
 
 const stateAbbreviations = [
@@ -58,7 +56,9 @@ const stateAbbreviations = [
 
 const genderOptions = ['Male', 'Female', 'Other'];
 
-function InputField({ id, label, value, placeholder, onChange, onClear, error, required }) {
+function InputField({
+  id, label, value, placeholder, onChange, onClear, error, required
+}) {
   const inputClassName = error ? 'input-flex-error' : 'input-flex';
 
   const renderRequired = () => {
@@ -150,7 +150,9 @@ function InputField({ id, label, value, placeholder, onChange, onClear, error, r
   );
 }
 
-export default function PatientForm({ fields, patient, onChange, errors }) {
+export default function PatientForm({
+  fields, patient, onChange, errors
+}) {
   const handleClear = (fieldKeys) => {
     const event = {
       target: {

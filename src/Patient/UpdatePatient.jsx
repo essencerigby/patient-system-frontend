@@ -122,6 +122,7 @@ export default function UpdatePatient({ patient, onRefresh }) {
     }));
   };
 
+  // Submits the new updates to the current patient
   const handleSubmit = async () => {
     const validationErrors = ValidatePatient(currentPatient);
     setErrors(validationErrors);
@@ -174,6 +175,7 @@ export default function UpdatePatient({ patient, onRefresh }) {
     document.body.classList.remove('active-modal');
   }
 
+  // When the edit button is pressed, the fields are prepopulted
   const handleUpdatePatient = async (id) => {
     try {
       const patientById = await getPatientById(id);
@@ -200,12 +202,10 @@ export default function UpdatePatient({ patient, onRefresh }) {
     }
   };
 
+  // Not save any changes and closes the modal
   const handleCancel = () => {
-    // eslint-disable-next-line no-alert
-    if (window.confirm('Are you sure you want to cancel?')) {
-      setCurrentPatient({});
-      toggleModal();
-    }
+    setCurrentPatient({});
+    toggleModal();
   };
 
   // Change this so the table shows only the neccessary fields
