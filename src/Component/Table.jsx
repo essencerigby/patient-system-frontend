@@ -15,7 +15,7 @@ import SortDropdown from './TableSort';
  */
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: '#8ca0c7',
+    backgroundColor: '#cabdda',
     borderBottom: '1px solid #000000',
     color: theme.palette.common.black,
     fontSize: 16,

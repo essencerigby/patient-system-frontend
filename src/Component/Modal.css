@@ -21,7 +21,7 @@ h2 {
 }
 
 .btn-modal {
-  background-color: #8ca0c7;
+  background-color: #c9a8d6;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -194,7 +194,7 @@ h2 {
 
 .edit-icon:hover {
   transform: scale(1.2);
-  color: #3f51b5;
+  color: #cd9add;
 }
 
 .id-number {
@@ -437,7 +437,7 @@ h2 {
 
 .close-modal:hover,
 .submit-close-modal:hover {
-  background-color: #8ca0c7; /* Change background color on hover */
+  background-color: #ecc3f8; /* Change background color on hover */
   border-color: #000; /* Change border color on hover */
   font-weight: bold; /* Make text bold on hover */
 }
