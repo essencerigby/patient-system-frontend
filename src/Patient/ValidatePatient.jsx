@@ -2,13 +2,17 @@
 export default function ValidatePatient(patient) {
   const errors = {};
 
-  if (!patient.firstName || patient.firstName.length > 30) {
+  if (!patient.firstName || !patient.firstName.trim()) {
+    errors.firstName = 'First Name is empty';
+  } else if (patient.firstName.length > 30) {
     errors.firstName = 'Please enter a first name between 1-30 characters';
   } else if (!/^[A-Za-z\s\-',.]*$/.test(patient.firstName)) {
     errors.firstName = 'First Name contains invalid chracters';
   }
 
-  if (!patient.lastName || patient.lastName.length > 30) {
+  if (!patient.lastName || !patient.lastName.trim()) {
+    errors.lastName = 'Last Name is empty';
+  } else if (patient.lastName.length > 30) {
     errors.lastName = 'Please enter a last name between 1-30 characters';
   } else if (!/^[A-Za-z\s\-',.]*$/.test(patient.lastName)) {
     errors.lastName = 'Last Name contains invalid chracters';
@@ -24,7 +28,7 @@ export default function ValidatePatient(patient) {
     errors.ssn = 'Please enter ssn in DDD-DD-DDDD format';
   }
 
-  if (!patient.street) {
+  if (!patient.street || !patient.street.trim()) {
     errors.street = 'Street field is empty';
   } else if (!/^[A-Za-z0-9\s\-',.]*$/.test(patient.street)) {
     errors.street = 'Street contains invalid characters';
@@ -32,7 +36,7 @@ export default function ValidatePatient(patient) {
     errors.street = 'Street must be less than 30 characters';
   }
 
-  if (!patient.city) {
+  if (!patient.city || !patient.city.trim()) {
     errors.city = 'City field is empty';
   } else if (!/^[A-Za-z\s\-',.]*$/.test(patient.city)) {
     errors.city = 'City contains invalid characters';
@@ -50,23 +54,19 @@ export default function ValidatePatient(patient) {
     errors.zip = 'Zip code field is empty';
   }
 
-  if (!patient.age) {
+  if (!patient.age || !patient.age.trim()) {
     errors.age = 'Age field is empty';
   } else if (!/^(120|1[01][0-9]|[1-9]?[0-9])$/.test(patient.age)) {
     errors.age = 'Age must be between 0 and 120 years';
   }
 
-  if (patient.height === '') {
-    errors.height = '';
-  } else if (patient.height < 0) {
+  if (patient.height < 0) {
     errors.height = 'Height must be a whole number greater than 0';
   } else if (patient.height > 108) {
     errors.height = 'Height must be a whole number less than 108';
   }
 
-  if (patient.weight === '') {
-    errors.weight = '';
-  } else if (patient.weight < 0) {
+  if (patient.weight < 0) {
     errors.weight = 'Weight must be a whole number greater than 0';
   } else if (patient.weight > 1400) {
     errors.weight = 'Weight must be a whole number less than 1400';
@@ -76,7 +76,7 @@ export default function ValidatePatient(patient) {
     errors.gender = 'Gender field is empty';
   }
 
-  if (!patient.insurance) {
+  if (!patient.insurance || !patient.insurance.trim()) {
     errors.insurance = 'Insurance field is empty';
   } else if (patient.insurance.length > 50) {
     errors.insurance = 'Insurance must be less that 50 characters';

@@ -5,6 +5,7 @@ import '../index.css';
 import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
+import CottageIcon from '@mui/icons-material/Cottage';
 import { getPatientById } from '../apiService';
 
 export default function PatientDetails() {
@@ -128,6 +129,7 @@ export default function PatientDetails() {
           value={patient.insurance}
         />
       </div>
+      <CottageIcon />
     </Box>
   );
 }
