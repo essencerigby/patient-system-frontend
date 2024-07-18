@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../Component/Modal.css';
-import { createPatient } from '../apiService';
+import { createPatient, getPatients } from '../apiService';
 import ValidatePatient from './ValidatePatient';
 import PatientForm from './PatientForm';
 
@@ -66,12 +66,28 @@ export default function CreatePatient({ onRefresh }) {
     gender: '',
     insurance: ''
   });
+  const [patients, setPatients] = useState([]);
 
-  const toggleModal = () => {
-    if (modal) {
-      setErrors({}); // Reset error when closing the modal
+  const toggleModal = async () => {
+    if (!modal) {
+      const fetchedPatients = await getPatients();
+      setPatients(fetchedPatients);
     }
-    setModal(!modal); // Toggle modal visibility
+    setModal(!modal);
+    if (modal) {
+      setErrors({});
+    } // Toggle modal visibility
+  };
+
+  const isUnique = () => {
+    const uniqueErrors = {};
+    const ssnExists = patients.some((p) => p.ssn === patient.ssn);
+    const emailExists = patients.some((p) => p.email === patient.email);
+
+    if (ssnExists) uniqueErrors.ssn = 'SSN already in use';
+    if (emailExists) uniqueErrors.email = 'Email already in use';
+
+    return uniqueErrors;
   };
 
   // This function handles changes in input fields of the vendor form.
@@ -83,11 +99,13 @@ export default function CreatePatient({ onRefresh }) {
     }));
   };
 
-  // This function handles the submission of the vendor form.
+  // This function handles the submission of the vendor form. Checks that all inputs are valid.
   const handleSubmit = async () => {
     const validationErrors = ValidatePatient(patient);
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length > 0) return;
+    const uniquenessErrors = isUnique();
+    const combinedErrors = { ...validationErrors, ...uniquenessErrors };
+    setErrors(combinedErrors);
+    if (Object.keys(combinedErrors).length > 0) return;
     try {
       const patientToCreate = {
         id: patient.id,

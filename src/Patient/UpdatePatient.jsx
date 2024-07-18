@@ -1,7 +1,7 @@
 import EditIcon from '@mui/icons-material/Edit';
 import React, { useState } from 'react';
 import '../Component/Modal.css';
-import { updatePatient, getPatientById } from '../apiService';
+import { updatePatient, getPatientById, getPatients } from '../apiService';
 import PatientForm from './PatientForm';
 import ValidatePatient from './ValidatePatient';
 
@@ -104,14 +104,18 @@ export default function UpdatePatient({ patient, onRefresh }) {
     gender: '',
     insurance: ''
   });
-
+  const [patients, setPatients] = useState([]);
   const [errors, setErrors] = useState({});
 
-  const toggleModal = () => {
+  const toggleModal = async () => {
+    if (!modal) {
+      const fetchedPatients = await getPatients();
+      setPatients(fetchedPatients);
+    }
+    setModal(!modal);
     if (modal) {
       setErrors({});
     }
-    setModal(!modal);
   };
 
   const handleChange = (e) => {
@@ -122,9 +126,27 @@ export default function UpdatePatient({ patient, onRefresh }) {
     }));
   };
 
+  const isUniqueForUpdate = () => {
+    const uniqueErrors = {};
+    const ssnExists = patients.some(
+      (p) => p.ssn === currentPatient.ssn && p.id !== currentPatient.id
+    );
+    const emailExists = patients.some(
+      (p) => p.email === currentPatient.email && p.id !== currentPatient.id
+    );
+
+    if (ssnExists) uniqueErrors.ssn = 'SSN already in use';
+    if (emailExists) uniqueErrors.email = 'Email already in use';
+
+    return uniqueErrors;
+  };
+
   // Submits the new updates to the current patient
   const handleSubmit = async () => {
     const validationErrors = ValidatePatient(currentPatient);
+    const uniquenessErrors = isUniqueForUpdate();
+    const combinedErrors = { ...validationErrors, ...uniquenessErrors };
+    setErrors(combinedErrors);
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) return;
     try {
